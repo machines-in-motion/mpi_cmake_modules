@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<package>
+
+  <name>cmake_modules</name>
+  <version>1.0.0</version>
+  <license>TODO</license>
+  <author email="mnaveau@tuebingen.mpg.de">Vincent Berenz</author>
+  <maintainer email="mnaveau@tuebingen.mpg.de">Vincent Berenz</maintainer>
+  <description>
+      Contains useful cmake macros
+  </description>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+
+</package>
