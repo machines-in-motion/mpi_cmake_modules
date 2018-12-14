@@ -2,7 +2,7 @@
 
 <package>
 
-  <name>cmake_modules</name>
+  <name>mpi_cmake_modules</name>
   <version>1.0.0</version>
   <license>TODO</license>
   <author email="mnaveau@tuebingen.mpg.de">Vincent Berenz</author>
