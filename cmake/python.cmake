@@ -117,6 +117,7 @@ MACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
     MODULE
     ${mpi_cmake_modules_SOURCE_DIR}/resources/python-module-py.cc
   )
+  MESSAGE(STATUS "Creating the python binding of: ${LIBRARYNAME}")
   TARGET_LINK_LIBRARIES(${PYTHON_MODULE} ${LIBRARYNAME} ${PYTHON_LIBRARY})
   SET_TARGET_PROPERTIES(${PYTHON_MODULE} PROPERTIES
     PREFIX ""
@@ -125,6 +126,22 @@ MACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
   )
 
   CMAKE_POLICY(POP)
+
+  # In essence create an empty __init__.py in all SUBMODULENAME subfolder
+  # this allow you to load the python package without trouble.
+  string(REPLACE "/" ";" SUB_FOLDER_LIST ${SUBMODULENAME})
+  set(current_folder ${DYNAMIC_GRAPH_PYTHON_DIR})
+  foreach(subfolder ${SUB_FOLDER_LIST})
+    CONFIGURE_FILE(
+      ${mpi_cmake_modules_SOURCE_DIR}/resources/__init__.py.empty.in
+      ${current_folder}/${subfolder}/__init__.py
+    )
+    set(current_folder ${current_folder}/${subfolder})
+  endforeach(subfolder ${SUB_FOLDER_LIST})
+  
+
+  # local var to create the destination folders and install it
+  SET(OUTPUT_MODULE_DIR ${DYNAMIC_GRAPH_PYTHON_DIR}/${SUBMODULE_DIR})
 
   CONFIGURE_FILE(
     ${mpi_cmake_modules_SOURCE_DIR}/resources/__init__.py.in
