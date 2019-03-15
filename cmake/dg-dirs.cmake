@@ -1,3 +1,9 @@
+# at the very top
+if(POLICY CMP0012)
+  cmake_policy(PUSH)
+  cmake_policy(SET CMP0012 NEW)
+endif()
+
 # Define a list of the subdirectories
 macro(SUBDIRLIST result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
@@ -20,7 +26,7 @@ macro(FIND_DEVEL_FOLDER CURRENT_DIR)
   foreach(subfold ${SUB_FOLDERS})
     if(${subfold} STREQUAL "devel")
       set(DEVEL_FOLDER ${CURRENT_FOLDER}/devel)
-      set(stop_find_devel_folder ON)
+      set(stop_find_devel_folder TRUE)
     endif()
   endforeach()      
 
@@ -38,3 +44,8 @@ set(DYNAMIC_GRAPH_PLUGIN_DIR ${CATKIN_DEVEL_PREFIX}/lib/plugin)
 
 set(DYNAMIC_GRAPH_PYTHON_DIR
   ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_PYTHON_DESTINATION}/dynamic_graph_manager)
+
+# at the very bottom
+if(POLICY CMP0012)
+  cmake_policy(POP)
+endif()
