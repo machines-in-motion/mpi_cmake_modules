@@ -24,7 +24,7 @@ macro(DEFINE_OS)
     set(CURRENT_OS "rt-preempt")
     add_definitions("-DRT_PREEMPT")
     
-  elseif(OS_VERSION MATCHES "ubuntu" OR OS_VERSION MATCHES "non-real-time" OR OS_VERSION MATCHES "darwin" )
+  elseif(OS_VERSION MATCHES "ubuntu" OR OS_VERSION MATCHES "non-real-time" OR OS_VERSION MATCHES "darwin" OR OS_VERSION MATCHES "el7.x86_64")
     set(CURRENT_OS "non-real-time")
     add_definitions("-DNON_REAL_TIME")
   else()
