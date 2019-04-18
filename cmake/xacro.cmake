@@ -22,8 +22,8 @@ macro(BUILD_XACRO_FILES)
 
   foreach(xacro_file_name ${xacro_file_names})
     # remove .xacro extension
-    string(REGEX MATCH "(.*)[.]xacro$" unused ${xacro_file_name})
-    set(urdf_file_name ${CMAKE_MATCH_1})
+    string(REGEX MATCH "(.*)[.]urdf.xacro$" unused ${xacro_file_name})
+    set(urdf_file_name ${CMAKE_MATCH_1}.urdf)
 
     set(xacro_file_full_path ${CMAKE_CURRENT_SOURCE_DIR}/xacro/${xacro_file_name})
     set(urdf_file_full_path ${CMAKE_CURRENT_SOURCE_DIR}/urdf/${urdf_file_name})
