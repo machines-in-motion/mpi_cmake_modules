@@ -30,9 +30,6 @@ macro(build_doxygen_documentation)
       COMMAND ${DOXYGEN_EXECUTABLE} ${doc_build_folder}/Doxyfile
       SOURCES ${doc_build_folder}/Doxyfile)
 
-    message(WARNING "doc folder = " ${doc_build_folder}/doc "            doc install fodler = " ${doc_install_folder})
-    message(WARNING "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH})
-    message(WARNING "CMAKE_INSTALL_PREFIX = " ${CMAKE_INSTALL_PREFIX})
     # install the documentation    
     install(DIRECTORY ${doc_build_folder}/doc DESTINATION ${doc_install_folder})
   
