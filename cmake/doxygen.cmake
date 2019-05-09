@@ -23,7 +23,8 @@ macro(build_doxygen_documentation)
     
     # Create the doxyfile in function of the current project.
     # If the Doxyfile.in does not exists, the cmake step stops.
-    configure_file(Doxyfile.in ${doc_build_folder}/Doxyfile  @ONLY IMMEDIATE)
+    configure_file(${mpi_cmake_modules_SOURCE_DIR}/resources/Doxyfile.in
+                   ${doc_build_folder}/Doxyfile  @ONLY IMMEDIATE)
     
     # the doxygen target is generated
     add_custom_target (${PROJECT_NAME}_doc ALL
