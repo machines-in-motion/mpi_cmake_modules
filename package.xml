@@ -4,9 +4,9 @@
 
   <name>mpi_cmake_modules</name>
   <version>1.0.0</version>
-  <license>TODO</license>
-  <author email="mnaveau@tuebingen.mpg.de">Vincent Berenz</author>
-  <maintainer email="mnaveau@tuebingen.mpg.de">Vincent Berenz</maintainer>
+  <license>BSD-3 Clause</license>
+  <author email="mnaveau@tuebingen.mpg.de">Maximilien Naveau</author>
+  <maintainer email="mberenz@tuebingen.mpg.de">Vincent Berenz</maintainer>
   <description>
       Contains useful cmake macros
   </description>
