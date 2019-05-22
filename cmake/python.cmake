@@ -1,3 +1,14 @@
+#
+# @file python.cmake
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief This file is copied/inspired from
+# https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/python.cmake
+# 
+
 # NORMALIZE_PATH
 # ------------------
 #

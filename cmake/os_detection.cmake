@@ -1,4 +1,15 @@
-# _WHICH_OS
+#
+# @file os-detection.cmake
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief This file allows us to detect which linux os we are using to compile
+# the code
+# 
+
+# DEFINE_OS
 # -------------
 #
 # Execute "uname --all" which provides us information on the os specific

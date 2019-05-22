@@ -1,3 +1,14 @@
+#
+# @file doxygen.cmake
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief This file allows us to build the doxygen documentation of a package
+# using a simple macro
+# 
+
 ##########################
 # building documentation #
 ##########################

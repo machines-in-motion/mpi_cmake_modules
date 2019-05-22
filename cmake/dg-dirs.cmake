@@ -1,3 +1,14 @@
+#
+# @file dg-dirs.cmake
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief This file allows us to install the python bindings of the dynamic graph
+# at the correct place.
+# 
+
 # at the very top
 if(POLICY CMP0012)
   cmake_policy(PUSH)

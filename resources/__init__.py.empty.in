@@ -1,0 +1,5 @@
+"""@package @PROJECT_NAME@
+
+This is an empty __init__.py to define a python module upon installation.
+
+"""
