@@ -15,10 +15,9 @@
 #
 # This file has been changed by:
 #
-# Maximilien Naveau from the Max Planck Institute of intelligent system
+# Maximilien Naveau (New York University and Max Planck Gesellshaft)
 #
 #
-
 
 #
 # This function looks for the "protoc" executable, which is the protobuf message

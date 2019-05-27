@@ -1,3 +1,14 @@
+#
+# @file xacro.cmake
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief This file allows us to abuild xacro files with a single macro.
+# 
+
+
 #.rst:
 #
 # This looks for any files ending with .urdf.xacro in the [package_root]/xacro

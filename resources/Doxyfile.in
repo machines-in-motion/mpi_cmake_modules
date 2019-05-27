@@ -1,4 +1,12 @@
-# see doxygen.cmake for details
+#
+# @file Doxyfile.in
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief see doxygen.cmake for details.
+# 
 
 PROJECT_NAME           = "@PROJECT_NAME@"
 OUTPUT_DIRECTORY       = doc

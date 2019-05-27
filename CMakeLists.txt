@@ -1,3 +1,13 @@
+#
+# @file CMakeLists.txt
+# @author Maximilien Naveau (maximilien.naveau@gmail.com)
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellshaft.
+# @license License BSD-3 clause
+# @date 2019-05-06
+# 
+# @brief This file allow the build of this package using cmake
+# 
+
 ######################
 # set up the project #
 ######################
