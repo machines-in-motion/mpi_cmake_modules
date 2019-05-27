@@ -30,3 +30,8 @@ endforeach()
 catkin_package(
   CFG_EXTRAS ${cmake_files}
 )
+
+##########################
+# building documentation #
+##########################
+build_doxygen_documentation()
