@@ -1,0 +1,13 @@
+/*! \mainpage mpi_cmake_modules
+ *
+ * \section intro_sec Introduction
+ *
+ * This package defines a list of usefull cmake macros.
+ * It can be used by simply depending on it using catkin.
+ *
+ * \section install_sec Installation
+ *
+ * \subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
