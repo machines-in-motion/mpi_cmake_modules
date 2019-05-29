@@ -29,7 +29,7 @@ macro(build_doxygen_documentation)
     endif()
 
     # set the destination folder to be devel/share/[project_name]/doc/
-    set(doc_build_folder ${PROJECT_BINARY_DIR})
+    set(doc_build_folder ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION})
     set(doc_install_folder ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION})
     
     # Create the doxyfile in function of the current project.
@@ -40,7 +40,8 @@ macro(build_doxygen_documentation)
     # the doxygen target is generated
     add_custom_target (${PROJECT_NAME}_doc ALL
       COMMAND ${DOXYGEN_EXECUTABLE} ${doc_build_folder}/Doxyfile
-      SOURCES ${doc_build_folder}/Doxyfile)
+      SOURCES ${doc_build_folder}/Doxyfile
+      WORKING_DIRECTORY ${doc_build_folder})
 
     # install the documentation    
     install(DIRECTORY ${doc_build_folder}/doc DESTINATION ${doc_install_folder})
