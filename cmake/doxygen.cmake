@@ -45,7 +45,7 @@ macro(build_doxygen_documentation)
 
     # install the documentation    
     install(DIRECTORY ${doc_build_folder}/doc DESTINATION ${doc_install_folder})
-  
+    install(FILES ${doc_build_folder}/${PROJECT_NAME}.tag DESTINATION ${doc_install_folder})
   endif(BUILD_DOCUMENTATION)
 
 endmacro(build_doxygen_documentation)
