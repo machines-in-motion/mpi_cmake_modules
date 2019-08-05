@@ -15,7 +15,7 @@
 #
 # This file has been changed by:
 #
-# Maximilien Naveau (New York University and Max Planck Gesellshaft)
+# Maximilien Naveau (New York University and Max Planck Gesellschaft)
 #
 #
 
