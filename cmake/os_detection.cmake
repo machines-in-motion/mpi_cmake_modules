@@ -40,11 +40,13 @@ macro(DEFINE_OS)
     add_definitions("-DNON_REAL_TIME")
   else()
     message(STATUS "output of \"uname -a\": ${OS_VERSION}")
-    message(FATAL_ERROR "Could not detect the OS version please "
-      "fix os_detection.cmake")
+    message(WARNING "Could not detect the OS version please "
+      "fix os_detection.cmake. Falling back to NON REAL-TIME api.")
+    set(CURRENT_OS "non-real-time")
+    add_definitions("-DNON_REAL_TIME")
   endif()
   #
-  message(STATUS "OS found is " ${CURRENT_OS})
+  message(STATUS "The OS type is " ${CURRENT_OS})
   
   if(OS_VERSION MATCHES "darwin")
     add_definitions("-DMAC_OS")
@@ -53,3 +55,6 @@ macro(DEFINE_OS)
 
 endmacro(DEFINE_OS)
 
+# We catually call the macro upon include of this cmake file so the OS is always
+# defined. This avoid verbosity in the CMakeLists.txt + potential error.
+DEFINE_OS()
