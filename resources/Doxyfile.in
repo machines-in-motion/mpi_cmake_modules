@@ -18,7 +18,9 @@ EXTRACT_STATIC         = YES
 INPUT                  = @PROJECT_SOURCE_DIR@/src \
                          @PROJECT_SOURCE_DIR@/include \
                          @PROJECT_SOURCE_DIR@/python \
-                         @PROJECT_SOURCE_DIR@/doc
+                         @PROJECT_SOURCE_DIR@/srcpy \
+                         @PROJECT_SOURCE_DIR@/doc \
+                         @PROJECT_SOURCE_DIR@/demos
 IMAGE_PATH             = @PROJECT_SOURCE_DIR@/doc/pictures \
                          @PROJECT_SOURCE_DIR@/doc/figures
 FILE_PATTERNS          = *.h *.hpp *.hh *.cpp *.c *.cc *.hxx *.py *.dox
