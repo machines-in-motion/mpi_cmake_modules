@@ -27,6 +27,11 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 
+###########################
+# depend on catkin macros #
+###########################
+find_package(catkin REQUIRED)
+
 ############################
 # Get all the files needed #
 ############################

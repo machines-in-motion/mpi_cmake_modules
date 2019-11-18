@@ -15,7 +15,8 @@ TAB_SIZE               = 4
 EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = NO
 EXTRACT_STATIC         = YES
-INPUT                  = @PROJECT_SOURCE_DIR@/src \
+INPUT                  = @PROJECT_SOURCE_DIR@ \
+                         @PROJECT_SOURCE_DIR@/src \
                          @PROJECT_SOURCE_DIR@/include \
                          @PROJECT_SOURCE_DIR@/python \
                          @PROJECT_SOURCE_DIR@/srcpy \
@@ -23,7 +24,7 @@ INPUT                  = @PROJECT_SOURCE_DIR@/src \
                          @PROJECT_SOURCE_DIR@/demos
 IMAGE_PATH             = @PROJECT_SOURCE_DIR@/doc/pictures \
                          @PROJECT_SOURCE_DIR@/doc/figures
-FILE_PATTERNS          = *.h *.hpp *.hh *.cpp *.c *.cc *.hxx *.py *.dox
+FILE_PATTERNS          = *.h *.hpp *.hh *.cpp *.c *.cc *.hxx *.py *.dox *.md
 EXCLUDE_PATTERNS       = */deprecated/*
 RECURSIVE              = YES
 GENERATE_LATEX         = YES

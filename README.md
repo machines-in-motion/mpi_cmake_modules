@@ -1,4 +1,17 @@
-# mpi_cmake_modules
+mpi_cmake_modules  {#mainpage}
+=================
+[TOC]
 
-Contains useful cmake macros exported into the daughter CMakelists.txt via
-the catkin macro.
+# Introduction {#intro}
+
+This package defines a list of usefull cmake macros.
+It can be used by simply depending on it using catkin.
+
+# License {#lic}
+
+BSD 3-Clause
+
+# Authors {#author}
+
+- Vincent Berenz (vberenz@tue.mpg.de)
+- Maximilien Naveau (mnaveau@tue.mpg.de)
