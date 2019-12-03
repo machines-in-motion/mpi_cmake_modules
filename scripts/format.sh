@@ -14,6 +14,7 @@ then
     echo "Error while formatting."
     exit ${clang_return_code}
 elif [ "${format_out}" = "" ]; then
+    echo "Formatting succeeded."
     exit 0
 else
     echo "Error while formatting."
