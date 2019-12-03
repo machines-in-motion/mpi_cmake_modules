@@ -22,8 +22,13 @@ MACRO(FORMAT_CODE)
         if(CLANG_FORMAT_EXECUTABLE)
             message(STATUS "Looking for clang-format - found")
             message(STATUS "Format source files using catkin_make format.")
-            configure_file(${mpi_cmake_modules_SOURCE_DIR}/resources/.clang-format.in
-                        ${CMAKE_CURRENT_SOURCE_DIR}/.clang_format @ONLY IMMEDIATE)
+
+            # copy the clang-format config file to the source dir of the package
+            # calling the macro
+            configure_file(
+                ${mpi_cmake_modules_SOURCE_DIR}/resources/.clang-format.in
+                ${CMAKE_CURRENT_SOURCE_DIR}/.clang_format COPYONLY)
+
             add_custom_target(${PROJECT_NAME}-format ALL
                             COMMAND ${CMAKE_COMMAND} -E echo "Formatting files... "
                             COMMAND ${mpi_cmake_modules_SOURCE_DIR}/resources/format.sh ${CLANG_FORMAT_EXECUTABLE}
