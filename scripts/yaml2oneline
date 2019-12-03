@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+"""Read a YAML-file and output its content as a one-line string
+
+Example:  A YAML file with the content
+
+    foo: 13
+    bar: 42
+
+would be converted into
+
+    {foo: 13, bar: 42}
+
+"""
+import sys
+import yaml
+
+if __name__ == "__main__":
+    filename = sys.argv[1]
+
+    with open(filename, "r") as fh:
+        data = yaml.load(fh)
+        print(yaml.dump(data).replace("\n", ""))
