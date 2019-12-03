@@ -37,8 +37,9 @@ MACRO(FORMAT_CODE)
                 DEPENDS ${CLANG_FORMAT_EXECUTABLE}
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
         else()
-            message(WARNING "Looking for clang-format - NOT found, please install clang-format to enable automatic code formatting")
+            message(FATAL_ERROR "Looking for clang-format - NOT found, please"
+                    "install clang-format to enable automatic code formatting")
         endif()
     endif()
-  
+
 ENDMACRO(FORMAT_CODE)
