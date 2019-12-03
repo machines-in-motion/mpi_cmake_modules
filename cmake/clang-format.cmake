@@ -17,7 +17,7 @@ MACRO(FORMAT_CODE)
         message(STATUS "[ Code Formatting ]")
         find_program(
             CLANG_FORMAT_EXECUTABLE
-            NAMES clang-format-6.0
+            NAMES clang-format
         )
         if(CLANG_FORMAT_EXECUTABLE)
             message(STATUS "Looking for clang-format - found")
