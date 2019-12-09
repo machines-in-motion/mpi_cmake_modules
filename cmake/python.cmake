@@ -4,13 +4,10 @@
 # @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 # @license License BSD-3 clause
 # @date 2019-05-06
-# 
+#
 # @brief This file is copied/inspired from
 # https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/python.cmake
-# 
-
-# set the path to the package root based on the location of this file
-set(mpi_cmake_modules_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+#
 
 
 # NORMALIZE_PATH
@@ -130,7 +127,7 @@ MACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
   SET(PYTHON_MODULE "${TARGET_NAME}")
   ADD_LIBRARY(${PYTHON_MODULE}
     MODULE
-    ${mpi_cmake_modules_SOURCE_DIR}/resources/python-module-py.cc
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/python-module-py.cc
   )
   MESSAGE(STATUS "Creating the python binding of: ${LIBRARYNAME}")
   TARGET_LINK_LIBRARIES(${PYTHON_MODULE} ${LIBRARYNAME} ${PYTHON_LIBRARY})
@@ -148,18 +145,18 @@ MACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
   set(current_folder ${DYNAMIC_GRAPH_PYTHON_DIR})
   foreach(subfolder ${SUB_FOLDER_LIST})
     CONFIGURE_FILE(
-      ${mpi_cmake_modules_SOURCE_DIR}/resources/__init__.py.empty.in
+        ${MPI_CMAKE_MODULES_RESOURCES_DIR}/__init__.py.empty.in
       ${current_folder}/${subfolder}/__init__.py
     )
     set(current_folder ${current_folder}/${subfolder})
   endforeach(subfolder ${SUB_FOLDER_LIST})
-  
+
 
   # local var to create the destination folders and install it
   SET(OUTPUT_MODULE_DIR ${DYNAMIC_GRAPH_PYTHON_DIR}/${SUBMODULE_DIR})
 
   CONFIGURE_FILE(
-    ${mpi_cmake_modules_SOURCE_DIR}/resources/__init__.py.in
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/__init__.py.in
     ${OUTPUT_MODULE_DIR}/__init__.py
   )
 

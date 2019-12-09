@@ -4,9 +4,9 @@
 # @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 # @license License BSD-3 clause
 # @date 2019-05-06
-# 
+#
 # @brief This file allow the build of this package using cmake
-# 
+#
 
 ######################
 # set up the project #
@@ -32,6 +32,13 @@ set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 ###########################
 find_package(catkin REQUIRED)
 
+
+# Define some path variables for this package
+set(MPI_CMAKE_MODULES_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(MPI_CMAKE_MODULES_CMAKE_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/cmake)
+set(MPI_CMAKE_MODULES_RESOURCES_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/resources)
+set(MPI_CMAKE_MODULES_SCRIPTS_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/scripts)
+
 ############################
 # Get all the files needed #
 ############################
@@ -46,7 +53,9 @@ endforeach()
 # export the package as a catkin package #
 ##########################################
 catkin_package(
-  CFG_EXTRAS ${cmake_files}
+  CFG_EXTRAS
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/package_paths.cmake
+    ${cmake_files}
 )
 
 ##########################
