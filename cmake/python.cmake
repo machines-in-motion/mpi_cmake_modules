@@ -9,6 +9,10 @@
 # https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/python.cmake
 # 
 
+# set the path to the package root based on the location of this file
+set(mpi_cmake_modules_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+
+
 # NORMALIZE_PATH
 # ------------------
 #
