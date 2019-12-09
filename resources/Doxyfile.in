@@ -33,7 +33,7 @@ FILTER_PATTERNS = *.py=@RESOURCE_FOLDER@/py_filter
 
 # Remove the absolute path to the package from the file path.
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/../
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
 
 # Get all the intersting files by looking for them recursively and according to
 # their extension
