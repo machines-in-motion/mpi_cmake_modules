@@ -27,18 +27,23 @@ MACRO(FORMAT_CODE)
 
             # load the clang-format configuration
             execute_process(COMMAND
-                ${mpi_cmake_modules_SOURCE_DIR}/scripts/yaml2oneline
-                    ${mpi_cmake_modules_SOURCE_DIR}/resources/_clang-format
+                ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/yaml2oneline
+                ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
                 RESULT_VARIABLE clang_format_conversion_result
-                OUTPUT_VARIABLE clang_format_config)
-            if(NOT ${clang_format_conversion_result} EQUAL 0)
-                message(FATAL_ERROR "Failed to load clang-format config.")
+                OUTPUT_VARIABLE clang_format_config
+                ERROR_VARIABLE clang_format_error_output)
+            if(NOT ${clang_format_error_output} STREQUAL "")
+                message(FATAL_ERROR "Failed to load clang-format config."
+                    " Error output: ${clang_format_error_output}")
+            elseif(NOT ${clang_format_conversion_result} EQUAL 0)
+                message(FATAL_ERROR "Failed to load clang-format config."
+                    " Return code: ${clang_format_conversion_result}")
             endif()
 
             # target to run clang-format to reformat the files
             add_custom_target(${PROJECT_NAME}-format ALL
                 COMMAND ${CMAKE_COMMAND} -E echo "Formatting files... "
-                COMMAND ${mpi_cmake_modules_SOURCE_DIR}/scripts/format.sh
+                COMMAND ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/format.sh
                     ${CLANG_FORMAT_EXECUTABLE} "${clang_format_config}"
                 COMMAND ${CMAKE_COMMAND} -E echo "Done."
                 DEPENDS ${CLANG_FORMAT_EXECUTABLE}
@@ -47,7 +52,7 @@ MACRO(FORMAT_CODE)
             # target to check if formatting of files complies with style guide
             add_custom_target(${PROJECT_NAME}-check-format ALL
                 COMMAND ${CMAKE_COMMAND} -E echo "Checking files... "
-                COMMAND ${mpi_cmake_modules_SOURCE_DIR}/scripts/check_format.sh
+                COMMAND ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/check_format.sh
                     ${CLANG_FORMAT_EXECUTABLE} "${clang_format_config}"
                 COMMAND ${CMAKE_COMMAND} -E echo "Done."
                 DEPENDS ${CLANG_FORMAT_EXECUTABLE} ${PROJECT_NAME}-format

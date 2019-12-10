@@ -1,0 +1,13 @@
+#
+# @file
+# @author Felix Widmaier <felix.widmaier@tue.mpg.de>
+# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# @license License BSD-3 clause
+#
+# @brief Export path variables to the mpi_cmake_modules package (so they can be
+# used in other files).
+
+set(MPI_CMAKE_MODULES_ROOT_DIR @MPI_CMAKE_MODULES_ROOT_DIR@)
+set(MPI_CMAKE_MODULES_CMAKE_DIR @MPI_CMAKE_MODULES_CMAKE_DIRS@)
+set(MPI_CMAKE_MODULES_RESOURCES_DIR @MPI_CMAKE_MODULES_RESOURCES_DIR@)
+set(MPI_CMAKE_MODULES_SCRIPTS_DIR @MPI_CMAKE_MODULES_SCRIPTS_DIR@)

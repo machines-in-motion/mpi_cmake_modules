@@ -29,7 +29,7 @@ RECURSIVE              = YES
 IMAGE_PATH             = @PROJECT_SOURCE_DIR@
 
 # Filter the python docstring as Doxygen ones.
-FILTER_PATTERNS = *.py=@RESOURCE_FOLDER@/py_filter
+FILTER_PATTERNS = *.py=@MPI_CMAKE_MODULES_RESOURCES_DIR@/py_filter
 
 # Remove the absolute path to the package from the file path.
 FULL_PATH_NAMES        = YES
