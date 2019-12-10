@@ -30,9 +30,14 @@ MACRO(FORMAT_CODE)
                 ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/yaml2oneline
                 ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
                 RESULT_VARIABLE clang_format_conversion_result
-                OUTPUT_VARIABLE clang_format_config)
-            if(NOT ${clang_format_conversion_result} EQUAL 0)
-                message(FATAL_ERROR "Failed to load clang-format config.")
+                OUTPUT_VARIABLE clang_format_config
+                ERROR_VARIABLE clang_format_error_output)
+            if(NOT ${clang_format_error_output} STREQUAL "")
+                message(FATAL_ERROR "Failed to load clang-format config."
+                    " Error output: ${clang_format_error_output}")
+            elseif(NOT ${clang_format_conversion_result} EQUAL 0)
+                message(FATAL_ERROR "Failed to load clang-format config."
+                    " Return code: ${clang_format_conversion_result}")
             endif()
 
             # target to run clang-format to reformat the files
