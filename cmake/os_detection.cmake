@@ -26,6 +26,7 @@ macro(DEFINE_OS)
       OUTPUT_VARIABLE UNAME_OUT)
   string(TOLOWER "${UNAME_OUT}" OS_VERSION)
 
+  set(OS_VERSION "preempt-rt")
 
   if(OS_VERSION MATCHES "xenomai")
     set(CURRENT_OS "xenomai")

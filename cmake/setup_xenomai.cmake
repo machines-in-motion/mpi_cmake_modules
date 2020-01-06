@@ -37,14 +37,3 @@ macro(SETUP_XENOMAI)
 
 endmacro(SETUP_XENOMAI)
 
-# calling setup_xenomai globally, to avoid cluttering
-# catkin packages. a lightweight Xenomai_LIBS variable is also defined 
-# for non xenomai os, also to avoid cluttering the catkin packages
-# (so that they can still safely link agains Xenomai_LIBS on non xenomai
-# os)
-DEFINE_OS()
-if(CURRENT_OS STREQUAL "xenomai")
-  SETUP_XENOMAI()
-else()
-  set(Xenomai_LIBS pthread edit curses nsl glut GL GLU X11 Xmu m)
-endif()
