@@ -26,7 +26,6 @@ macro(DEFINE_OS)
       OUTPUT_VARIABLE UNAME_OUT)
   string(TOLOWER "${UNAME_OUT}" OS_VERSION)
 
-
   if(OS_VERSION MATCHES "xenomai")
     set(CURRENT_OS "xenomai")
     add_definitions("-DXENOMAI")
@@ -55,6 +54,3 @@ macro(DEFINE_OS)
 
 endmacro(DEFINE_OS)
 
-# We catually call the macro upon include of this cmake file so the OS is always
-# defined. This avoid verbosity in the CMakeLists.txt + potential error.
-DEFINE_OS()
