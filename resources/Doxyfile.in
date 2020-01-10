@@ -53,6 +53,8 @@ GENERATE_XML           = YES
 
 # Include and resize and image.
 ALIASES += imageSize{3}="\htmlonly <style> div.image img[src=\"\1\"]{\2} </style> \endhtmlonly \image html \1 \"\3\""
+# add a `@license` tag
+ALIASES += "license=\xrefitem license \"License\" \"License\" "
 
 # Allow searching from teh client side.
 SERVER_BASED_SEARCH = NO
