@@ -819,3 +819,69 @@ MACRO(PKG_CONFIG_ADD_COMPILE_OPTIONS COMPILE_OPTIONS DEPENDENCY)
     SET(${COMPILE_OPTIONS} "${${COMPILE_OPTIONS}};${FLAG}")
   ENDFOREACH()
 ENDMACRO(PKG_CONFIG_ADD_COMPILE_OPTIONS COMPILE_OPTIONS DEPENDENCY)
+
+# CATKIN_ADD_REQUIRED_DEPENDENCY(DEPENDENCY)
+# --------------------------------------------
+#
+# This macros looks for the dependencies using pkg config and export the
+# cmake variables using catkin.
+#
+# I.e. CATKIN_ADD_REQUIRED_DEPENDENCY("my-package >= 1.0.0")
+MACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
+    # Get the name from the string    
+    SET(ARGS ${DEPENDENCY})
+    SEPARATE_ARGUMENTS(ARGS)
+    list(LENGTH ARGS NB_ARGS)
+    list(GET ARGS 0 DEPENDENCY_NAME)
+
+    # Look for the dependency
+    ADD_REQUIRED_DEPENDENCY(${DEPENDENCY})
+
+    # Setup the catkin variable
+    BUILD_PREFIX_FOR_PKG(${DEPENDENCY_NAME} DEPENDENCY_FORMATED_NAME)
+
+    SET(catkin_INCLUDE_DIRS
+        ${${DEPENDENCY_FORMATED_NAME}_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
+    )
+    LINK_DIRECTORIES(
+        ${${dependency_formated_name}_LIBRARY_DIRS}
+    )
+    SET(catkin_LIBRARIES
+        ${${dependency_formated_name}_LIBRARIES}
+        ${catkin_LIBRARIES}
+    )    
+ENDMACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
+
+# CATKIN_ADD_OPTIONAL_DEPENDENCY(DEPENDENCY)
+# --------------------------------------------
+#
+# This macros looks for the dependencies using pkg config and export the
+# cmake variables using catkin.
+#
+# I.e. CATKIN_ADD_OPTIONAL_DEPENDENCY("my-package >= 1.0.0")
+MACRO(CATKIN_ADD_OPTIONAL_DEPENDENCY DEPENDENCY)
+    # Get the name from the string    
+    SET(ARGS ${DEPENDENCY})
+    SEPARATE_ARGUMENTS(ARGS)
+    list(LENGTH ARGS NB_ARGS)
+    list(GET ARGS 0 DEPENDENCY_NAME)
+
+    # Look for the dependency
+    ADD_OPTIONAL_DEPENDENCY(${DEPENDENCY})
+
+    # Setup the catkin variable
+    BUILD_PREFIX_FOR_PKG(${DEPENDENCY_NAME} DEPENDENCY_FORMATED_NAME)
+
+    SET(catkin_INCLUDE_DIRS
+        ${${DEPENDENCY_FORMATED_NAME}_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
+    )
+    LINK_DIRECTORIES(
+        ${${dependency_formated_name}_LIBRARY_DIRS}
+    )
+    SET(catkin_LIBRARIES
+        ${${dependency_formated_name}_LIBRARIES}
+        ${catkin_LIBRARIES}
+    )    
+ENDMACRO(CATKIN_ADD_OPTIONAL_DEPENDENCY DEPENDENCY)
