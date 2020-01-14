@@ -845,12 +845,12 @@ MACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
         ${catkin_INCLUDE_DIRS}
     )
     LINK_DIRECTORIES(
-        ${${dependency_formated_name}_LIBRARY_DIRS}
+        ${${DEPENDENCY_FORMATED_NAME}_LIBRARY_DIRS}
     )
     SET(catkin_LIBRARIES
-        ${${dependency_formated_name}_LIBRARIES}
+        ${${DEPENDENCY_FORMATED_NAME}_LIBRARIES}
         ${catkin_LIBRARIES}
-    )    
+    )
 ENDMACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
 
 # CATKIN_ADD_OPTIONAL_DEPENDENCY(DEPENDENCY)
@@ -878,10 +878,10 @@ MACRO(CATKIN_ADD_OPTIONAL_DEPENDENCY DEPENDENCY)
         ${catkin_INCLUDE_DIRS}
     )
     LINK_DIRECTORIES(
-        ${${dependency_formated_name}_LIBRARY_DIRS}
+        ${${DEPENDENCY_FORMATED_NAME}_LIBRARY_DIRS}
     )
     SET(catkin_LIBRARIES
-        ${${dependency_formated_name}_LIBRARIES}
+        ${${DEPENDENCY_FORMATED_NAME}_LIBRARIES}
         ${catkin_LIBRARIES}
-    )    
+    )
 ENDMACRO(CATKIN_ADD_OPTIONAL_DEPENDENCY DEPENDENCY)
