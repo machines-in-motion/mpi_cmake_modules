@@ -27,7 +27,7 @@ MACRO(FORMAT_CODE)
 
             # load the clang-format configuration
             execute_process(COMMAND
-                ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/yaml2oneline.py
+                ${MPI_CMAKE_MODULES_ROOT_DIR}/python/mpi_cmake_modules/yaml2oneline.py
                 ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
                 RESULT_VARIABLE clang_format_conversion_result
                 OUTPUT_VARIABLE clang_format_config
