@@ -1,6 +1,5 @@
-mpi_cmake_modules  {#mainpage}
+mpi_cmake_modules
 =================
-[TOC]
 
 # Introduction {#intro}
 
