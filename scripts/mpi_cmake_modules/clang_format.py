@@ -6,6 +6,7 @@ Example:
     2/ rosrun mpi_cmake_module clang_format file_to_format.ext
 """
 
+import argparse
 import sys
 import os
 from os import walk
@@ -74,10 +75,17 @@ def execute_clang_format(clang_format_bin, clang_format_config,
 
 if __name__ == "__main__":
     """ Format source files given or found recursively in the given folders """
+
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('files_or_folders', metavar='files_or_folders',
+                        type=str, nargs='+',
+                        help='List of source files or folders.')
+    args = parser.parse_args()
+
     clang_format_bin = find_clang_format(['clang-format', 'clang-format-6.0',
                                           'clang-format-8'])
     clang_format_config = load_clang_format_config()
-    list_of_files = list_of_files_to_format(sys.argv[1:])
+    list_of_files = list_of_files_to_format(args.files_or_folders)
 
     if not list_of_files:
         raise RuntimeError(
