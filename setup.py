@@ -1,7 +1,6 @@
-"""@package dynamic_graph_manager
+"""@package mpi_cmake_modules
 
-@file setup.py
-@author Maximilien Naveau (maximilien.naveau@gmail.com)
+@file
 @license License BSD-3-Clause
 @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 @date 2019-05-22
