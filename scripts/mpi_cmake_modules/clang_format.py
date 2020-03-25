@@ -7,9 +7,9 @@ Example:
 """
 
 import sys
+import os
 from os import walk
 from os import path
-import subprocess
 try:
     from shutil import which
 except:
@@ -36,20 +36,15 @@ def load_clang_format_config():
 
 
 def test_valid_file(filename):
-    if path.isfile(filename):
-        if (filename.endswith(".h") or filename.endswith(".c") or
-                filename.endswith(".hh") or filename.endswith(".cc") or
-                filename.endswith(".hpp") or filename.endswith(".cpp") or
-                filename.endswith(".hxx") or filename.endswith(".cxx")):
-            return True
-        else:
-            return False
+    if (path.isfile(filename) and any([filename.endswith(suffix) for suffix in
+                                       (".h", ".c", ".hh", ".cc", ".hpp",
+                                        ".cpp", ".hxx", ".cxx")])):
+        return True
     else:
         return False
 
 
 def list_of_files_to_format(files_or_directories):
-    print files_or_directories
     list_of_files = []
     for file_or_directory in files_or_directories:
         if test_valid_file(file_or_directory):
@@ -64,14 +59,21 @@ def list_of_files_to_format(files_or_directories):
 
 def execute_clang_format(clang_format_bin, clang_format_config,
                          clang_format_arg):
-    cmd = (clang_format_bin + " -style=\"" + clang_format_config + "\" -i " +
-           ' '.join(clang_format_arg))
-    print ("executing: ", cmd)
-    ret = subprocess.call([cmd])
-    print(ret)
+    cmd = ' '.join([clang_format_bin,
+          ' -style="' + clang_format_config + '"',
+          ' -i ' + ' '.join(clang_format_arg)
+          ])
+    try:
+        print ("executing: ")
+        print (cmd)
+        os.system(cmd)
+    except Exception as e:
+        print("Fail to call " + clang_format_bin + " with error:")
+        print(e)
 
 
 if __name__ == "__main__":
+    """ Format source files given or found recursively in the given folders """
     clang_format_bin = find_clang_format(['clang-format', 'clang-format-6.0',
                                           'clang-format-8'])
     clang_format_config = load_clang_format_config()
@@ -80,8 +82,5 @@ if __name__ == "__main__":
     if not list_of_files:
         raise RuntimeError(
             "No file to format, please indicate paths to files or directories.")
-    # print(clang_format_bin)
-    # print(clang_format_config)
-    # print(list_of_files)
-
+    
     execute_clang_format(clang_format_bin, clang_format_config, list_of_files)
