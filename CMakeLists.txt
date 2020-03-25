@@ -37,7 +37,7 @@ find_package(catkin REQUIRED)
 set(MPI_CMAKE_MODULES_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(MPI_CMAKE_MODULES_CMAKE_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/cmake)
 set(MPI_CMAKE_MODULES_RESOURCES_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/resources)
-set(MPI_CMAKE_MODULES_SCRIPTS_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/scripts)
+set(MPI_CMAKE_MODULES_SCRIPTS_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/scripts/${PROJECT_NAME})
 
 ############################
 # Get all the files needed #
@@ -49,6 +49,11 @@ foreach(cmake_file ${cmake_files})
   include(cmake/${cmake_file})
 endforeach()
 
+##############################
+# manage python file install #
+##############################
+catkin_python_setup()
+
 ##########################################
 # export the package as a catkin package #
 ##########################################
@@ -56,6 +61,15 @@ catkin_package(
   CFG_EXTRAS
     ${MPI_CMAKE_MODULES_RESOURCES_DIR}/package_paths.cmake
     ${cmake_files}
+)
+
+##########################################
+# Install the interesting resource files #
+##########################################
+configure_file(
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
+    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}/_clang-format
+    @ONLY IMMEDIATE
 )
 
 ##########################

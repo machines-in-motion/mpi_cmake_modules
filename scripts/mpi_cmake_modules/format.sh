@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$#" -lt 2 ]; then
-  echo "Usage: ./check_format.sh <clang-format-executable> <config-string>" >&2
+  echo "Usage: ./format.sh <clang-format-executable> <config-string>" >&2
   exit 1
 fi
 

@@ -19,7 +19,7 @@ MACRO(FORMAT_CODE)
         message(STATUS "[ Code Formatting ]")
         find_program(
             CLANG_FORMAT_EXECUTABLE
-            NAMES clang-format
+            NAMES clang-format clang-format-6.0 clang-format-8
         )
         if(CLANG_FORMAT_EXECUTABLE)
             message(STATUS "Looking for clang-format - found")
@@ -27,7 +27,7 @@ MACRO(FORMAT_CODE)
 
             # load the clang-format configuration
             execute_process(COMMAND
-                ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/yaml2oneline
+                ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/yaml2oneline.py
                 ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
                 RESULT_VARIABLE clang_format_conversion_result
                 OUTPUT_VARIABLE clang_format_config
