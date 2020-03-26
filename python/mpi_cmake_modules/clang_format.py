@@ -76,7 +76,7 @@ def execute_clang_format(clang_format_bin, clang_format_config,
 if __name__ == "__main__":
     """ Format source files given or found recursively in the given folders """
 
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('files_or_folders', metavar='files_or_folders',
                         type=str, nargs='+',
                         help='List of source files or folders.')
