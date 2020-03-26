@@ -49,6 +49,11 @@ foreach(cmake_file ${cmake_files})
   include(cmake/${cmake_file})
 endforeach()
 
+##############################
+# manage python file install #
+##############################
+catkin_python_setup()
+
 ##########################################
 # export the package as a catkin package #
 ##########################################
@@ -56,6 +61,15 @@ catkin_package(
   CFG_EXTRAS
     ${MPI_CMAKE_MODULES_RESOURCES_DIR}/package_paths.cmake
     ${cmake_files}
+)
+
+##########################################
+# Install the interesting resource files #
+##########################################
+configure_file(
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
+    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}/_clang-format
+    @ONLY IMMEDIATE
 )
 
 ##########################

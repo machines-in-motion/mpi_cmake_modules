@@ -14,9 +14,13 @@ would be converted into
 import sys
 import yaml
 
-if __name__ == "__main__":
-    filename = sys.argv[1]
 
+def yaml2oneline(filename):
     with open(filename, "r") as fh:
         data = yaml.load(fh, Loader=yaml.SafeLoader)
-        print(yaml.dump(data, default_flow_style=True).replace("\n", ""))
+        return yaml.dump(data, default_flow_style=True).replace("\n", "")
+
+
+if __name__ == "__main__":
+    filename = sys.argv[1]
+    print(yaml2oneline(filename))
