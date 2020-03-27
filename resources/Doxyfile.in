@@ -17,7 +17,7 @@ EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = YES
 EXTRACT_STATIC         = YES
 
-# Add exmaples form this folder.
+# Add examples from this folder.
 EXAMPLE_PATH           = @PROJECT_SOURCE_DIR@/demos
 
 # Look for any files in this folder ...(see RECURSIVE)
