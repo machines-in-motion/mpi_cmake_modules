@@ -26,7 +26,9 @@ def find_clang_format(name_list=['clang-format']):
         path_to_clang_format = which(name)
         if path_to_clang_format is not None:
             return path_to_clang_format
-
+    raise Exception("clang-format executable not found. You may try 'sudo apt-get install clang-format'")
+    
+        
 
 def load_clang_format_config():
     for module_path in mpi_cmake_modules.__path__:
@@ -60,6 +62,7 @@ def list_of_files_to_format(files_or_directories):
 
 def execute_clang_format(clang_format_bin, clang_format_config,
                          clang_format_arg):
+    
     cmd = ' '.join([clang_format_bin,
           ' -style="' + clang_format_config + '"',
           ' -i ' + ' '.join(clang_format_arg)
@@ -90,5 +93,5 @@ if __name__ == "__main__":
     if not list_of_files:
         raise RuntimeError(
             "No file to format, please indicate paths to files or directories.")
-    
+
     execute_clang_format(clang_format_bin, clang_format_config, list_of_files)
