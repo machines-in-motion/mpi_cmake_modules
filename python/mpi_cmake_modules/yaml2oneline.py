@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """Read a YAML-file and output its content as a one-line string
+@file
+@license License BSD-3-Clause
+@copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 
 Example:  A YAML file with the content
 

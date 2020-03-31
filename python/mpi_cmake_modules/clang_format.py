@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 """Execute a clang-format on a desired file or folder.
+@file
+@license License BSD-3-Clause
+@copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 
 Example:
-    1/ rosrun mpi_cmake_module clang_format /path/to/format
-    2/ rosrun mpi_cmake_module clang_format file_to_format.ext
+    rosrun mpi_cmake_module clang_format /path/to/format
+    rosrun mpi_cmake_module clang_format file_to_format.ext
 """
 
 import argparse
