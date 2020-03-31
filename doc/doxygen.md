@@ -50,11 +50,14 @@ external user to understand the API.
 - Third, one need to provide demos of the API defining the usual use case of the
 code. These code must contain doc-strings containing the key word, e.g. with
 C/C++:
-    ```C
+
+    ```C++
     /** 
-      * @example <file name> This example provide an exmaple on how to use ...
+      * \@example <file name> This example provide an exmaple on how to use ...
+      * Remarque: remove the `\` before the `@`.
       */
     ```
+
 - Finally whenever you feel like documenting more extensively something and
 adding graph, image, extensive text explanatin, link, etc, it is way more
 convenitent to use markdown. Therefore one need to provide a `doc/` folder
