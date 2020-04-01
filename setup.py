@@ -1,4 +1,4 @@
-"""@package mpi_cmake_modules.setup
+"""@package setup
 This file defines the python modules in this package.
 
 @file
