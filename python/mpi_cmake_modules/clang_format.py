@@ -50,7 +50,25 @@ def test_valid_file(filename):
         return False
 
 
+# either returns file_or_directory as such (if exists)
+# or assumes file_or_directory was a relative path and returns
+# the corresponding absolute path (if exist, None otherwise)
+def _get_full_path(file_or_directory):
+    if path.isfile(file_or_directory) or path.isdir(file_or_directory):
+        return file_or_directory
+    fixed_path = os.path.abspath(os.getcwd()+os.sep+file_or_directory)
+    if os.isfile(fixed_path) or os.dir(fixed_path):
+        return fixed_path
+    return None
+        
+    
 def list_of_files_to_format(files_or_directories):
+    fixed = [_get_full_path(fod)
+             for fod in files_or_directories]
+    for original,fix in zip(files_or_directories,fixed):
+        if fix is None:
+            raise Exception("failed to find: "+str(original))
+    files_or_directories = fixed
     list_of_files = []
     for file_or_directory in files_or_directories:
         if test_valid_file(file_or_directory):
@@ -71,8 +89,9 @@ def execute_clang_format(clang_format_bin, clang_format_config,
                     ' -i ' + ' '.join(clang_format_arg)
                     ])
     try:
-        print ("executing: ")
+        print ("\nexecuting: ")
         print (cmd)
+        print ("")
         os.system(cmd)
     except Exception as e:
         print("Fail to call " + clang_format_bin + " with error:")
@@ -95,6 +114,11 @@ if __name__ == "__main__":
 
     if not list_of_files:
         raise RuntimeError(
-            "No file to format, please indicate paths to files or directories.")
-
+            "\nNo file to format, please indicate paths to files or directories.\n")
+    else :
+        print ("\nformatting:")
+        for f in list_of_files:
+            print ("\t"+str(f))
+        print ("")
+            
     execute_clang_format(clang_format_bin, clang_format_config, list_of_files)

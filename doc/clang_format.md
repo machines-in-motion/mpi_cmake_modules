@@ -18,6 +18,8 @@ And to run the following command:
 
     rosrun mpi_cmake_modules clang_format <list of files> <list of folders>
 
+<list_of_files> and <list of folders> can be either relative paths or absolute paths.
+
 For those not willing to use rosrun the executable is located in
 
     mpi_cmake_modules/scripts/clang_format
