@@ -66,7 +66,6 @@ def test_valid_file(filename,extensions):
         return True
     else:
         return False
-    
 
 def get_absolute_path(file_or_directory):
     """
@@ -150,5 +149,4 @@ def execute_clang_format(clang_format_bin, clang_format_config,
     except Exception as e:
         print("Fail to call " + clang_format_bin + " with error:")
         print(e)
-
 
