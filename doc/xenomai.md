@@ -1,4 +1,4 @@
 Xenomai
 =======
 
-@VinentBerenz can you fill that up?
+[Vincent Berenz](vberenz@tue.mpg.de) can you fill that up?

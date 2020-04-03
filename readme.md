@@ -11,7 +11,15 @@ It can be used by simply depending on it using catkin.
 In order to use the CMake macros contained in this package one need to depend
 on it in the following way:
 
+```cmake
     find_package(catkin REQUIRED COMPONENTS ${CATKIN_PKGS}) mpi_cmake_modules)
+```
+
+And add the following line in your `package.xml`
+
+~~~xml
+    <depend>mpi_cmake_modules</depend>
+~~~
 
 Remarque: This will perform by default:
 - the `define_os()` macro defined in cmake/os_detection.cmake
