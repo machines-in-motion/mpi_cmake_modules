@@ -13,6 +13,8 @@ from catkin_pkg.python_setup import generate_distutils_setup
 setup_args = generate_distutils_setup(
     packages=['mpi_cmake_modules'],
     package_dir={'': 'python'},
+    include_package_data=True,
+    package_data={"":["*_clang-format"]},
 )
 
 setup(**setup_args)
