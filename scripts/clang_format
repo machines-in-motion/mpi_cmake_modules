@@ -7,13 +7,14 @@ Usage example:
 - @code rosrun mpi_cmake_module clang_format /path/to/format @endcode
 - @code rosrun mpi_cmake_module clang_format file_to_format.ext @endcode
 
-@file
+@file clang_format
 @license License BSD-3-Clause
 @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """
 
 # cakin install has been called and install has been sourced
-from mpi_cmake_modules.clang_format import *
+from mpi_cmake_modules import clang_format
+import argparse
 
 def _execute():
 
@@ -37,13 +38,13 @@ def _execute():
                   ".cpp", ".hxx", ".cxx")
 
     ## Path to the clang-format binary.
-    clang_format_bin = find_clang_format(['clang-format', 'clang-format-6.0',
-                                          'clang-format-8'])
+    clang_format_bin = clang_format.find_clang_format(['clang-format', 'clang-format-6.0',
+                                                       'clang-format-8'])
     
     ## clang-format parameters.
-    clang_format_config = load_clang_format_config()
+    clang_format_config = clang_format.load_clang_format_config()
     ## List of files or directories to parse.
-    list_of_files = list_of_files_to_format(args.files_or_folders,extensions)
+    list_of_files = clang_format.list_of_files_to_format(args.files_or_folders,extensions)
         
     if not list_of_files:
         raise RuntimeError(
@@ -54,13 +55,11 @@ def _execute():
             print ("\t"+str(f))
         print ("")
 
-    execute_clang_format(clang_format_bin, clang_format_config, list_of_files)
+    clang_format.execute_clang_format(clang_format_bin, clang_format_config, list_of_files)
     
 if __name__ == "__main__":
     """ 
     Format source files given or found recursively in the given folders.
-    If '--preview' is passed as argument, only list the files that would
-    be formated, without actually formating them.
     """
 
     try :

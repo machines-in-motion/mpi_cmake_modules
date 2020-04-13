@@ -1,3 +1,11 @@
+""" @namespace mpi_cmake_modules.clang_format.py
+Utility functions for creating formatting script based on clang 
+@file clang_format.py
+@license License BSD-3-Clause
+@copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+"""
+
+
 import argparse
 import sys
 import os
