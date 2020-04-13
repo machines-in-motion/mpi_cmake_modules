@@ -1,10 +1,1 @@
----
-BasedOnStyle: Google
-AccessModifierOffset: '-4'
-AllowShortFunctionsOnASingleLine: None
-BinPackArguments: 'false'
-BinPackParameters: 'false'
-BreakBeforeBraces: Allman
-IndentWidth: '4'
-
-...
+../python/mpi_cmake_modules/_clang-format
