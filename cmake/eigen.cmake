@@ -1,23 +1,27 @@
+# Copyright (C) 2008-2014 LAAS-CNRS, JRL AIST-CNRS.
 #
-# @file eigen.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft and LAAS.
-# @license License BSD-3 clause
-# @date 2019-05-06
-# 
-# @brief This file is copied/inspired from
-# https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/eigen.cmake
-# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# SEARCH_FOR_EIGEN
-# -----------------
+#.rst:
+# .. command:: SEARCH_FOR_EIGEN
 #
-# This macro gets eigen include path from pkg-config file, and adds it include directories.
-# If there is no pkg-config for Eigen, we fall back to a manual search.
+#   This macro gets eigen include path from pkg-config file, and adds it include directories.
+#   If there is no pkg-config for Eigen, we fall back to a manual search.
 #
-# If no version requirement argument is passed to the macro, it looks for the 
-# variable Eigen_REQUIRED. If this variable is not defined before calling
-# the method SEARCH_FOR_EIGEN, the minimum version requirement is 3.0.0 by default.
+#   If no version requirement argument is passed to the macro, it looks for the
+#   variable Eigen_REQUIRED. If this variable is not defined before calling
+#   the method SEARCH_FOR_EIGEN, the minimum version requirement is 3.0.0 by default.
 MACRO(SEARCH_FOR_EIGEN)
   SET(_Eigen_FOUND 0)
   IF(${ARGC} GREATER 0)

@@ -1,13 +1,35 @@
+# Copyright (C) 2008-2019 LAAS-CNRS, JRL AIST-CNRS, INRIA
 #
-# @file boost.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-# 
-# @brief This file is copied/inspired from
-# https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/boost.cmake
-# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#.rst:
+# .. command:: SEARCH_FOR_BOOST_COMPONENT
+#
+#   :param boost_python_name:
+#   :param found:
+#
+#  This function returns found to TRUE if the boost_python_name has been found, FALSE otherwise.
+#  This function is for internal use only.
+#
+FUNCTION(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
+  SET(found FALSE PARENT_SCOPE)
+  FIND_PACKAGE(Boost ${BOOST_REQUIRED} QUIET OPTIONAL_COMPONENTS ${boost_python_name}) 
+  STRING(TOUPPER ${boost_python_name} boost_python_name_UPPER)
+  IF(Boost_${boost_python_name_UPPER}_FOUND)
+    SET(${found} TRUE PARENT_SCOPE)
+  ENDIF()
+ENDFUNCTION(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
 
 #.rst:
 # .. variable:: BOOST_COMPONENTS
@@ -34,16 +56,23 @@
 #  to automatically detect the right boost-python component version according
 #  to the Python version (2.7 or 3.x).
 #
+
+IF(CMAKE_VERSION VERSION_LESS "3.12")
+  SET(CMAKE_MODULE_PATH ${MPI_CMAKE_MODULES_ROOT_DIR}/cmake/boost ${CMAKE_MODULE_PATH})
+  MESSAGE(STATUS "CMake versions older than 3.12 may warn when looking to Boost components. Custom macros are used to find it.")
+ENDIF(CMAKE_VERSION VERSION_LESS "3.12")
+
 MACRO(SEARCH_FOR_BOOST)
   SET(Boost_USE_STATIC_LIBS OFF)
   SET(Boost_USE_MULTITHREAD ON)
 
-  IF(NOT BOOST_REQUIRED)
-    SET(BOOST_REQUIRED 1.40)
-  ENDIF(NOT BOOST_REQUIRED)
-
   # First try to find Boost to get the version
   FIND_PACKAGE(Boost ${BOOST_REQUIRED})
+  STRING(REPLACE "_" "." Boost_SHORT_VERSION ${Boost_LIB_VERSION})
+  IF("${Boost_SHORT_VERSION}" VERSION_GREATER "1.70" OR "${Boost_SHORT_VERSION}" VERSION_EQUAL "1.70")
+    SET(BUILD_SHARED_LIBS ON)
+    SET(Boost_NO_BOOST_CMAKE ON)
+  ENDIF("${Boost_SHORT_VERSION}" VERSION_GREATER "1.70" OR "${Boost_SHORT_VERSION}" VERSION_EQUAL "1.70")
 
   IF(NOT DEFINED BOOST_COMPONENTS)
     SET(BOOST_COMPONENTS
@@ -54,39 +83,52 @@ MACRO(SEARCH_FOR_BOOST)
   # This is made mandatory if for Boost version greater than 1.67.0
   LIST(FIND BOOST_COMPONENTS python PYTHON_IN_BOOST_COMPONENTS)
   IF(${PYTHON_IN_BOOST_COMPONENTS} GREATER -1)
+    # 1st step: check if Python has been found
+    IF(NOT PYTHONLIBS_FOUND)
+      MESSAGE(FATAL_ERROR "PYTHON has not been found. You should first call FindPython before calling SEARCH_FOR_BOOST macro.")   
+    ENDIF(NOT PYTHONLIBS_FOUND)
+
+    # 2nd step: copy BOOST_COMPONENTS
     SET(BOOST_COMPONENTS_ ${BOOST_COMPONENTS})
 
-    IF(Boost_VERSION VERSION_GREATER 106699)
-        # Check if Python has been found
-        IF(NOT PYTHONLIBS_FOUND)
-          MESSAGE(FATAL_ERROR "PYTHON has not been found. You should first call FindPython before calling SEARCH_FOR_BOOST macro.")   
-        ENDIF(NOT PYTHONLIBS_FOUND)
-
-        LIST(REMOVE_AT BOOST_COMPONENTS_ ${PYTHON_IN_BOOST_COMPONENTS})
-        IF(APPLE)
-          SET(BOOST_PYTHON_COMPONENT "python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}")
-        ELSE(APPLE)
-          SET(BOOST_PYTHON_COMPONENT "python")
-        ENDIF(APPLE)
-        LIST(APPEND BOOST_COMPONENTS_ ${BOOST_PYTHON_COMPONENT})
-    ELSE(Boost_VERSION VERSION_GREATER 106699)
-      # Check if Python has been found
-      IF(NOT PYTHONLIBS_FOUND)
-        MESSAGE(FATAL_ERROR "PYTHON has not been found. You should first call FindPython before calling SEARCH_FOR_BOOST macro.")   
-      ENDIF(NOT PYTHONLIBS_FOUND)
+    # 3rd step: check BOOST_VERSION 
+    SET(BOOST_PYTHON_WITH_PYTHON_VERSION_NAMING FALSE)
+    IF("${Boost_SHORT_VERSION}" VERSION_GREATER "1.70" OR "${Boost_SHORT_VERSION}" VERSION_EQUAL "1.70")
+      SET(BOOST_PYTHON_WITH_PYTHON_VERSION_NAMING TRUE)
+    ELSE("${Boost_SHORT_VERSION}" VERSION_GREATER "1.70" OR "${Boost_SHORT_VERSION}" VERSION_EQUAL "1.70")
       IF(${PYTHON_VERSION_MAJOR} EQUAL 3) 
-        LIST(REMOVE_AT BOOST_COMPONENTS_ ${PYTHON_IN_BOOST_COMPONENTS})
-        IF(APPLE)
-          SET(BOOST_PYTHON_COMPONENT "python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}")
-        ELSE(APPLE)
-          SET(BOOST_PYTHON_COMPONENT "python")
-        ENDIF(APPLE)
-        LIST(APPEND BOOST_COMPONENTS_ ${BOOST_PYTHON_COMPONENT})
-      ELSE(${PYTHON_VERSION_MAJOR} EQUAL 3) 
-        SET(BOOST_COMPONENTS_ ${BOOST_COMPONENTS})
+        SET(BOOST_PYTHON_WITH_PYTHON_VERSION_NAMING TRUE)
       ENDIF(${PYTHON_VERSION_MAJOR} EQUAL 3) 
-    ENDIF(Boost_VERSION VERSION_GREATER 106699)
-  
+    ENDIF("${Boost_SHORT_VERSION}" VERSION_GREATER "1.70" OR "${Boost_SHORT_VERSION}" VERSION_EQUAL "1.70")
+
+    # 4th step: retrive BOOST_PYTHON_MODULE naming
+    IF(BOOST_PYTHON_WITH_PYTHON_VERSION_NAMING)
+      LIST(REMOVE_AT BOOST_COMPONENTS_ ${PYTHON_IN_BOOST_COMPONENTS})
+
+      SET(BOOST_PYTHON_COMPONENT_LIST)
+      # Test: python2 or python3
+      LIST(APPEND BOOST_PYTHON_COMPONENT_LIST "python${PYTHON_VERSION_MAJOR}") 
+      # Test: python2x or python3x
+      LIST(APPEND BOOST_PYTHON_COMPONENT_LIST "python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}") 
+      # Test: python-py2x or python-py3x
+      LIST(APPEND BOOST_PYTHON_COMPONENT_LIST "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}") 
+
+      SET(BOOST_PYTHON_FOUND FALSE)
+      FOREACH(BOOST_PYTHON_COMPONENT ${BOOST_PYTHON_COMPONENT_LIST})
+        SEARCH_FOR_BOOST_COMPONENT(${BOOST_PYTHON_COMPONENT} BOOST_PYTHON_FOUND)
+        IF(BOOST_PYTHON_FOUND)
+          LIST(APPEND BOOST_COMPONENTS_ ${BOOST_PYTHON_COMPONENT})
+          BREAK()
+        ENDIF(BOOST_PYTHON_FOUND)
+      ENDFOREACH(BOOST_PYTHON_COMPONENT ${BOOST_PYTHON_COMPONENT_LIST})
+
+      # If boost-python has not been found, then force warning from FIND_PACKAGE directly
+      IF(NOT BOOST_PYTHON_FOUND)
+        LIST(APPEND BOOST_COMPONENTS_ "python")
+      ENDIF(NOT BOOST_PYTHON_FOUND)
+      
+    ENDIF(BOOST_PYTHON_WITH_PYTHON_VERSION_NAMING)
+
     SET(BOOST_COMPONENTS ${BOOST_COMPONENTS_})
   ENDIF(${PYTHON_IN_BOOST_COMPONENTS} GREATER -1)
 
@@ -99,7 +141,6 @@ MACRO(SEARCH_FOR_BOOST)
   ENDIF(NOT Boost_FOUND)
 
   PKG_CONFIG_APPEND_CFLAGS("-I${Boost_INCLUDE_DIR}")
-  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
   LIST(APPEND LOGGING_WATCHED_VARIABLES
     Boost_USE_MULTITHREADED
@@ -139,12 +180,13 @@ MACRO(SEARCH_FOR_BOOST)
     IF(${python_comp_pos} GREATER -1)
       SET(Boost_PYTHON_LIBRARY ${Boost_${UPPERCOMPONENT}_LIBRARY})
       MESSAGE(STATUS "Boost_PYTHON_LIBRARY: ${Boost_PYTHON_LIBRARY}")
-      LIST(APPEND Boost_PYTHON_LIBRARIES ${Boost_PYTHON_LIBRARY})
-      LIST(APPEND LOGGING_WATCHED_VARIABLES
+      LIST(APPEND Boost_PYTHON_LIBRARIES
+        ${Boost_PYTHON_LIBRARY})
+            LIST(APPEND LOGGING_WATCHED_VARIABLES
         python_comp_pos
         Boost_${UPPERCOMPONENT}_LIBRARY
         Boost_PYTHON_LIBRARY
-      )
+        )
     ENDIF()
 
   ENDFOREACH()
@@ -158,11 +200,12 @@ MACRO(SEARCH_FOR_BOOST)
 ENDMACRO(SEARCH_FOR_BOOST)
 
 #.rst:
-# .. command:: TARGET_LINK_BOOST_PYTHON (TARGET)
+# .. command:: TARGET_LINK_BOOST_PYTHON (TARGET <PRIVATE|PUBLIC|INTERFACE>)
 #
 #   Link target againt boost_python library.
 #
-#   :TARGET: is either a library or an executable
+#   :target: is either a library or an executable
+#   :private,public,interface: The PUBLIC, PRIVATE and INTERFACE keywords can be used to specify both the link dependencies and the link interface.
 #
 #   On darwin systems, boost_python is not linked against any python library.
 #   This linkage is resolved at execution time via the python interpreter.
@@ -170,17 +213,21 @@ ENDMACRO(SEARCH_FOR_BOOST)
 #   Otherwise, for executables we need to link to a specific version of python.
 #
 MACRO(TARGET_LINK_BOOST_PYTHON target)
+  IF(${ARGC} GREATER 1)
+    SET(PUBLIC_KEYWORD ${ARGV1})
+  ENDIF()
+
   IF(APPLE)
     GET_TARGET_PROPERTY(TARGET_TYPE ${target} TYPE)
 
     IF(${TARGET_TYPE} MATCHES EXECUTABLE)
-      TARGET_LINK_LIBRARIES(${target} ${Boost_PYTHON_LIBRARY})
+      TARGET_LINK_LIBRARIES(${target} ${PUBLIC_KEYWORD} ${Boost_PYTHON_LIBRARY})
     ELSE(${TARGET_TYPE} MATCHES EXECUTABLE)
-      TARGET_LINK_LIBRARIES(${target} -Wl,-undefined,dynamic_lookup,${Boost_PYTHON_LIBRARIES})
+      TARGET_LINK_LIBRARIES(${target} ${PUBLIC_KEYWORD} -Wl,-undefined,dynamic_lookup,${Boost_PYTHON_LIBRARIES})
     ENDIF(${TARGET_TYPE} MATCHES EXECUTABLE)
 
   ELSE(APPLE)
-    TARGET_LINK_LIBRARIES(${target} ${Boost_PYTHON_LIBRARY})
+    TARGET_LINK_LIBRARIES(${target} ${PUBLIC_KEYWORD} ${Boost_PYTHON_LIBRARY})
   ENDIF(APPLE)
   LIST(APPEND LOGGING_WATCHED_VARIABLES
     Boost_PYTHON_LIBRARIES
@@ -203,14 +250,31 @@ MACRO(PKG_CONFIG_APPEND_BOOST_LIBS)
   FOREACH(COMPONENT ${ARGN})
     STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
     STRING(TOLOWER ${COMPONENT} LOWERCOMPONENT)
+
+    # See https://cmake.org/cmake/help/latest/module/FindBoost.html
+    IF(CMAKE_BUILD_TYPE MATCHES DEBUG)
+      SET(LIB_PATH ${Boost_${UPPERCOMPONENT}_LIBRARY_DEBUG})
+    ELSE()
+      SET(LIB_PATH ${Boost_${UPPERCOMPONENT}_LIBRARY_RELEASE})
+    ENDIF()
+
+    IF("${LIB_PATH}" STREQUAL "")
+      SET(LIB_PATH ${Boost_${UPPERCOMPONENT}_LIBRARY})
+    ENDIF("${LIB_PATH}" STREQUAL "")
+
     IF(APPLE)
+      GET_FILENAME_COMPONENT(LIB_NAME ${LIB_PATH} NAME_WE)
+      STRING(REGEX REPLACE "^lib" "" LIB_NAME "${LIB_NAME}")
       IF("${LOWERCOMPONENT}" MATCHES "python")
-        PKG_CONFIG_APPEND_LIBS_RAW(-Wl,-undefined,dynamic_lookup,${Boost_${UPPERCOMPONENT}_LIBRARY})
+        PKG_CONFIG_APPEND_LIBS_RAW(-Wl,-undefined,dynamic_lookup,-l${LIB_NAME})
       ELSE("${LOWERCOMPONENT}" MATCHES "python")
-        PKG_CONFIG_APPEND_LIBS_RAW(${Boost_${UPPERCOMPONENT}_LIBRARY})
+        PKG_CONFIG_APPEND_LIBS_RAW(-l${LIB_NAME})
       ENDIF("${LOWERCOMPONENT}" MATCHES "python")
-    ELSE(APPLE)
-      GET_FILENAME_COMPONENT(LIB_NAME ${Boost_${UPPERCOMPONENT}_LIBRARY} NAME_WE)
+    ELSEIF(WIN32)
+      GET_FILENAME_COMPONENT(LIB_NAME ${LIB_PATH} NAME)
+      PKG_CONFIG_APPEND_LIBS_RAW("-l${LIB_NAME}")
+    ELSE()
+      GET_FILENAME_COMPONENT(LIB_NAME ${LIB_PATH} NAME_WE)
       STRING(REGEX REPLACE "^lib" "" LIB_NAME "${LIB_NAME}")
       PKG_CONFIG_APPEND_LIBS_RAW("-l${LIB_NAME}")
     ENDIF(APPLE)
