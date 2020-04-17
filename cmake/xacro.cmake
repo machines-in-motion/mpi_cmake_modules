@@ -43,6 +43,7 @@ macro(BUILD_XACRO_FILES)
     xacro_add_xacro_file(
       ${xacro_file_full_path}
       ${urdf_file_full_path}
+      INORDER
     )
 
     list(APPEND urdf_files ${urdf_file_full_path})
