@@ -1,3 +1,4 @@
+#
 # Copyright (C) 2008-2019 LAAS-CNRS, JRL AIST-CNRS, INRIA
 #
 # This program is free software: you can redistribute it and/or modify

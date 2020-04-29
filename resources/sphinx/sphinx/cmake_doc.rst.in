@@ -1,0 +1,7 @@
+CMake API
+=========
+
+.. toctree::
+   :caption: Table of Content: CMake API
+
+@DOC_CMAKE_MODULE@

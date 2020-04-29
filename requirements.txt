@@ -1,0 +1,4 @@
+sphinx
+recommonmark
+breathe
+sphinxcontrib-cmakedomain
