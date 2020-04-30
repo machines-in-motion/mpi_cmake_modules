@@ -33,6 +33,8 @@ macro(_BUILD_DOXYGEN)
         WORKING_DIRECTORY ${DOXYGEN_OUTPUT}
         COMMENT "Building xml doxygen documentation for ${PROJECT_NAME}")
 
+    set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND}
+        ${PROJECT_NAME}_doxygen)
 endmacro(_BUILD_DOXYGEN)
 
 ##################
@@ -57,6 +59,8 @@ macro(_BUILD_BREATHE_APIDOC)
         DEPENDS ${PROJECT_NAME}_doxygen
         COMMENT "Building breathe-apidoc for ${PROJECT_NAME}")
 
+    set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND}
+        ${PROJECT_NAME}_breathe_apidoc)
 endmacro(_BUILD_BREATHE_APIDOC)
 
 ##################
@@ -79,6 +83,9 @@ macro(_BUILD_SPHINX_API_DOC)
 	    ${SPHINX_APIDOC} -o ${SPHINX_APIDOC_OUTPUT} ${SPHINX_APIDOC_INPUT}
         WORKING_DIRECTORY ${SPHINX_APIDOC_OUTPUT}
         COMMENT "Building sphinx-apidoc for ${PROJECT_NAME}")
+    
+    set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND}
+        ${PROJECT_NAME}_sphinx_apidoc)
 
 endmacro(_BUILD_SPHINX_API_DOC)
 
@@ -100,7 +107,7 @@ macro(_BUILD_SPHINX_BUILD)
         ${PROJECT_NAME}_sphinx_html ALL
 	    ${SPHINX_BUILD} -M html ${SPHINX_BUILD_INPUT} ${SPHINX_DOC_BUILD_FOLDER} ${SPHINX_OPTION}
         WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
-        DEPENDS ${PROJECT_NAME}_breathe_apidoc ${PROJECT_NAME}_sphinx_apidoc ${SYMLINK_TARGET}
+        DEPENDS ${SPHINX_BUILD_TARGET_DEPEND}
         COMMENT "Building sphinx-apidoc for ${PROJECT_NAME}")
 
 endmacro(_BUILD_SPHINX_BUILD)
@@ -121,7 +128,7 @@ macro(BUILD_SPHINX_DOCUMENTATION)
         set(SPHINX_DOC_BUILD_FOLDER   ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sphinx)
         set(SPHINX_DOC_INSTALL_FOLDER ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs)
         # Doxygen
-        set(DOXYGEN_DOXYFILE_IN ${PROJECT_SOURCE_DIR}/resources/sphinx/doxygen/Doxyfile.in)
+        set(DOXYGEN_DOXYFILE_IN ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/doxygen/Doxyfile.in)
         set(DOXYGEN_DOXYFILE    ${SPHINX_DOC_BUILD_FOLDER}/doxygen/Doxyfile)
         set(DOXYGEN_OUTPUT      ${SPHINX_DOC_BUILD_FOLDER}/doxygen)
         set(DOXYGEN_XML_OUTPUT  ${SPHINX_DOC_BUILD_FOLDER}/doxygen/xml)
@@ -137,16 +144,9 @@ macro(BUILD_SPHINX_DOCUMENTATION)
         set(SPHINX_BUILD_INPUT  ${SPHINX_DOC_BUILD_FOLDER})
         set(SPHINX_BUILD_OUTPUT ${SPHINX_BUILD_INPUT})
         set(SPHINX_BUILD_OPTION -Q) # quiet the sphinx output
-
-        # Build the rst files
-
-        set(SYMLINK_TARGET "")
-        # Build the doxygen xml files.
-        _build_doxygen()
-        # Generate the .rst corresponding to the doxygen xml
-        _build_breathe_apidoc()
-        # Generate the .rst corresponding to the python module(s)
-        _build_sphinx_api_doc()
+        # Make sure the sphinx-build is not executed before the different API
+        # are built.
+        set(SPHINX_BUILD_TARGET_DEPEND "")
 
         # Parameterize the final layout
 
@@ -164,11 +164,17 @@ macro(BUILD_SPHINX_DOCUMENTATION)
             set(CPP_API ".. toctree::\n   :maxdepth: 2\n   :caption: C++ API\n\n   doxygen_index\n\n")
             # Associated configuration files
             configure_file(
-                ${PROJECT_SOURCE_DIR}/resources/sphinx/sphinx/doxygen_index_one_page.rst.in
+                ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/doxygen_index_one_page.rst.in
                 ${SPHINX_DOC_BUILD_FOLDER}/doxygen_index_one_page.rst @ONLY IMMEDIATE)
             configure_file(
-                ${PROJECT_SOURCE_DIR}/resources/sphinx/sphinx/doxygen_index.rst.in
+                ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/doxygen_index.rst.in
                 ${SPHINX_DOC_BUILD_FOLDER}/doxygen_index.rst @ONLY IMMEDIATE)
+
+            # Build the doxygen xml files.
+            _build_doxygen()
+            # Generate the .rst corresponding to the doxygen xml
+            _build_breathe_apidoc()
+
         endif()
         # Build the Python API rst files if needed
         set(PYTHON_API "")
@@ -176,7 +182,9 @@ macro(BUILD_SPHINX_DOCUMENTATION)
 
             # Add the Python API to the main documentation
             set(PYTHON_API ".. toctree::\n   :maxdepth: 3\n   :caption: Python API\n\n   modules\n\n")
-        
+            # Generate the .rst corresponding to the python module(s)
+            _build_sphinx_api_doc()
+
         endif()
         # Build the cmake API if needed
         set(CMAKE_API "")
@@ -194,46 +202,48 @@ macro(BUILD_SPHINX_DOCUMENTATION)
             
             # Add the cmake documentation to the main doc
             configure_file(
-                ${PROJECT_SOURCE_DIR}/resources/sphinx/sphinx/cmake_doc.rst.in
+                ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/cmake_doc.rst.in
                 ${SPHINX_DOC_BUILD_FOLDER}/cmake_doc.rst @ONLY IMMEDIATE)
-                configure_file(
-                    ${PROJECT_SOURCE_DIR}/resources/sphinx/custom_module/cmake.py.in
-                    ${SPHINX_DOC_BUILD_FOLDER}/cmake.py @ONLY IMMEDIATE)
             # Create a symlink to the cmake folder
             add_custom_target(
                 ${PROJECT_NAME}_cmake_symlink ALL
                 ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/cmake ${SPHINX_DOC_BUILD_FOLDER}/cmake
                 WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
                 COMMENT "Add the doc folder to the sphinx build.")
-            set(SYMLINK_TARGET ${SYMLINK_TARGET} ${PROJECT_NAME}_cmake_symlink)
+            set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND} ${PROJECT_NAME}_cmake_symlink)
 
         endif()
         # Build the general documentation if needed
         set(ADDITIONNAL_DOC_PATH "")
         if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/doc)
             
-            # Add the general documentaion to the main one if needed.
+            # Add the general documentation to the main one if needed.
             set(ADDITIONNAL_DOC_PATH "doc/*")
-
+            # Add the cmake files to the main documentation
+            set(GENERAL_DOCUMENTATION ".. toctree::\n   :maxdepth: 2\n   :caption: General Documentation\n\n   general_documentation\n\n")
+   
             # Create a symlink to the doc folder containing the Markdown files.
             add_custom_target(
                 ${PROJECT_NAME}_doc_symlink ALL
                 ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/doc ${SPHINX_DOC_BUILD_FOLDER}/doc
                 WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
                 COMMENT "Add the doc folder to the sphinx build.")
-            set(SYMLINK_TARGET ${SYMLINK_TARGET} ${PROJECT_NAME}_doc_symlink)
+            set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND} ${PROJECT_NAME}_doc_symlink)
         endif()
 
         # Generate the configuration files
         configure_file(
-            ${PROJECT_SOURCE_DIR}/resources/sphinx/sphinx/conf.py.in
+            ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/conf.py.in
             ${SPHINX_DOC_BUILD_FOLDER}/conf.py @ONLY IMMEDIATE)
         configure_file(
-            ${PROJECT_SOURCE_DIR}/resources/sphinx/sphinx/index.rst.in
+            ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/index.rst.in
             ${SPHINX_DOC_BUILD_FOLDER}/index.rst @ONLY IMMEDIATE)
         configure_file(
-            ${PROJECT_SOURCE_DIR}/resources/sphinx/sphinx/general_documentation.rst.in
+            ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/general_documentation.rst.in
             ${SPHINX_DOC_BUILD_FOLDER}/general_documentation.rst @ONLY IMMEDIATE)
+        configure_file(
+            ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/custom_module/cmake.py.in
+            ${SPHINX_DOC_BUILD_FOLDER}/cmake.py @ONLY IMMEDIATE)
 
         # Fetch the readme.md
         add_custom_target(
@@ -241,7 +251,6 @@ macro(BUILD_SPHINX_DOCUMENTATION)
             ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/readme.md ${SPHINX_DOC_BUILD_FOLDER}/readme.md
             WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
             COMMENT "Add the readme.md folder to the sphinx build.")
-        set(SYMLINK_TARGET ${SYMLINK_TARGET} ${PROJECT_NAME}_doc_symlink)
 
         # We generate the final layout. Mardown files are looked for automatically.
         _build_sphinx_build()

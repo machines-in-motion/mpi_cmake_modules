@@ -6,11 +6,7 @@ Welcome to @PROJECT_NAME@'s documentation!
 
    readme.md
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Table of Content: General Documentation
-
-   general_documentation
+@GENERAL_DOCUMENTATION@
 
 @CPP_API@
 
