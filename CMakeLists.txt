@@ -72,6 +72,14 @@ configure_file(
     @ONLY IMMEDIATE
 )
 
+##########################################################
+# Copy the executable scripts to the corresponding place #
+##########################################################
+
+configure_file(${MPI_CMAKE_MODULES_SCRIPTS_DIR}/mpi_clang_format
+               ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_BIN_DESTINATION}/mpi_clang_format
+               COPYONLY)
+
 ##########################
 # building documentation #
 ##########################
