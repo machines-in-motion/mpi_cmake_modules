@@ -126,7 +126,7 @@ macro(BUILD_SPHINX_DOCUMENTATION)
         
         # Build and install directories
         set(SPHINX_DOC_BUILD_FOLDER   ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sphinx)
-        set(SPHINX_DOC_INSTALL_FOLDER ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs)
+        set(SPHINX_DOC_INSTALL_FOLDER ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sphinx)
         # Doxygen
         set(DOXYGEN_DOXYFILE_IN ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/doxygen/Doxyfile.in)
         set(DOXYGEN_DOXYFILE    ${SPHINX_DOC_BUILD_FOLDER}/doxygen/Doxyfile)
@@ -256,7 +256,7 @@ macro(BUILD_SPHINX_DOCUMENTATION)
         _build_sphinx_build()
 
         # Install the documentation
-        install(DIRECTORY ${SPHINX_DOC_BUILD_FOLDER} DESTINATION
+        install(DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}/html DESTINATION
                 ${SPHINX_DOC_INSTALL_FOLDER})
 
     endif()
