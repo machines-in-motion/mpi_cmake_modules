@@ -25,10 +25,6 @@ from docutils import nodes
 from sphinx.util.nodes import set_source_info
 currentmode = "user"
 
-# AutoStructify for math in markdown
-import recommonmark 
-from recommonmark.transform import AutoStructify
-
 # on_rtd is whether we are on readthedocs.org, this line of code grabbed from docs.readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
@@ -70,7 +66,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'cmake',
-    'recommonmark', # markdown support
+    'm2r', # markdown support
     'breathe', # to define the C++ api with breathe-apidoc
 ]
 
@@ -269,11 +265,4 @@ def setup(app):
     app.add_config_value('currentmode', 'user', 'env')
     app.add_directive("setmode", SetMode)
     app.add_directive("ifmode", IfMode)
-    # Markdown
-    app.add_config_value('recommonmark_config', {
-            'auto_toc_tree_section': 'Contents',
-            'enable_math':True,
-            'enable_inline_math':True,
-            'enable_eval_rst':True,
-            }, True)
-    app.add_transform(AutoStructify)
+

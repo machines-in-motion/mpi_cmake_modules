@@ -1,4 +1,4 @@
 sphinx
-recommonmark
+m2r
 breathe
 sphinxcontrib-cmakedomain

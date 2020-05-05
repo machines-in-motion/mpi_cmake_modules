@@ -1,10 +1,7 @@
 Welcome to @PROJECT_NAME@'s documentation!
 ==================================================================================================================================================================
 
-.. toctree::
-   :caption: Readme
-
-   readme.md
+.. mdinclude:: readme.md
 
 @GENERAL_DOCUMENTATION@
 
