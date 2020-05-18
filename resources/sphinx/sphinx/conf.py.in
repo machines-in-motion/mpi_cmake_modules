@@ -12,17 +12,19 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import xml.etree.ElementTree
+import datetime
+from sphinx.util.nodes import set_source_info
+from docutils import nodes
+from docutils.parsers.rst import Directive
+import textwrap
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('.')) # in order to use the local modules
+sys.path.insert(0, os.path.abspath('.'))  # in order to use the local modules
 sys.path.insert(0, os.path.abspath("@PROJECT_SOURCE_DIR@/python"))
-import textwrap
 
 # cmake parser custom module
-from docutils.parsers.rst import Directive
-from docutils import nodes
-from sphinx.util.nodes import set_source_info
 currentmode = "user"
 
 # on_rtd is whether we are on readthedocs.org, this line of code grabbed from docs.readthedocs.org
@@ -32,15 +34,13 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 # -- Project information -----------------------------------------------------
 
 project = u'@PROJECT_NAME@'
-import datetime
 now = datetime.datetime.now()
-copyright = (u'Copyright (c) ' + str(now.year) + ', New York University and ' +
-             u'Max Planck Gesellschaft. License under the BSD 3-clause.')
-author = u'Maximilien Naveau'
+copyright = (u'Copyright (c) ' + str(now.year) +
+             ', See license.txt file or the license section.')
+author = u'See the readme file.'
 
 # Version control
-package_xml = os.path.join("@PROJECT_SOURCE_DIR@","package.xml")
-import xml.etree.ElementTree
+package_xml = os.path.join("@PROJECT_SOURCE_DIR@", "package.xml")
 package_xml_root = xml.etree.ElementTree.parse(package_xml).getroot()
 version_xml = package_xml_root.find('version').text
 
@@ -61,13 +61,13 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.mathjax', # doxygen math in doc
+    'sphinx.ext.mathjax',  # doxygen math in doc
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'cmake',
-    'm2r', # markdown support
-    'breathe', # to define the C++ api with breathe-apidoc
+    'm2r',  # markdown support
+    'breathe',  # to define the C++ api with breathe-apidoc
 ]
 
 # Root of the github page:
@@ -78,7 +78,7 @@ html_baseurl = github_doc_root
 templates_path = ['_templates']
 
 # breath extension management
-breathe_projects = { project: "@DOXYGEN_XML_OUTPUT@" }
+breathe_projects = {project: "@DOXYGEN_XML_OUTPUT@"}
 breathe_default_project = project
 breathe_default_members = ('members', 'private-members', 'undoc-members')
 
@@ -248,6 +248,8 @@ class IfMode(Directive):
         return []
 
 # cmake parser custom module
+
+
 class SetMode (Directive):
     has_content = False
     required_arguments = 1
@@ -265,4 +267,3 @@ def setup(app):
     app.add_config_value('currentmode', 'user', 'env')
     app.add_directive("setmode", SetMode)
     app.add_directive("ifmode", IfMode)
-

@@ -5,6 +5,7 @@ mpi_cmake_modules
 
 This package `mpi_cmake_modules` defines a list of usefull cmake macros.
 It can be used by simply depending on it using catkin.
+The documentation can be seen [here](https://machines-in-motion.github.io/)
 
 ## Getting started
 

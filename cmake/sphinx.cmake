@@ -181,7 +181,7 @@ macro(BUILD_SPHINX_DOCUMENTATION)
         if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/python)
 
             # Add the Python API to the main documentation
-            set(PYTHON_API ".. toctree::\n   :maxdepth: 3\n   :caption: Python API\n\n   modules\n\n")
+            set(PYTHON_API ".. toctree::\n   :maxdepth: 3\n   :caption: Python API\n\n   modules\n* :ref:`modindex`\n\n")
             # Generate the .rst corresponding to the python module(s)
             _build_sphinx_api_doc()
 
@@ -245,12 +245,20 @@ macro(BUILD_SPHINX_DOCUMENTATION)
             ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/custom_module/cmake.py.in
             ${SPHINX_DOC_BUILD_FOLDER}/cmake.py @ONLY IMMEDIATE)
 
-        # Fetch the readme.md
+        # Fetch the readme.md and the license.txt
         add_custom_target(
             ${PROJECT_NAME}_readme_symlink ALL
             ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/readme.md ${SPHINX_DOC_BUILD_FOLDER}/readme.md
             WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
             COMMENT "Add the readme.md folder to the sphinx build.")
+        add_custom_target(
+            ${PROJECT_NAME}_license_symlink ALL
+            ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/license.txt ${SPHINX_DOC_BUILD_FOLDER}/license.txt
+            WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
+            COMMENT "Add the license.txt folder to the sphinx build.")
+        set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND}
+            ${PROJECT_NAME}_readme_symlink
+            ${PROJECT_NAME}_license_symlink)
 
         # We generate the final layout. Mardown files are looked for automatically.
         _build_sphinx_build()
