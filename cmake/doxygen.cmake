@@ -29,8 +29,8 @@ macro(build_doxygen_documentation)
     endif()
 
     # set the destination folder to be devel/share/[project_name]/doc/
-    set(doc_build_folder ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION})
-    set(doc_install_folder ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION})
+    set(doc_build_folder ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/doxygen)
+    set(doc_install_folder ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs)
 
     # Create the doxyfile in function of the current project.
     # If the Doxyfile.in does not exists, the cmake step stops.
@@ -45,8 +45,7 @@ macro(build_doxygen_documentation)
       WORKING_DIRECTORY ${doc_build_folder})
 
     # install the documentation
-    install(DIRECTORY ${doc_build_folder}/doc DESTINATION ${doc_install_folder})
-    install(FILES ${doc_build_folder}/${PROJECT_NAME}.tag DESTINATION ${doc_install_folder})
+    install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
   endif(BUILD_DOCUMENTATION)
 
 endmacro(build_doxygen_documentation)

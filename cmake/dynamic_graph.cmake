@@ -104,9 +104,11 @@ MACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
 
   # create the library
   SET(PYTHON_MODULE "${TARGET_NAME}")
+  configure_file(${MPI_CMAKE_MODULES_RESOURCES_DIR}/python-module-py.cc.in
+                 ${PROJECT_BINARY_DIR}/python-module-py.cc @ONLY IMMEDIATE)
   ADD_LIBRARY(${PYTHON_MODULE}
     MODULE
-    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/python-module-py.cc
+    ${PROJECT_BINARY_DIR}/python-module-py.cc
   )
   MESSAGE(STATUS "Creating the python binding of: ${LIBRARYNAME}")
   TARGET_LINK_LIBRARIES(${PYTHON_MODULE} ${LIBRARYNAME} ${PYTHON_LIBRARY})

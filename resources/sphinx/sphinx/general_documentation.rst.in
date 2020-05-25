@@ -1,0 +1,8 @@
+General Documentation
+=====================
+
+.. toctree::
+   :caption: Table of Content: Index
+   :glob:
+
+   @ADDITIONNAL_DOC_PATH@
