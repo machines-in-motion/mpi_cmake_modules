@@ -246,9 +246,20 @@ macro(BUILD_SPHINX_DOCUMENTATION)
             ${SPHINX_DOC_BUILD_FOLDER}/cmake.py @ONLY IMMEDIATE)
 
         # Fetch the readme.md and the license.txt
+        file(GLOB md_files RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/*.md)
+        foreach(md_file ${md_files})
+            message(WARNING md_file ${md_file})
+            string(TOLOWER ${md_file} md_file_lower)
+            if(${md_file_lower} STREQUAL "readme.md")
+                set(readme_file ${md_file})
+            endif(${md_file_lower} STREQUAL "readme.md")
+        endforeach(md_file ${md_files})
+        if(NOT readme_file)
+            MESSAGE(FATAL_ERROR "No readme file found.")
+        endif()
         add_custom_target(
             ${PROJECT_NAME}_readme_symlink ALL
-            ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/readme.md ${SPHINX_DOC_BUILD_FOLDER}/readme.md
+            ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/${readme_file} ${SPHINX_DOC_BUILD_FOLDER}/readme.md
             WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
             COMMENT "Add the readme.md folder to the sphinx build.")
         add_custom_target(
