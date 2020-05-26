@@ -248,7 +248,6 @@ macro(BUILD_SPHINX_DOCUMENTATION)
         # Fetch the readme.md and the license.txt
         file(GLOB md_files RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/*.md)
         foreach(md_file ${md_files})
-            message(WARNING md_file ${md_file})
             string(TOLOWER ${md_file} md_file_lower)
             if(${md_file_lower} STREQUAL "readme.md")
                 set(readme_file ${md_file})
