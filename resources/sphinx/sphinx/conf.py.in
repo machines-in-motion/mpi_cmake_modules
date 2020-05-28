@@ -68,7 +68,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'cmake',
+    # 'cmake',
+    'sphinxcontrib.moderncmakedomain',
     'recommonmark',
     # 'm2r',  # markdown support
     'breathe',  # to define the C++ api with breathe-apidoc
@@ -232,45 +233,41 @@ todo_include_todos = True
 
 
 # cmake parser custom module
-class IfMode(Directive):
+# class IfMode(Directive):
+#     has_content = True
+#     required_arguments = 1
+#     optional_arguments = 0
+#     final_argument_whitespace = True
+#     option_spec = {}
 
-    has_content = True
-    required_arguments = 1
-    optional_arguments = 0
-    final_argument_whitespace = True
-    option_spec = {}
+#     def run(self):
+#         cm = self.state.document.settings.env.config.currentmode
+#         if cm == self.arguments[0]:
+#             node = nodes.Element()
+#             node.document = self.state.document
+#             set_source_info(self, node)
+#             self.state.nested_parse(self.content, self.content_offset,
+#                                     node, match_titles=1)
+#             return node.children
+#         return []
 
-    def run(self):
-        cm = self.state.document.settings.env.config.currentmode
-        if cm == self.arguments[0]:
-            node = nodes.Element()
-            node.document = self.state.document
-            set_source_info(self, node)
-            self.state.nested_parse(self.content, self.content_offset,
-                                    node, match_titles=1)
-            return node.children
-        return []
+# class SetMode (Directive):
+#     has_content = False
+#     required_arguments = 1
+#     optional_arguments = 0
+#     final_argument_whitespace = False
 
-# cmake parser custom module
-
-
-class SetMode (Directive):
-    has_content = False
-    required_arguments = 1
-    optional_arguments = 0
-    final_argument_whitespace = False
-
-    def run(self):
-        self.state.document.settings.env.config.currentmode = self.arguments[0]
-        return []
+#     def run(self):
+#         self.state.document.settings.env.config.currentmode = self.arguments[0]
+#         return []
 
 
 # some tools for markdown parsing
 def setup(app):
     # cmake parser custom module
     app.add_config_value('currentmode', 'user', 'env')
-    app.add_directive("setmode", SetMode)
-    app.add_directive("ifmode", IfMode)
+    # app.add_directive("setmode", SetMode)
+    # app.add_directive("ifmode", IfMode)
 
     config = {
         # 'url_resolver': lambda url: github_doc_root + url,
