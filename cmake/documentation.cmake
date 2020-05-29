@@ -8,9 +8,9 @@
 # @brief This file allow building the documentation using cmake
 #
 
-macro(BUILD_DOCUMENTATION_WEBSITE)
+macro(BUILD_DOCUMENTATION_ALL)
 
     build_doxygen_documentation()
     build_sphinx_documentation()
 
-endmacro(BUILD_DOCUMENTATION_WEBSITE)
+endmacro(BUILD_DOCUMENTATION_ALL)
