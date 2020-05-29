@@ -14,18 +14,14 @@
 ##########################
 macro(build_doxygen_documentation)
 
-  set(BUILD_DOCUMENTATION OFF CACHE BOOL
-      "Set to ON if you want to build the documentation")
-  if(BUILD_DOCUMENTATION)
-
     message(STATUS "building doxygen documentation for ${PROJECT_NAME}")
 
     # Find "doxygen"
     find_package(Doxygen)
     if (NOT DOXYGEN_FOUND)
-      message(FATAL_ERROR
-          "Doxygen is needed to build the documentation. "
-          "Please install it correctly")
+        message(FATAL_ERROR
+            "Doxygen is needed to build the documentation. "
+            "Please install it correctly")
     endif()
 
     # set the destination folder to be devel/share/[project_name]/doc/
@@ -35,17 +31,22 @@ macro(build_doxygen_documentation)
     # Create the doxyfile in function of the current project.
     # If the Doxyfile.in does not exists, the cmake step stops.
     configure_file(${MPI_CMAKE_MODULES_RESOURCES_DIR}/Doxyfile.in
-                   ${doc_build_folder}/Doxyfile
-                   @ONLY IMMEDIATE)
+                    ${doc_build_folder}/Doxyfile
+                    @ONLY IMMEDIATE)
 
     # the doxygen target is generated
-    add_custom_target (${PROJECT_NAME}_doc ALL
-      COMMAND ${DOXYGEN_EXECUTABLE} ${doc_build_folder}/Doxyfile
-      SOURCES ${doc_build_folder}/Doxyfile
-      WORKING_DIRECTORY ${doc_build_folder})
+    add_custom_target (${PROJECT_NAME}_doxygen_html
+        COMMAND ${DOXYGEN_EXECUTABLE} ${doc_build_folder}/Doxyfile
+        SOURCES ${doc_build_folder}/Doxyfile
+        WORKING_DIRECTORY ${doc_build_folder})
 
     # install the documentation
-    install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
-  endif(BUILD_DOCUMENTATION)
+    # install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
+
+    if(NOT TARGET doc)
+        add_custom_target(doc)
+    endif()
+    add_dependencies(doc ${PROJECT_NAME}_doxygen_html)
+
 
 endmacro(build_doxygen_documentation)
