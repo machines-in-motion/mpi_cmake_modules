@@ -27,14 +27,14 @@ macro(_BUILD_DOXYGEN)
     configure_file(${DOXYGEN_DOXYFILE_IN} ${DOXYGEN_DOXYFILE} @ONLY IMMEDIATE)
 
     # the doxygen target is generated
-    add_custom_target (${PROJECT_NAME}_doxygen
+    add_custom_target (${PROJECT_NAME}_sphinx_doxygen
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_DOXYFILE}
         SOURCES ${DOXYGEN_DOXYFILE} # if the file change rebuild
         WORKING_DIRECTORY ${DOXYGEN_OUTPUT}
         COMMENT "Building xml doxygen documentation for ${PROJECT_NAME}")
 
     set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND}
-        ${PROJECT_NAME}_doxygen)
+        ${PROJECT_NAME}_sphinx_doxygen)
 endmacro(_BUILD_DOXYGEN)
 
 ##################
@@ -56,7 +56,7 @@ macro(_BUILD_BREATHE_APIDOC)
         # Generate the .rst files from the doxygen xml output
 	    ${BREATHE_APIDOC} -o ${BREATHE_OUTPUT} ${BREATHE_INPUT} ${BREATHE_OPTION} 
         WORKING_DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}
-        DEPENDS ${PROJECT_NAME}_doxygen
+        DEPENDS ${PROJECT_NAME}_sphinx_doxygen
         COMMENT "Building breathe-apidoc for ${PROJECT_NAME}")
 
     set(SPHINX_BUILD_TARGET_DEPEND ${SPHINX_BUILD_TARGET_DEPEND}
@@ -109,11 +109,6 @@ macro(_BUILD_SPHINX_BUILD)
         DEPENDS ${SPHINX_BUILD_TARGET_DEPEND}
         COMMENT "Building sphinx-apidoc for ${PROJECT_NAME}")
 
-    if(NOT TARGET doc)
-        add_custom_target(doc)
-    endif()
-    add_dependencies(doc ${PROJECT_NAME}_sphinx_html)
-
 endmacro(_BUILD_SPHINX_BUILD)
 
 
@@ -121,10 +116,6 @@ endmacro(_BUILD_SPHINX_BUILD)
 # building documentation #
 ##########################
 macro(BUILD_SPHINX_DOCUMENTATION)
-
-set(BUILD_DOCUMENTATION OFF CACHE BOOL
-    "Set to ON if you want to build the documentation")
-if(BUILD_DOCUMENTATION)
     
     # All parameters
     
@@ -277,8 +268,8 @@ if(BUILD_DOCUMENTATION)
     # We generate the final layout. Mardown files are looked for automatically.
     _build_sphinx_build()
 
-    # # Install the documentation
-    # install(DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}/html DESTINATION
-    #         ${SPHINX_DOC_INSTALL_FOLDER})
+    # Create a dependency on the doc target
+    create_doc_target()
+    add_dependencies(doc ${PROJECT_NAME}_sphinx_html)
 
 endmacro(BUILD_SPHINX_DOCUMENTATION)

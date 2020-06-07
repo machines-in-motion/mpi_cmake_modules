@@ -8,9 +8,17 @@
 # @brief This file allow building the documentation using cmake
 #
 
-macro(BUILD_DOCUMENTATION_ALL)
+macro(CREATE_DOC_TARGET)
+
+    if(NOT TARGET doc)
+        add_custom_target(doc)
+    endif(NOT TARGET doc)
+
+endmacro(CREATE_DOC_TARGET)
+
+macro(BUILD_DOCUMENTATION)
 
     build_doxygen_documentation()
     build_sphinx_documentation()
 
-endmacro(BUILD_DOCUMENTATION_ALL)
+endmacro(BUILD_DOCUMENTATION)

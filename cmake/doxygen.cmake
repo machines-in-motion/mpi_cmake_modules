@@ -43,10 +43,8 @@ macro(build_doxygen_documentation)
     # install the documentation
     # install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
 
-    if(NOT TARGET doc)
-        add_custom_target(doc)
-    endif()
+    # Create a dependency on the doc target
+    create_doc_target()
     add_dependencies(doc ${PROJECT_NAME}_doxygen_html)
-
 
 endmacro(build_doxygen_documentation)
