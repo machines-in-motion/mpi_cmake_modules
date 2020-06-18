@@ -23,3 +23,5 @@ if(CURRENT_OS STREQUAL "xenomai")
 else()
   set(Xenomai_LIBS pthread edit curses nsl glut GL GLU X11 Xmu m)
 endif()
+
+create_doc_target()
