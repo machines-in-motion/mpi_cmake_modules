@@ -1,17 +1,21 @@
 #!/usr/bin/env python
-
-## @namespace mpi_cmake_modules.yaml2oneline
 """ Convert a YAML file in a one line string
 
-For example, a YAML file with the content:
-@code
-    foo: 13
-    bar: 42
-@endcode
-would be converted into: @code "{foo: 13, bar: 42}" @endcode
+Example:
+
+    For example, a YAML file with the content.
+
+        foo: 13
+        bar: 42
+
+    would be converted into
+    
+        {foo: 13, bar: 42}
 
 @file yaml2oneline.py
+
 @license License BSD-3-Clause
+
 @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """
 
