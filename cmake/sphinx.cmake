@@ -36,7 +36,13 @@ macro(_BUILD_DOXYGEN)
                                  ${PROJECT_NAME}_sphinx_doxygen)
 endmacro(_BUILD_DOXYGEN)
 
-# Breathe APIDOC
+#.rst:
+#
+# .. cmake:command:: _BUILD_BREATHE_APIDOC
+#
+#   Use breathe_apidoc to parse the xml output from Doxygen and generate .rst
+#   files.
+#
 macro(_BUILD_BREATHE_APIDOC)
 
   # Find the breathe
@@ -59,7 +65,13 @@ macro(_BUILD_BREATHE_APIDOC)
                                  ${PROJECT_NAME}_breathe_apidoc)
 endmacro(_BUILD_BREATHE_APIDOC)
 
-# SPHINX APIDOC
+#.rst:
+#
+# .. cmake:command:: _BUILD_SPHINX_API_DOC
+#
+#   Use sphinx_apidoc to parse the python files output from Doxygen and generate
+#   .rst files.
+#
 macro(_BUILD_SPHINX_API_DOC)
 
   # Find the sphinx-apidoc executable.
@@ -82,7 +94,13 @@ macro(_BUILD_SPHINX_API_DOC)
 
 endmacro(_BUILD_SPHINX_API_DOC)
 
-# SPHINX BUILD
+#.rst:
+#
+# .. cmake:command:: _BUILD_SPHINX_BUILD
+#
+#   Use sphinx_build to parse the cmake and rst files previously generated and
+#   generate the final html layout.
+#
 macro(_BUILD_SPHINX_BUILD)
   # Find the sphinx-apidoc executable.
   find_program(SPHINX_BUILD sphinx-build)
@@ -103,7 +121,20 @@ macro(_BUILD_SPHINX_BUILD)
 
 endmacro(_BUILD_SPHINX_BUILD)
 
-# building documentation
+#.rst:
+#
+# .. cmake:command:: BUILD_SPHINX_DOCUMENTATION
+#
+#   Process the current project in order to generate a specific documentation
+#   content.
+#
+#   todo: explain in details how this is done or refer to a .md file
+#
+#       * :command: _BUILD_DOXYGEN
+#       * :command: _BUILD_BREATHE_APIDOC
+#       * :command: _BUILD_SPHINX_API_DOC
+#       * :command: _BUILD_SPHINX_BUILD
+#
 macro(BUILD_SPHINX_DOCUMENTATION)
 
   # All parameters
