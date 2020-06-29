@@ -1,21 +1,23 @@
 #
-# @file dg-dirs.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-# 
-# @brief This file allows us to install the python bindings of the dynamic graph
-# at the correct place.
-# 
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
+#
 
-# at the very top
+#.rst:
+#
+# Change the cmake policy `CMP0012` to `NEW` in this file to prevent cmake
+# warnings.
+#
 if(POLICY CMP0012)
   cmake_policy(PUSH)
   cmake_policy(SET CMP0012 NEW)
 endif()
 
-# Define a list of the subdirectories
+#.rst:
+# .. cmake:command:: BUILD_DOXYGEN_DOCUMENTATION
+# 
+#   Define a list of the subdirectories.
+# 
 macro(SUBDIRLIST result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
   set(dirlist "")
@@ -27,7 +29,11 @@ macro(SUBDIRLIST result curdir)
   set(${result} ${dirlist})
 endmacro()
 
-# Detect the parent devel folder
+#.rst:
+# .. cmake:command:: FIND_DEVEL_FOLDER
+# 
+#   Detect the parent catkin devel folder. This macro is called by default here.
+#
 macro(FIND_DEVEL_FOLDER CURRENT_DIR)
 
   set(CURRENT_FOLDER ${CURRENT_DIR})
@@ -46,24 +52,38 @@ macro(FIND_DEVEL_FOLDER CURRENT_DIR)
     find_devel_folder(${CURRENT_FOLDER})
   endif()
 endmacro()
-
 find_devel_folder(${CMAKE_CURRENT_SOURCE_DIR})
-# Just declare where the plugin directory is for all dynamic graph plugins
+
+#.rst:
+#
+# .. cmake:variable:: DYNAMIC_GRAPH_GLOBAL_PLUGIN_DIR
+#    
+#   Location of the all the dynamic graph plugins.
+#
 set(DYNAMIC_GRAPH_GLOBAL_PLUGIN_DIR ${DEVEL_FOLDER}/lib/plugin)
 
+#.rst:
+#
+# .. cmake:variable:: DYNAMIC_GRAPH_PLUGIN_DIR
+#    
+#   Relative path form the devel folder of the
+#   :cmake:variable:`DYNAMIC_GRAPH_GLOBAL_PLUGIN_DIR`
+#
 set(DYNAMIC_GRAPH_PLUGIN_DIR ${CATKIN_DEVEL_PREFIX}/lib/plugin)
-
 set(DYNAMIC_GRAPH_PYTHON_DIR
   ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_PYTHON_DESTINATION}/dynamic_graph_manager)
 
-# at the very bottom
+# Reset the policy here.
 if(POLICY CMP0012)
   cmake_policy(POP)
 endif()
 
 #.rst:
-# .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME TARGETNAME)
-#
+# .. cmake:command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME TARGETNAME)
+#   
+#   This file allows us to install the Python bindings of the dynamic graph
+#   at the correct place.
+# 
 #   Add a python submodule to dynamic_graph
 #  
 #   :param SUBMODULENAME: the name of the submodule (can be foo/bar),

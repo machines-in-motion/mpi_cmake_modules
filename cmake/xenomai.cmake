@@ -14,7 +14,7 @@ macro(SETUP_XENOMAI)
 
   message(WARNING "\n\n** compiling for xenomai **\n\n")
 
-  set (Xenomai_DIR "${CMAKE_CURRENT_LIST_DIR}/")
+  set (Xenomai_DIR "${CMAKE_CURRENT_LIST_DIR}/xenomai")
   find_package(Xenomai REQUIRED)
 
   set(XENOMAI_ROOT ${Xenomai_ROOT_DIR})

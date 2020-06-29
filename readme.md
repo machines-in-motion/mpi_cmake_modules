@@ -22,7 +22,7 @@ And add the following line in your `package.xml`
 
 Remarque: This will perform by default:
 - the `define_os()` macro defined in cmake/os_detection.cmake
-- the `setup_xenomai()` macro defined in the cmake/setup_xenomai.cmake
+- the `setup_xenomai()` macro defined in the cmake/xenomai.cmake
   if the OS Xenomai is detected.
 
 ### License

@@ -1,4 +1,5 @@
 sphinx
 m2r
+recommonmark
 breathe
 sphinxcontrib-moderncmakedomain

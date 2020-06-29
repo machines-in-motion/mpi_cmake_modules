@@ -1,11 +1,16 @@
 #
-# @file cereal.cmake
-# @author Vincent Berenz
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-09-24
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
 #
 
+#.rst:
+# .. cmake:command:: SEARCH_FOR_CEREAL
+#
+#   This macro appends Boost libraries to the pkg-config file. A list of Boost
+#   components is expected, for instance::
+#
+#     SEARCH_FOR_CEREAL(system filesystem)
+#
 MACRO(SEARCH_FOR_CEREAL REQUIRED)
 
   IF(EXISTS "/usr/include/cereal")

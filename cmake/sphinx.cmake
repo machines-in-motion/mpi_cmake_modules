@@ -126,14 +126,23 @@ endmacro(_BUILD_SPHINX_BUILD)
 # .. cmake:command:: BUILD_SPHINX_DOCUMENTATION
 #
 #   Process the current project in order to generate a specific documentation
-#   content.
+#   content. This macro generates the appropriate documentation if is detects
+#   the corresponding files::
+#       * `files` with the extensions {.h, .cpp, ...} generates the `C++ API`
+#         section.
+#       * the `python` folder will generate the `Python API` section.
+#       * the `cmake` folder will generate the `CMake API` section.
+#       * the `doc` folder containing markdown files (`.md`) will generate the
+#         the `Additionnal Documentation` section.
 #
-#   todo: explain in details how this is done or refer to a .md file
-#
+#   The following macros are called in order and if needed::
 #       * :command: _BUILD_DOXYGEN
 #       * :command: _BUILD_BREATHE_APIDOC
 #       * :command: _BUILD_SPHINX_API_DOC
 #       * :command: _BUILD_SPHINX_BUILD
+#
+#   Please refer to the `Sphinx` paragraph in the `General Documentation` in
+#   this package for more explanation about the parametrization of the tools.
 #
 macro(BUILD_SPHINX_DOCUMENTATION)
 
@@ -225,6 +234,7 @@ macro(BUILD_SPHINX_DOCUMENTATION)
       GLOB_RECURSE CMAKE_FILES_FOUND
       RELATIVE ${PROJECT_SOURCE_DIR}
       FOLLOW_SYMLINKS ${PROJECT_SOURCE_DIR}/cmake/*.cmake)
+    list(SORT CMAKE_FILES_FOUND)
     set(DOC_CMAKE_MODULE "")
     foreach(cmake_file ${CMAKE_FILES_FOUND})
       set(DOC_CMAKE_MODULE

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #.rst:
-# .. command:: SEARCH_FOR_BOOST_COMPONENT
+# .. cmake:command:: SEARCH_FOR_BOOST_COMPONENT
 #
 #   :param boost_python_name:
 #   :param found:
@@ -45,12 +45,12 @@ ENDFUNCTION(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
 #  - Thread
 #  - Unit_test_framework
 #
-# .. command:: SEARCH_FOR_BOOST
+# .. cmake:command:: SEARCH_FOR_BOOST
 #
 #  This macro deals with Visual Studio Fortran incompatibilities
 #  and add detected flags to the pkg-config file automatically.
 #
-#  The components to be detected is controlled by :variable:`BOOST_COMPONENTS`.
+#  The components to be detected is controlled by :cmake:variable:`BOOST_COMPONENTS`.
 #
 #  A special treatment must be done for the boost-python component. 
 #  For boost >= 1.67.0, FindPython macro should be called first in order
@@ -201,7 +201,7 @@ MACRO(SEARCH_FOR_BOOST)
 ENDMACRO(SEARCH_FOR_BOOST)
 
 #.rst:
-# .. command:: TARGET_LINK_BOOST_PYTHON (TARGET <PRIVATE|PUBLIC|INTERFACE>)
+# .. cmake:command:: TARGET_LINK_BOOST_PYTHON (TARGET <PRIVATE|PUBLIC|INTERFACE>)
 #
 #   Link target againt boost_python library.
 #
@@ -236,7 +236,7 @@ MACRO(TARGET_LINK_BOOST_PYTHON target)
 ENDMACRO(TARGET_LINK_BOOST_PYTHON)
 
 #.rst:
-# .. command:: PKG_CONFIG_APPEND_BOOST_LIBS
+# .. cmake:command:: PKG_CONFIG_APPEND_BOOST_LIBS
 #
 #   This macro appends Boost libraries to the pkg-config file. A list of Boost
 #   components is expected, for instance::

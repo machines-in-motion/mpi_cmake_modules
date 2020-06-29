@@ -1,18 +1,17 @@
 #
-# @file doxygen.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-#
-# @brief This file allows us to build the doxygen documentation of a package
-# using a simple macro
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
 #
 
-##########################
-# building documentation #
-##########################
-macro(build_doxygen_documentation)
+#.rst:
+# .. cmake:command:: BUILD_DOXYGEN_DOCUMENTATION
+#
+#   Builds the doxygen html documentation of a package. The Doxyfile is set to
+#   parse the Markdown files in the `doc/` folder, the Python file in the
+#   `python/` folder and the C/C++ files. The output is gnerated in 
+#   `${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/doxygen/html/`.
+#
+macro(BUILD_DOXYGEN_DOCUMENTATION)
 
     message(STATUS "building doxygen documentation for ${PROJECT_NAME}")
 
@@ -46,4 +45,4 @@ macro(build_doxygen_documentation)
     # Create a dependency on the doc target
     add_dependencies(doc ${PROJECT_NAME}_doxygen_html)
 
-endmacro(build_doxygen_documentation)
+endmacro(BUILD_DOXYGEN_DOCUMENTATION)

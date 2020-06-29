@@ -19,7 +19,7 @@ CMakelists.txt:
 This macro is idle by default. To activate it one need to pass the following
 CMake argument:
 
-    catkin build --cmake-args -DBUILD_DOCUMENTATION=ON
+    catkin build --cmake-args -DGENERATE_DOCUMENTATION=ON
 
 The macro will generate a specific target using the name of the project for
 unicity. The docuementation is located in:

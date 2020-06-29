@@ -1,15 +1,15 @@
 #
-# @file clang-format.cmake
-# @author Maximilien Naveau, Felix Widmaier
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-10-16
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
 #
-#===============================================================================
-# Code Formatting
-#===============================================================================
 
-# Add targets to automatically run clang-format on all C++ source files.
+#.rst:
+# .. cmake:command:: FORMAT_CODE
+#
+#   Add targets to automatically run clang-format on all C++ source files.
+#   From this package one can also use the executable installed as
+#   `mpi_clang_format`.
+#
 MACRO(FORMAT_CODE)
 
     option(FORMAT_CODE

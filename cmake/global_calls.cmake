@@ -9,7 +9,7 @@
 # 
 
 include(${CMAKE_CURRENT_LIST_DIR}/os_detection.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/setup_xenomai.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/xenomai.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/documentation.cmake)
 
 # defining -DXENOMAI, -DRT_PREEMPT or -DNON_REAL_TIME
