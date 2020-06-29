@@ -1,24 +1,29 @@
 #
-# @file pkg-config.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-# 
-# @brief This file is copied/inspired from
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
+#
+
+#.rst:
+# This file is copied/inspired from
 # https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/pkg-config.cmake
 # 
+# .. note:: CMake commands starting with `_` are for internal purpose only.
 
 FIND_PACKAGE(PkgConfig)
 
-# Additional pkg-config variables whose value will be imported
-# during the dependency check.
+#.rst:
+#
+# .. cmake:variable:: PKG_CONFIG_ADDITIONAL_VARIABLES
+#
+#    Additional pkg-config variables whose value will be imported
+#    during the dependency check.
+#
 SET(PKG_CONFIG_ADDITIONAL_VARIABLES bindir pkglibdir datarootdir pkgdatarootdir docdir doxygendocdir)
 
-# _SETUP_PROJECT_PKG_CONFIG
-# -------------------------
+#.rst:
+# .. cmake:command:: _SETUP_PROJECT_PKG_CONFIG
 #
-# Prepare pkg-config pc file generation step.
+#    Prepares pkg-config pc file generation step.
 #
 MACRO(_SETUP_PROJECT_PKG_CONFIG)
   # Pkg-config related commands.
@@ -96,17 +101,17 @@ MACRO(_SETUP_PROJECT_PKG_CONFIG)
 ENDMACRO(_SETUP_PROJECT_PKG_CONFIG)
 
 
-# _SETUP_PROJECT_PKG_CONFIG_FINALIZE_DEBUG
-# ----------------------------------
-#
-# Post-processing of the pkg-config step.
-#
-# The pkg-config file has to be generated at the end to allow end-user
-# defined variables replacement.
-#
-# This macro adds _PKG_CONFIG_LIBS_DEBUG to _PKG_CONFIG_LIBS and
-# _PKGCONFIG_CFLAGS_DEBUG to _PKG_CONFIG_CFLAGS
-#
+#.rst:
+# .. cmake:command:: _SETUP_PROJECT_PKG_CONFIG_FINALIZE_DEBUG
+#  
+#   Post-processing of the pkg-config step.
+#  
+#   The pkg-config file has to be generated at the end to allow end-user
+#   defined variables replacement.
+#  
+#   This macro adds `_PKG_CONFIG_LIBS_DEBUG` to `_PKG_CONFIG_LIBS` and
+#   `_PKGCONFIG_CFLAGS_DEBUG` to `_PKG_CONFIG_CFLAGS`
+#  
 MACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_DEBUG)
   # Setup altered variables
   SET(TEMP_CFLAGS ${_PKG_CONFIG_CFLAGS})
@@ -130,16 +135,16 @@ MACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_DEBUG)
     PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE)
 ENDMACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_DEBUG)
 
-# _SETUP_PROJECT_PKG_CONFIG_FINALIZE_OPTIMIZED
-# ----------------------------------
+#.rst:
+# .. cmake:command:: _SETUP_PROJECT_PKG_CONFIG_FINALIZE_OPTIMIZED
+#  
+#  Post-processing of the pkg-config step.
 #
-# Post-processing of the pkg-config step.
+#  The pkg-config file has to be generated at the end to allow end-user
+#  defined variables replacement.
 #
-# The pkg-config file has to be generated at the end to allow end-user
-# defined variables replacement.
-#
-# This macro adds _PKG_CONFIG_LIBS_OPTIMIZED to _PKG_CONFIG_LIBS and
-# _PKGCONFIG_CFLAGS_OPTIMIZED to _PKG_CONFIG_CFLAGS
+#  This macro adds _PKG_CONFIG_LIBS_OPTIMIZED to `_PKG_CONFIG_LIBS` and
+#  `_PKGCONFIG_CFLAGS_OPTIMIZED` to `_PKG_CONFIG_CFLAGS`
 #
 MACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_OPTIMIZED)
   # Setup altered variables
@@ -168,13 +173,13 @@ MACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_OPTIMIZED)
     PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE)
 ENDMACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_OPTIMIZED)
 
-# _SETUP_PROJECT_PKG_CONFIG_FINALIZE
-# ----------------------------------
+#.rst:
+# .. cmake:command:: _SETUP_PROJECT_PKG_CONFIG_FINALIZE
 #
-# Post-processing of the pkg-config step.
+#   Post-processing of the pkg-config step.
 #
-# The pkg-config file has to be generated at the end to allow end-user
-# defined variables replacement.
+#   The pkg-config file has to be generated at the end to allow end-user
+#   defined variables replacement.
 #
 MACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE)
   # Single build type generator
@@ -197,23 +202,24 @@ MACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE)
 ENDMACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE)
 
 
-# ADD_DEPENDENCY(PREFIX P_REQUIRED PKGCONFIG_STRING)
-# ------------------------------------------------
+#.rst:
+# .. cmake:command:: ADD_DEPENDENCY(PREFIX P_REQUIRED PKGCONFIG_STRING)
 #
-# Check for a dependency using pkg-config. Fail if the package cannot
-# be found.
+#   Check for a dependency using pkg-config. Fail if the package cannot
+#   be found.
 #
-# P_REQUIRED : if set to 1 the package is required, otherwise it consider
-#              as optional.
-#              WARNING for optional package:
-#              if the package is detected its compile
-#              and linking options are still put in the required fields
-#              of the generated pc file. Indeed from the binary viewpoint
-#              the package becomes required.
+#   P_REQUIRED : if set to 1 the package is required, otherwise it consider
+#                as optional.
+#                WARNING for optional package:
+#                if the package is detected its compile
+#                and linking options are still put in the required fields
+#                of the generated pc file. Indeed from the binary viewpoint
+#                the package becomes required.
 #
-# PKG_CONFIG_STRING	: string passed to pkg-config to check the version.
-#			  Typically, this string looks like:
-#                         ``my-package >= 0.5''
+#   PKG_CONFIG_STRING : String passed to pkg-config to check the version.
+#                       Typically, this string looks like:
+#                          
+#                          "`my-package >= 0.5`"
 #
 MACRO(ADD_DEPENDENCY P_REQUIRED DOC_ONLY PKG_CONFIG_STRING PKG_CONFIG_DEBUG_STRING)
   # Retrieve the left part of the equation to get package name.
@@ -411,19 +417,19 @@ MACRO(ADD_DEPENDENCY P_REQUIRED DOC_ONLY PKG_CONFIG_STRING PKG_CONFIG_DEBUG_STRI
 
 ENDMACRO(ADD_DEPENDENCY)
 
-# ADD_REQUIRED_DEPENDENCY(PREFIX PKGCONFIG_STRING)
-# ------------------------------------------------
+#.rst:
+# .. cmake:command:: ADD_REQUIRED_DEPENDENCY(PREFIX PKGCONFIG_STRING)
 #
-# Check for a dependency using pkg-config. Fail if the package cannot
-# be found.
+#   Check for a dependency using pkg-config. Fail if the package cannot
+#   be found.
 #
-# PKG_CONFIG_STRING	: string passed to pkg-config to check the version.
-#			  Typically, this string looks like:
-#                         ``my-package >= 0.5''
+#   PKG_CONFIG_STRING : String passed to pkg-config to check the version.
+#                       Typically, this string looks like:
+#                           "`my-package >= 0.5`"
 #
-# An optional argument can be passed to define an alternate PKG_CONFIG_STRING
-# for debug builds. It should follow the same rule as PKG_CONFIG_STRING.
-#
+#   An optional argument can be passed to define an alternate PKG_CONFIG_STRING
+#   for debug builds. It should follow the same rule as PKG_CONFIG_STRING.
+#  
 MACRO(ADD_REQUIRED_DEPENDENCY PKG_CONFIG_STRING)
   SET(PKG_CONFIG_DEBUG_STRING "")
   FOREACH(ARG ${ARGN})
@@ -432,15 +438,15 @@ MACRO(ADD_REQUIRED_DEPENDENCY PKG_CONFIG_STRING)
   ADD_DEPENDENCY(1 0 ${PKG_CONFIG_STRING} "${PKG_CONFIG_DEBUG_STRING}")
 ENDMACRO(ADD_REQUIRED_DEPENDENCY)
 
-# ADD_OPTIONAL_DEPENDENCY(PREFIX PKGCONFIG_STRING)
-# ------------------------------------------------
+#.rst:
+# .. cmake:command:: ADD_OPTIONAL_DEPENDENCY(PREFIX PKGCONFIG_STRING)
 #
-# Check for a dependency using pkg-config. Quiet if the package cannot
-# be found.
+#   Check for a dependency using pkg-config. Quiet if the package cannot
+#   be found.
 #
-# PKG_CONFIG_STRING	: string passed to pkg-config to check the version.
-#			  Typically, this string looks like:
-#                         ``my-package >= 0.5''
+#   PKG_CONFIG_STRING : String passed to pkg-config to check the version.
+#                       Typically, this string looks like:
+#                          "`my-package >= 0.5`"
 #
 # An optional argument can be passed to define an alternate PKG_CONFIG_STRING
 # for debug builds. It should follow the same rule as PKG_CONFIG_STRING.
@@ -453,18 +459,18 @@ MACRO(ADD_OPTIONAL_DEPENDENCY PKG_CONFIG_STRING)
   ADD_DEPENDENCY(0 0 ${PKG_CONFIG_STRING} "${PKG_CONFIG_DEBUG_STRING}")
 ENDMACRO(ADD_OPTIONAL_DEPENDENCY)
 
-# ADD_DOC_DEPENDENCY(PREFIX PKGCONFIG_STRING)
-# ------------------------------------------------
+#.rst:
+# .. cmake:command:: ADD_DOC_DEPENDENCY(PREFIX PKGCONFIG_STRING)
 #
-# Check for a dependency using pkg-config. Do not express dependency in
-# "requires" field.
+#   Check for a dependency using pkg-config. Do not express dependency in
+#   "requires" field.
 #
-# PKG_CONFIG_STRING	: string passed to pkg-config to check the version.
-#			  Typically, this string looks like:
-#                         ``my-package >= 0.5''
+#   PKG_CONFIG_STRING : String passed to pkg-config to check the version.
+#                       Typically, this string looks like:
+#                         "`my-package >= 0.5`"
 #
-# An optional argument can be passed to define an alternate PKG_CONFIG_STRING
-# for debug builds. It should follow the same rule as PKG_CONFIG_STRING.
+#   An optional argument can be passed to define an alternate PKG_CONFIG_STRING
+#   for debug builds. It should follow the same rule as PKG_CONFIG_STRING.
 #
 MACRO(ADD_DOC_DEPENDENCY PKG_CONFIG_STRING)
   SET(PKG_CONFIG_DEBUG_STRING "")
@@ -474,11 +480,11 @@ MACRO(ADD_DOC_DEPENDENCY PKG_CONFIG_STRING)
   ADD_DEPENDENCY(1 1 ${PKG_CONFIG_STRING} "${PKG_CONFIG_DEBUG_STRING}")
 ENDMACRO(ADD_DOC_DEPENDENCY)
 
-# PKG_CONFIG_APPEND_LIBRARY_DIR
-# -----------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_APPEND_LIBRARY_DIR
 #
-# This macro adds library directories in a portable way
-# into the CMake file.
+#   This macro adds library directories in a portable way
+#   into the CMake file.
 MACRO(PKG_CONFIG_APPEND_LIBRARY_DIR DIRS)
   FOREACH(DIR ${DIRS})
     IF(DIR)
@@ -487,11 +493,11 @@ MACRO(PKG_CONFIG_APPEND_LIBRARY_DIR DIRS)
   ENDFOREACH(DIR ${DIRS})
 ENDMACRO(PKG_CONFIG_APPEND_LIBRARY_DIR DIR)
 
-# PKG_CONFIG_APPEND_CFLAGS_DEBUG
-# ------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_APPEND_CFLAGS_DEBUG
 #
-# This macro adds CFLAGS in a portable way into the pkg-config file of the debug library
-# As such the macro fails if PROJECT_DEBUG_POSTFIX is not set
+#   This macro adds CFLAGS in a portable way into the pkg-config file of the
+#   debug library. As such the macro fails if `PROJECT_DEBUG_POSTFIX` is not set
 #
 MACRO(PKG_CONFIG_APPEND_CFLAGS_DEBUG FLAGS)
   IF(NOT DEFINED PROJECT_DEBUG_POSTFIX)
@@ -504,11 +510,12 @@ MACRO(PKG_CONFIG_APPEND_CFLAGS_DEBUG FLAGS)
   ENDFOREACH(FLAG ${FLAGS})
 ENDMACRO(PKG_CONFIG_APPEND_CFLAGS_DEBUG FLAGS)
 
-# PKG_CONFIG_APPEND_CFLAGS_OPTIMIZED
-# ------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_APPEND_CFLAGS_OPTIMIZED
 #
-# This macro adds CFLAGS in a portable way into the pkg-config file of the OPTIMIZED library
-# As such the macro fails if PROJECT_OPTIMIZED_POSTFIX is not set
+#   This macro adds `CFLAGS` in a portable way into the pkg-config file of the
+#   `OPTIMIZED` library. As such the macro fails if `PROJECT_OPTIMIZED_POSTFIX`
+#   is not set
 #
 MACRO(PKG_CONFIG_APPEND_CFLAGS_OPTIMIZED FLAGS)
   IF(NOT DEFINED PROJECT_DEBUG_POSTFIX)
@@ -521,10 +528,10 @@ MACRO(PKG_CONFIG_APPEND_CFLAGS_OPTIMIZED FLAGS)
   ENDFOREACH(FLAG ${FLAGS})
 ENDMACRO(PKG_CONFIG_APPEND_CFLAGS_OPTIMIZED FLAGS)
 
-# PKG_CONFIG_APPEND_CFLAGS
-# ------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_APPEND_CFLAGS
 #
-# This macro adds CFLAGS in a portable way into the pkg-config file.
+#   This macro adds CFLAGS in a portable way into the pkg-config file.
 #
 MACRO(PKG_CONFIG_APPEND_CFLAGS FLAGS)
   FOREACH(FLAG ${FLAGS})
@@ -535,20 +542,21 @@ MACRO(PKG_CONFIG_APPEND_CFLAGS FLAGS)
 ENDMACRO(PKG_CONFIG_APPEND_CFLAGS)
 
 
-# PKG_CONFIG_APPEND_LIBS_RAW
-# ----------------------------
-#
-# This macro adds raw value in the "Libs:" into the pkg-config file.
-#
-# Exception for mac OS X:
-# In addition to the classical static and dynamic libraries (handled like
-# unix does), mac systems can link against frameworks.
-# Frameworks are directories gathering headers, libraries, shared resources...
-#
-# The syntax used to link with a framework is particular, hence a filter is
-# added to convert the absolute path to a framework (e.g. /Path/to/Sample.framework)
-# into the correct flags (-F/Path/to/ -framework Sample).
-#
+#.rst:
+# .. cmake:command:: PKG_CONFIG_APPEND_LIBS_RAW
+#  
+#   This macro adds raw value in the "Libs:" into the pkg-config file.
+#  
+#   Exception for mac OS X:
+#   In addition to the classical static and dynamic libraries (handled like
+#   unix does), mac systems can link against frameworks.
+#   Frameworks are directories gathering headers, libraries, shared resources...
+#  
+#   The syntax used to link with a framework is particular, hence a filter is
+#   added to convert the absolute path to a framework
+#   (e.g. /Path/to/Sample.framework) into the correct flags
+#   (-F/Path/to/ -framework Sample).
+#  
 MACRO(PKG_CONFIG_APPEND_LIBS_RAW LIBS)
   FOREACH(LIB ${LIBS})
     IF(LIB)
@@ -565,13 +573,13 @@ MACRO(PKG_CONFIG_APPEND_LIBS_RAW LIBS)
 ENDMACRO(PKG_CONFIG_APPEND_LIBS_RAW)
 
 
-# PKG_CONFIG_APPEND_LIBS
-# ----------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_APPEND_LIBS
 #
-# This macro adds libraries in a portable way into the pkg-config
-# file.
+#   This macro adds libraries in a portable way into the pkg-config
+#   file.
 #
-# Library prefix and suffix is automatically added.
+#   Library prefix and suffix is automatically added.
 #
 MACRO(PKG_CONFIG_APPEND_LIBS LIBS)
   FOREACH(LIB ${LIBS})
@@ -597,19 +605,18 @@ MACRO(PKG_CONFIG_APPEND_LIBS LIBS)
   ENDFOREACH(LIB ${LIBS})
 ENDMACRO(PKG_CONFIG_APPEND_LIBS)
 
-
-# For internal use only.
-# PKG_CONFIG_USE_LCOMPILE_DEPENDENCY(TARGET DEPENDENCY)
-# --------------------------------------------
-#
-# For user look at PKG_CONFIG_USE_COMPILE_DEPENDENCY
-#
-# This macro changes the target properties to properly search for
-# headers  against the required shared libraries
-# when using a dependency detected through pkg-config.
-#
-# I.e. PKG_CONFIG_USE_LCOMPILE_DEPENDENCY(my-binary my-package)
-#
+#.rst:
+# .. cmake:command:: PKG_CONFIG_USE_LCOMPILE_DEPENDENCY(TARGET DEPENDENCY)
+#   
+#   .. note:: For internal use only. For user look at
+#             :cmake:command:`PKG_CONFIG_USE_COMPILE_DEPENDENCY`
+#  
+#   This macro changes the target properties to properly search for
+#   headers  against the required shared libraries
+#   when using a dependency detected through pkg-config.
+#  
+#   I.e. :code:`PKG_CONFIG_USE_LCOMPILE_DEPENDENCY(my-binary my-package)`
+#  
 MACRO(PKG_CONFIG_USE_LCOMPILE_DEPENDENCY TARGET PREFIX)
 
   GET_TARGET_PROPERTY(CFLAGS ${TARGET} COMPILE_OPTIONS)
@@ -684,17 +691,17 @@ MACRO(_PKG_CONFIG_MANIPULATE_LDFLAGS TARGET PREFIX CONFIG IS_GENERAL IS_DEBUG)
   ENDIF(UNIX AND NOT APPLE)
 ENDMACRO(_PKG_CONFIG_MANIPULATE_LDFLAGS TARGET PREFIX CONFIG IS_GENERAL IS_DEBUG)
 
-# Internal use only.
-# PKG_CONFIG_USE_LLINK_DEPENDENCY(TARGET DEPENDENCY)
-# --------------------------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_USE_LLINK_DEPENDENCY(TARGET DEPENDENCY)
 #
-# For user look at PKG_CONFIG_USE_LINK_DEPENDENCY
+#   .. note: Internal use only. For user look at 
+#            :cmake:command:`PKG_CONFIG_USE_LINK_DEPENDENCY`
 #
-# This macro changes the target properties to properly search for
-# the required shared libraries
-# when using a dependency detected through pkg-config.
+#   This macro changes the target properties to properly search for
+#   the required shared libraries
+#   when using a dependency detected through pkg-config.
 #
-# I.e. PKG_CONFIG_USE_LLINK_DEPENDENCY(my-binary my-package)
+#   I.e. :code:`PKG_CONFIG_USE_LLINK_DEPENDENCY(my-binary my-package)`
 #
 MACRO(PKG_CONFIG_USE_LLINK_DEPENDENCY TARGET PREFIX)
 
@@ -754,14 +761,15 @@ MACRO(BUILD_PREFIX_FOR_PKG DEPENDENCY PREFIX)
 
 ENDMACRO(BUILD_PREFIX_FOR_PKG)
 
-# PKG_CONFIG_USE_DEPENDENCY(TARGET DEPENDENCY)
+#.rst:
+# .. cmake:command:: PKG_CONFIG_USE_DEPENDENCY(TARGET DEPENDENCY)
 # --------------------------------------------
 #
-# This macro changes the target properties to properly search for
-# headers, libraries and link against the required shared libraries
-# when using a dependency detected through pkg-config.
+#   This macro changes the target properties to properly search for
+#   headers, libraries and link against the required shared libraries
+#   when using a dependency detected through pkg-config.
 #
-# I.e. PKG_CONFIG_USE_DEPENDENCY(my-binary my-package)
+#   I.e. :code:`PKG_CONFIG_USE_DEPENDENCY(my-binary my-package)`
 #
 MACRO(PKG_CONFIG_USE_DEPENDENCY TARGET DEPENDENCY)
   BUILD_PREFIX_FOR_PKG(${DEPENDENCY} PREFIX)
@@ -770,42 +778,42 @@ MACRO(PKG_CONFIG_USE_DEPENDENCY TARGET DEPENDENCY)
 ENDMACRO(PKG_CONFIG_USE_DEPENDENCY TARGET DEPENDENCY)
 
 
-# PKG_CONFIG_USE_COMPILE_DEPENDENCY(TARGET DEPENDENCY)
-# --------------------------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_USE_COMPILE_DEPENDENCY(TARGET DEPENDENCY)
 #
-# This macro changes the target properties to properly search for
-# headers  against the required shared libraries
-# when using a dependency detected through pkg-config.
+#   This macro changes the target properties to properly search for
+#   headers  against the required shared libraries
+#   when using a dependency detected through pkg-config.
 #
-# I.e. PKG_CONFIG_USE_COMPILE_DEPENDENCY(my-binary my-package)
+#   I.e. :code:`PKG_CONFIG_USE_COMPILE_DEPENDENCY(my-binary my-package)`
 MACRO(PKG_CONFIG_USE_COMPILE_DEPENDENCY TARGET DEPENDENCY)
   BUILD_PREFIX_FOR_PKG(${DEPENDENCY} PREFIX)
   PKG_CONFIG_USE_LCOMPILE_DEPENDENCY(${TARGET} ${PREFIX})
 ENDMACRO(PKG_CONFIG_USE_COMPILE_DEPENDENCY TARGET DEPENDENCY)
 
-# PKG_CONFIG_USE_LINK_DEPENDENCY(TARGET DEPENDENCY)
-# --------------------------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_USE_LINK_DEPENDENCY(TARGET DEPENDENCY)
 #
-# This macro changes the target properties to properly search for
-# the required shared libraries
-# when using a dependency detected through pkg-config.
+#   This macro changes the target properties to properly search for
+#   the required shared libraries
+#   when using a dependency detected through pkg-config.
 #
-# I.e. PKG_CONFIG_USE_LINK_DEPENDENCY(my-binary my-package)
+#   I.e. :code:`PKG_CONFIG_USE_LINK_DEPENDENCY(my-binary my-package)`
 MACRO(PKG_CONFIG_USE_LINK_DEPENDENCY TARGET DEPENDENCY)
   BUILD_PREFIX_FOR_PKG(${DEPENDENCY} PREFIX)
   PKG_CONFIG_USE_LLINK_DEPENDENCY(${TARGET} ${PREFIX})
 ENDMACRO(PKG_CONFIG_USE_LINK_DEPENDENCY TARGET DEPENDENCY)
 
 
-# PKG_CONFIG_ADD_COMPILE_OPTIONS(COMPILE_OPTIONS DEPENDENCY)
-# ----------------------------------------------------------
+#.rst:
+# .. cmake:command:: PKG_CONFIG_ADD_COMPILE_OPTIONS(COMPILE_OPTIONS DEPENDENCY)
 #
-# This macro adds the compile-time options for a given pkg-config
-# dependency to a given semi-colon-separated list. This can be
-# used to provide options to CUDA_ADD_LIBRARY for instance, since
-# it does not support SET_TARGET_PROPERTIES...
+#   This macro adds the compile-time options for a given pkg-config
+#   dependency to a given semi-colon-separated list. This can be
+#   used to provide options to CUDA_ADD_LIBRARY for instance, since
+#   it does not support SET_TARGET_PROPERTIES...
 #
-# I.e. PKG_CONFIG_ADD_COMPILE_OPTIONS(${MY_OPTIONS} my-package)
+#   I.e. `PKG_CONFIG_ADD_COMPILE_OPTIONS(${MY_OPTIONS} my-package)`
 MACRO(PKG_CONFIG_ADD_COMPILE_OPTIONS COMPILE_OPTIONS DEPENDENCY)
   BUILD_PREFIX_FOR_PKG(${DEPENDENCY} PREFIX)
 
@@ -820,13 +828,13 @@ MACRO(PKG_CONFIG_ADD_COMPILE_OPTIONS COMPILE_OPTIONS DEPENDENCY)
   ENDFOREACH()
 ENDMACRO(PKG_CONFIG_ADD_COMPILE_OPTIONS COMPILE_OPTIONS DEPENDENCY)
 
-# CATKIN_ADD_REQUIRED_DEPENDENCY(DEPENDENCY)
-# --------------------------------------------
+#.rst:
+# .. cmake:command:: CATKIN_ADD_REQUIRED_DEPENDENCY(DEPENDENCY)
 #
-# This macros looks for the dependencies using pkg config and export the
-# cmake variables using catkin.
+#   This macros looks for the dependencies using pkg config and export the
+#   cmake variables using catkin.
 #
-# I.e. CATKIN_ADD_REQUIRED_DEPENDENCY("my-package >= 1.0.0")
+#   I.e. :code:`CATKIN_ADD_REQUIRED_DEPENDENCY("my-package >= 1.0.0")`
 MACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
     # Get the name from the string    
     SET(ARGS ${DEPENDENCY})
@@ -853,13 +861,13 @@ MACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
     )
 ENDMACRO(CATKIN_ADD_REQUIRED_DEPENDENCY DEPENDENCY)
 
-# CATKIN_ADD_OPTIONAL_DEPENDENCY(DEPENDENCY)
-# --------------------------------------------
+#.rst:
+# .. cmake:command:: CATKIN_ADD_OPTIONAL_DEPENDENCY(DEPENDENCY)
 #
-# This macros looks for the dependencies using pkg config and export the
-# cmake variables using catkin.
+#   This macros looks for the dependencies using pkg config and export the
+#   cmake variables using catkin.
 #
-# I.e. CATKIN_ADD_OPTIONAL_DEPENDENCY("my-package >= 1.0.0")
+#   I.e. :code:`CATKIN_ADD_OPTIONAL_DEPENDENCY("my-package >= 1.0.0")`
 MACRO(CATKIN_ADD_OPTIONAL_DEPENDENCY DEPENDENCY)
     # Get the name from the string    
     SET(ARGS ${DEPENDENCY})

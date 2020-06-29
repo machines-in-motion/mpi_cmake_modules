@@ -1,11 +1,14 @@
 #
-# @file global_calls.cmake
-# @author Vincent Berenz / Maximilien Naveau
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2020-01-06
-# 
-# @brief call macros for all catkin packages importing mpi_cmake_modules
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
+#
+
+#.rst:
+#
+# Call macros by default for `all` catkin packages importing mpi_cmake_modules.
+# This file includes os-detection to determine the os the code is built on.
+# It detects and import xenomai if needed.
+# And generate the `doc` target in order to build the documentation.
 # 
 
 include(${CMAKE_CURRENT_LIST_DIR}/os_detection.cmake)
