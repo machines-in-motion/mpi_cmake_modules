@@ -763,7 +763,6 @@ ENDMACRO(BUILD_PREFIX_FOR_PKG)
 
 #.rst:
 # .. cmake:command:: PKG_CONFIG_USE_DEPENDENCY(TARGET DEPENDENCY)
-# --------------------------------------------
 #
 #   This macro changes the target properties to properly search for
 #   headers, libraries and link against the required shared libraries

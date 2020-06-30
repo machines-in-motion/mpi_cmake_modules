@@ -33,7 +33,7 @@ FUNCTION(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
 ENDFUNCTION(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
 
 #.rst:
-# .. variable:: BOOST_COMPONENTS
+# .. cmake:variable:: BOOST_COMPONENTS
 #
 #  Controls the components to be detected.  
 #  If this variable is not defined, it defaults to the following component
