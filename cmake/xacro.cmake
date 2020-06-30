@@ -1,24 +1,22 @@
 #
-# @file xacro.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-# 
-# @brief This file allows us to abuild xacro files with a single macro.
-# 
-
+# Copyright (c) 2019-2020, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
+#
 
 #.rst:
 #
-# This looks for any files ending with .urdf.xacro in the [package_root]/xacro
-# folder. Then it calls the xacro command on each and every file found.
-# It then declare a target whith the xacro command.
-# 
-# This all boils down to the following fact:
+# Build the documentation based on sphinx and the read_the_doc layout.
 #
-# At compile time the [package_root]/urdf/*.urdf files are going to be compiled
-# from the [package_root]/xacro/*.urdf.xacro files.
+# .. cmake:command:: BUILD_XACRO_FILES
+#
+#   This looks for any files ending with .urdf.xacro in the [package_root]/xacro
+#   folder. Then it calls the xacro command on each and every file found.
+#   It then declare a target whith the xacro command.
+#
+#   .. note::
+#       This all boils down to the following fact,
+#       at compile time the [package_root]/urdf/*.urdf files are going to
+#       be compiled from the [package_root]/xacro/*.urdf.xacro files.
 #
 macro(BUILD_XACRO_FILES)
 

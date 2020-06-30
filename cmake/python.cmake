@@ -15,7 +15,7 @@
 
 
 #.rst:
-# .. command:: FINDPYTHON
+# .. cmake:command:: FINDPYTHON
 #
 #  Find python interpreter and python libs.
 #  Arguments are passed to the find_package command so
@@ -39,12 +39,12 @@
 #
 
 #.rst:
-# .. variable:: PYTHON_SITELIB
+# .. cmake:variable:: PYTHON_SITELIB
 #
 #  Absolute path where Python files will be installed.
 
 #.rst:
-# .. variable:: PYTHON_EXT_SUFFIX
+# .. cmake:variable:: PYTHON_EXT_SUFFIX
 #
 #  Portable suffix of C++ Python modules.
 
@@ -249,7 +249,7 @@ MACRO(FINDPYTHON)
 ENDMACRO(FINDPYTHON)
 
 #.rst:
-# .. command::  SEARCH_FOR_PYTHON()
+# .. cmake:command::  SEARCH_FOR_PYTHON()
 #
 #  Alias for the FINDPYTHON macro. See FINDPYTHON().
 #
@@ -280,7 +280,7 @@ MACRO(SEARCH_FOR_PYTHON)
 ENDMACRO(SEARCH_FOR_PYTHON)
 
 #.rst:
-# .. command::  PYTHON_INSTALL(MODULE FILE DEST)
+# .. cmake:command::  PYTHON_INSTALL(MODULE FILE DEST)
 #
 #  Compile and install a Python file.
 #
@@ -294,7 +294,7 @@ MACRO(PYTHON_INSTALL MODULE FILE DEST)
 ENDMACRO()
 
 #.rst:
-# .. command:: PYTHON_INSTALL_ON_SITE (MODULE FILE)
+# .. cmake:command:: PYTHON_INSTALL_ON_SITE (MODULE FILE)
 #
 #  Compile and install a Python file in :cmake:variable:`PYTHON_SITELIB`.
 #
@@ -387,27 +387,17 @@ MACRO(PYTHON_INSTALL_BUILD MODULE FILE DEST)
 ENDMACRO()
 
 #.rst:
-# .. command:: INSTALL_PYTHON_FILES (SUBMODULENAME PYTHON_SRC_DIR)
+# .. cmake:command:: INSTALL_PYTHON_FILES (SUBMODULENAME PYTHON_SRC_DIR)
 #
 #   Install python files in the python submodule of dynamic_graph
 #
-#   :param PYTHON_SRC_DIR is the root of the python module. It *must* contain
-#   a __init__.py. All file bleow this folder will be install in the python
-#   submodule
-# PYTHON_INSTALL_BUILD(MODULE FILE DEST)
-# --------------------------------------
+#   :param PYTHON_SRC_DIR: is the root of the python module. It *must* contain
+#                          a `__init__.py`. All file below this folder will be
+#                          install in the python submodule.
 #
-#   :param SUBMODULENAME: the name of the submodule (can be foo/bar),
-# Install a Python file residing in the build directory and its
-# associated compiled version.
-#
-#   :param LIBRARYNAME:   library to link the submodule with.
-#
-#  .. note::
-#    Before calling this macro, set variable NEW_ENTITY_CLASS as
-#    the list of new Entity types that you want to be bound.
-#    Entity class name should match the name referencing the type
-#    in the factory.
+#   :param SUBMODULENAME: The name of the submodule (can be foo/bar), install a
+#                         Python file residing in the build directory and its
+#                         associated compiled version.
 #
 MACRO(INSTALL_PYTHON_FILES SUBMODULENAME PYTHON_SRC_DIR)
   # get the global path
@@ -433,11 +423,10 @@ MACRO(INSTALL_PYTHON_FILES SUBMODULENAME PYTHON_SRC_DIR)
 ENDMACRO()
 
 #.rst:
-# .. command:: FIND_NUMPY
+# .. cmake:command:: FIND_NUMPY
 #
-#   Detect numpy module
+#    Detect numpy module
 #
-
 MACRO(FIND_NUMPY)
   # Detect numpy.
   MESSAGE (STATUS "checking for numpy")
