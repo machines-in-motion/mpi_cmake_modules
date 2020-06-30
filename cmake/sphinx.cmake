@@ -123,7 +123,7 @@ endmacro(_BUILD_SPHINX_BUILD)
 
 #.rst:
 #
-# .. cmake:command:: BUILD_SPHINX_DOCUMENTATION
+# .. cmake:command:: ADD_SPHINX_DOCUMENTATION
 #
 #   Process the current project in order to generate a specific documentation
 #   content. This macro generates the appropriate documentation if is detects
@@ -144,7 +144,7 @@ endmacro(_BUILD_SPHINX_BUILD)
 #   Please refer to the `Sphinx` paragraph in the `General Documentation` in
 #   this package for more explanation about the parametrization of the tools.
 #
-macro(BUILD_SPHINX_DOCUMENTATION)
+macro(ADD_SPHINX_DOCUMENTATION)
 
   # All parameters
 
@@ -328,4 +328,4 @@ macro(BUILD_SPHINX_DOCUMENTATION)
   # Create a dependency on the doc target
   add_dependencies(doc ${PROJECT_NAME}_sphinx_html)
 
-endmacro(BUILD_SPHINX_DOCUMENTATION)
+endmacro(ADD_SPHINX_DOCUMENTATION)

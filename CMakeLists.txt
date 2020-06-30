@@ -83,4 +83,4 @@ configure_file(${MPI_CMAKE_MODULES_SCRIPTS_DIR}/mpi_clang_format
 ##########################
 # building documentation #
 ##########################
-build_documentation()
+add_documentation()

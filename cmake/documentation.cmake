@@ -38,9 +38,9 @@ endmacro(CREATE_DOC_TARGET)
 #   more modern Sphinx/Read-the-doc output. Eventually only the read-the-doc
 #   output will remain.
 #
-macro(BUILD_DOCUMENTATION)
+macro(ADD_DOCUMENTATION)
 
-  build_doxygen_documentation()
-  build_sphinx_documentation()
+  add_doxygen_documentation()
+  add_sphinx_documentation()
 
 endmacro(BUILD_DOCUMENTATION)

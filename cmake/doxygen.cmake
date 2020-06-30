@@ -4,14 +4,14 @@
 #
 
 #.rst:
-# .. cmake:command:: BUILD_DOXYGEN_DOCUMENTATION
+# .. cmake:command:: ADD_DOXYGEN_DOCUMENTATION
 #
 #   Builds the doxygen html documentation of a package. The Doxyfile is set to
 #   parse the Markdown files in the `doc/` folder, the Python file in the
 #   `python/` folder and the C/C++ files. The output is gnerated in 
 #   `${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/doxygen/html/`.
 #
-macro(BUILD_DOXYGEN_DOCUMENTATION)
+macro(ADD_DOXYGEN_DOCUMENTATION)
 
     message(STATUS "building doxygen documentation for ${PROJECT_NAME}")
 
@@ -45,4 +45,4 @@ macro(BUILD_DOXYGEN_DOCUMENTATION)
     # Create a dependency on the doc target
     add_dependencies(doc ${PROJECT_NAME}_doxygen_html)
 
-endmacro(BUILD_DOXYGEN_DOCUMENTATION)
+endmacro(ADD_DOXYGEN_DOCUMENTATION)
