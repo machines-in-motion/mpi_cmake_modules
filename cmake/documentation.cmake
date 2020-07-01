@@ -79,7 +79,7 @@ endmacro(BUILD_DOXYGEN_DOCUMENTATION)
 #.rst:
 # .. cmake:command:: BUILD_SPHINX_DOCUMENTATION
 #
-#   See :cmake:command:`ADD_DOCUMENTATION`
+#   See :cmake:command:`ADD_SPHINX_DOCUMENTATION`
 #
 macro(BUILD_SPHINX_DOCUMENTATION)
 
