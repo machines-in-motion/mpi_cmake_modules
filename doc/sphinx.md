@@ -77,7 +77,7 @@ breathe_default_project = project
 breathe_default_members = ('members', 'private-members', 'undoc-members')
 ~~~
 
-Once the `config.py` is setup we execute `breath-apidoc` on the Doxygen
+Once the `conf.py` is setup we execute `breath-apidoc` on the Doxygen
 xml output:
 
     breathe-apidoc -o $(BREATHE_OUT) $(BREATHE_IN) $(BREATHE_OPTION)
@@ -99,7 +99,7 @@ from the code. Hence our choice to use `Markdown` and `Restructured` text.
 Both file types are parse by sphinx and converted to html.
 The sphinx module `recommonmark` is here to convert the Markdown properly.
 
-In the header of the `config.py` used by sphinx we need to include:
+In the header of the `conf.py` used by sphinx we need to include:
 
     # AutoStructify for math in markdown
     import recommonmark 
@@ -115,7 +115,7 @@ extensions = [
 ]
 ~~~
 
-Then we tell Sphinx to read the .md extension files in the `config.py`:
+Then we tell Sphinx to read the .md extension files in the `conf.py`:
 
 ~~~python
 # The suffix(es) of source filenames.
@@ -128,7 +128,7 @@ And last in order to get math support in the mardown using:
         a = \theta
     ```
 
-We need to add the following at the end of the `config.py`:
+We need to add the following at the end of the `conf.py`:
 
 ~~~python
 # some tools for markdown parsing
@@ -147,7 +147,7 @@ app.add_transform(AutoStructify)
 This tool allow the generation of a Python module API documentation 
 extracting the doc string from the code.
 We need to add to the PYTHONPATH the path to the Python module in the
-`config.py`:
+`conf.py`:
 
 ~~~python
 sys.path.insert(0, os.path.abspath("path/to/the/python/module"))
