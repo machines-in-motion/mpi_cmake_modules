@@ -18,8 +18,8 @@
 # .. cmake:command:: FINDPYTHON
 #
 #  Find python interpreter and python libs.
-#  Arguments are passed to the find_package command so
-#  refer to `find_package` documentation to learn about valid arguments.
+#  Arguments are passed to the ``find_package`` command so
+#  refer to ``find_package`` documentation to learn about valid arguments.
 #
 #  To specify a specific Python version from the command line,
 #  use the command ``FINDPYTHON()``
@@ -392,7 +392,7 @@ ENDMACRO()
 #   Install python files in the python submodule of dynamic_graph
 #
 #   :param PYTHON_SRC_DIR: is the root of the python module. It *must* contain
-#                          a `__init__.py`. All file below this folder will be
+#                          a *__init__.py*. All file below this folder will be
 #                          install in the python submodule.
 #
 #   :param SUBMODULENAME: The name of the submodule (can be foo/bar), install a

@@ -5,7 +5,7 @@
 
 #.rst:
 #
-# Change the cmake policy `CMP0012` to `NEW` in this file to prevent cmake
+# Change the cmake policy *CMP0012* to *NEW* in this file to prevent cmake
 # warnings.
 #
 if(POLICY CMP0012)

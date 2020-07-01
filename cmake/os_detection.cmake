@@ -11,7 +11,7 @@
 #
 # .. cmake:command:: DEFINE_OS
 #
-#   Execute "uname --all" which provides us information on the `OS` specific
+#   Execute "uname --all" which provides us information on the *OS* specific
 #   functions to use.
 #   This method supports::
 #       * Xenomai
@@ -19,7 +19,7 @@
 #       * Ubuntu
 #       * Mac-OS
 #
-#   It also discriminate between real-time and non-real-time `OS`.
+#   It also discriminate between real-time and non-real-time *OS*.
 #
 macro(DEFINE_OS)
 

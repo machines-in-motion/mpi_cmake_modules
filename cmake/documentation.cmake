@@ -6,12 +6,12 @@
 #.rst:
 # .. cmake:command:: CREATE_DOC_TARGET
 #
-#   Create a target called `doc`. This target allows you do perform::
+#   Create a target called *doc*. This target allows you do perform::
 #       
 #       make doc
 #
-#   This target is created by default in the `cmake/global_calls.cmake`. It can
-#   be built by default if one set the CMake variable `GENERATE_DOCUMENTATION`
+#   This target is created by default in the *cmake/global_calls.cmake*. It can
+#   be built by default if one set the CMake variable ``GENERATE_DOCUMENTATION``
 #   to on::
 #
 #       cmake .. -DGENERATE_DOCUMENTATION=ON
@@ -33,7 +33,7 @@ endmacro(CREATE_DOC_TARGET)
 #.rst:
 # .. cmake:command:: BUILD_DOCUMENTATION
 #
-#   Create targets that are dependencies to the `doc` target. It builds the
+#   Create targets that are dependencies to the *doc* target. It builds the
 #   documentation html output using the classic Doxygen output and the rather
 #   more modern Sphinx/Read-the-doc output. Eventually only the read-the-doc
 #   output will remain.

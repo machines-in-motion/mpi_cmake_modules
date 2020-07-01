@@ -7,7 +7,7 @@
 # .. cmake:command:: SET_IF_EMPTY
 #
 #   :param [in/out] variable: CMake varibale to allocate if it is empty.
-#   :param [in] value: Value to affect to the input/ouput `variable`.
+#   :param [in] value: Value to affect to the input/ouput *variable*.
 #
 MACRO( SET_IF_EMPTY variable value )
   IF( "${${variable}}" STREQUAL "" )

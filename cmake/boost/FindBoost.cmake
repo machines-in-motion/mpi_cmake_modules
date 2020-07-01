@@ -976,9 +976,9 @@ endfunction()
 
 #
 # Some boost libraries may require particular set of compler features.
-# The very first one was `boost::fiber` introduced in Boost 1.62.
+# The very first one was ``boost::fiber`` introduced in Boost 1.62.
 # One can check required compiler features of it in
-# `${Boost_ROOT}/libs/fiber/build/Jamfile.v2`.
+# *${Boost_ROOT}/libs/fiber/build/Jamfile.v2*.
 #
 function(_Boost_COMPILER_FEATURES component _ret)
   # Boost >= 1.62 and < 1.67
@@ -1007,7 +1007,7 @@ endfunction()
 # Prebuilt windows binaries (https://sourceforge.net/projects/boost/files/boost-binaries/)
 # have library directories named using MSVC compiler version and architecture.
 # This function would append corresponding directories if MSVC is a current compiler,
-# so having `BOOST_ROOT` would be enough to specify to find everything.
+# so having ``BOOST_ROOT`` would be enough to specify to find everything.
 #
 function(_Boost_UPDATE_WINDOWS_LIBRARY_SEARCH_DIRS_WITH_PREBUILT_PATHS componentlibvar basedir)
   if("x${CMAKE_CXX_COMPILER_ID}" STREQUAL "xMSVC")

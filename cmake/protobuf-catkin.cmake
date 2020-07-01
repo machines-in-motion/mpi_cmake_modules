@@ -59,12 +59,12 @@ endfunction()
 #.rst:
 # .. cmake:command:: PROTOBUF_CATKIN_GENERATE_CPP
 #
-#   :param SRC_PATH in: source path of the `.proto` files
-#   :param SRCS out: list of the `.c` generated files.
-#   :param HDRS out: list of the `.h` generated files.
+#   :param SRC_PATH in: source path of the *.proto* files
+#   :param SRCS out: list of the *.c* generated files.
+#   :param HDRS out: list of the *.h* generated files.
 #
 #   This function execute the compilation of each protobuf file in the
-#   `BASE_PATH` folder.
+#   ``BASE_PATH`` folder.
 #   Usage::
 #
 #       set(SRC_PATH "protobuf")
@@ -207,7 +207,7 @@ endfunction()
 #
 #    Use :cmake:command:`PROTOBUF_CATKIN_GENERATE_CPP` in order to generate the
 #    protobuf C++ source files from the protobuf files located in the local
-#    `protobuff` folder. It then creates a cmake target building the library
+#    *protobuff/* folder. It then creates a cmake target building the library
 #    including the generated files.
 #
 function(PROTOBUF_CATKIN_GENERATE_LIB protobuf_cmake_target)

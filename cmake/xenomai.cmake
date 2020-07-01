@@ -10,7 +10,7 @@
 #    1. calls xeno-config
 #    2. add suitable libraries to linked directories
 #    3. add suitable directories to include directories
-#    4. setup variable `Xenomai_LIBS`.
+#    4. setup variable ``Xenomai_LIBS``.
 #
 #    .. note::
 #        Has been tested only on Xenomai 2.6.

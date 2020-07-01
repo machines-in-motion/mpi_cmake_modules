@@ -8,7 +8,7 @@
 #
 #   Add targets to automatically run clang-format on all C++ source files.
 #   From this package one can also use the executable installed as
-#   `mpi_clang_format`.
+#   ``mpi_clang_format`.
 #
 MACRO(FORMAT_CODE)
 

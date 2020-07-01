@@ -5,10 +5,10 @@
 
 #.rst:
 #
-# Call macros by default for `all` catkin packages importing mpi_cmake_modules.
+# Call macros by default for *all* catkin packages importing mpi_cmake_modules.
 # This file includes os-detection to determine the os the code is built on.
 # It detects and import xenomai if needed.
-# And generate the `doc` target in order to build the documentation.
+# And generate the *doc* target in order to build the documentation.
 # 
 
 include(${CMAKE_CURRENT_LIST_DIR}/os_detection.cmake)
