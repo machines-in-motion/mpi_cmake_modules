@@ -9,6 +9,13 @@
 # 
 # --- end cisst license ---
 
+#.rst:
+#
+# Find the Xenamai library. Usage::
+#
+#    find_package(Xenomai REQUIRED)
+#
+
 if( UNIX )
 
   # set the search paths

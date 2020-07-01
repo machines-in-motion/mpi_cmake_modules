@@ -1,24 +1,27 @@
 #
-# @file os-detection.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-# 
-# @brief This file allows us to detect which linux os we are using to compile
-# the code
-# 
-
-# DEFINE_OS
-# -------------
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
 #
-# Execute "uname --all" which provides us information on the os specific
-# functions to use
+
+#.rst:
+#
+# This file allows us to detect which linux os we are using to compile
+# the code.
+#
+#
+# .. cmake:command:: DEFINE_OS
+#
+#   Execute "uname --all" which provides us information on the *OS* specific
+#   functions to use.
+#   This method supports::
+#       * Xenomai
+#       * RT-Preempt
+#       * Ubuntu
+#       * Mac-OS
+#
+#   It also discriminate between real-time and non-real-time *OS*.
 #
 macro(DEFINE_OS)
-  # Add an option not used yet
-  set(CURRENT_OS "ubuntu" CACHE STRING
-      "DEPRECATED: Set it to \"xenomai\" or \"rt-preempt\" or \"non-real-time\" to specify the OS")
 
   # Update submodules as needed
   execute_process(

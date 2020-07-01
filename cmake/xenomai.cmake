@@ -1,20 +1,25 @@
 #
-# @file setup_xenomai.cmake
-# @author Vincent Berenz (vberenz@tue.mpg.de)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2020-01-02
-# 
-# @brief setup Xenomai : 1) calls xeno-config , 2) add suitable libraries to linked
-# directories, 3) add suitable directories to include directories
-#  and 4) setup variable Xenomai_LIBS. Has been tested only on Xenomai 2.6.  
-# 
+# Copyright (c) 2019-2020, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
+#
 
+#.rst:
+#
+# .. cmake:command:: SETUP_XENOMAI
+#    
+#    1. calls xeno-config
+#    2. add suitable libraries to linked directories
+#    3. add suitable directories to include directories
+#    4. setup variable ``Xenomai_LIBS``.
+#
+#    .. note::
+#        Has been tested only on Xenomai 2.6.
+#
 macro(SETUP_XENOMAI)
 
   message(WARNING "\n\n** compiling for xenomai **\n\n")
 
-  set (Xenomai_DIR "${CMAKE_CURRENT_LIST_DIR}/")
+  set (Xenomai_DIR "${CMAKE_CURRENT_LIST_DIR}/xenomai")
   find_package(Xenomai REQUIRED)
 
   set(XENOMAI_ROOT ${Xenomai_ROOT_DIR})

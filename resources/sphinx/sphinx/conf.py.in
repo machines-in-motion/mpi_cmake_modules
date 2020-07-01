@@ -68,9 +68,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'cmake',
+    'sphinxcontrib.moderncmakedomain',
     'recommonmark',
-    # 'm2r',  # markdown support
     'breathe',  # to define the C++ api with breathe-apidoc
 ]
 
@@ -91,7 +90,7 @@ breathe_default_members = ('members', 'private-members', 'undoc-members')
 # highlight_language = 'cmake'
 
 # The suffix(es) of source filenames.
-source_suffix = ['.rst', '.md']
+source_suffix = ['.rst', '.md', '.cmake']
 
 # The master toctree document.
 master_doc = 'index'
@@ -231,47 +230,8 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 todo_include_todos = True
 
 
-# cmake parser custom module
-class IfMode(Directive):
-
-    has_content = True
-    required_arguments = 1
-    optional_arguments = 0
-    final_argument_whitespace = True
-    option_spec = {}
-
-    def run(self):
-        cm = self.state.document.settings.env.config.currentmode
-        if cm == self.arguments[0]:
-            node = nodes.Element()
-            node.document = self.state.document
-            set_source_info(self, node)
-            self.state.nested_parse(self.content, self.content_offset,
-                                    node, match_titles=1)
-            return node.children
-        return []
-
-# cmake parser custom module
-
-
-class SetMode (Directive):
-    has_content = False
-    required_arguments = 1
-    optional_arguments = 0
-    final_argument_whitespace = False
-
-    def run(self):
-        self.state.document.settings.env.config.currentmode = self.arguments[0]
-        return []
-
-
-# some tools for markdown parsing
 def setup(app):
-    # cmake parser custom module
-    app.add_config_value('currentmode', 'user', 'env')
-    app.add_directive("setmode", SetMode)
-    app.add_directive("ifmode", IfMode)
-
+    """ some tools for markdown parsing """
     config = {
         # 'url_resolver': lambda url: github_doc_root + url,
         'auto_toc_tree_section': 'Contents',

@@ -1,31 +1,26 @@
 #
-# @file doxygen.cmake
-# @author Maximilien Naveau (maximilien.naveau@gmail.com)
-# @copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# @license License BSD-3 clause
-# @date 2019-05-06
-#
-# @brief This file allows us to build the doxygen documentation of a package
-# using a simple macro
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+# License BSD-3 clause
 #
 
-##########################
-# building documentation #
-##########################
-macro(build_doxygen_documentation)
-
-  set(BUILD_DOCUMENTATION OFF CACHE BOOL
-      "Set to ON if you want to build the documentation")
-  if(BUILD_DOCUMENTATION)
+#.rst:
+# .. cmake:command:: ADD_DOXYGEN_DOCUMENTATION
+#
+#   Builds the doxygen html documentation of a package. The Doxyfile is set to
+#   parse the Markdown files in the *doc/* folder, the Python file in the
+#   *python/* folder and the C/C++ files. The output is gnerated in 
+#   *${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/doxygen/html/*.
+#
+macro(ADD_DOXYGEN_DOCUMENTATION)
 
     message(STATUS "building doxygen documentation for ${PROJECT_NAME}")
 
     # Find "doxygen"
     find_package(Doxygen)
     if (NOT DOXYGEN_FOUND)
-      message(FATAL_ERROR
-          "Doxygen is needed to build the documentation. "
-          "Please install it correctly")
+        message(FATAL_ERROR
+            "Doxygen is needed to build the documentation. "
+            "Please install it correctly")
     endif()
 
     # set the destination folder to be devel/share/[project_name]/doc/
@@ -35,17 +30,19 @@ macro(build_doxygen_documentation)
     # Create the doxyfile in function of the current project.
     # If the Doxyfile.in does not exists, the cmake step stops.
     configure_file(${MPI_CMAKE_MODULES_RESOURCES_DIR}/Doxyfile.in
-                   ${doc_build_folder}/Doxyfile
-                   @ONLY IMMEDIATE)
+                    ${doc_build_folder}/Doxyfile
+                    @ONLY IMMEDIATE)
 
     # the doxygen target is generated
-    add_custom_target (${PROJECT_NAME}_doc ALL
-      COMMAND ${DOXYGEN_EXECUTABLE} ${doc_build_folder}/Doxyfile
-      SOURCES ${doc_build_folder}/Doxyfile
-      WORKING_DIRECTORY ${doc_build_folder})
+    add_custom_target (${PROJECT_NAME}_doxygen_html
+        COMMAND ${DOXYGEN_EXECUTABLE} ${doc_build_folder}/Doxyfile
+        SOURCES ${doc_build_folder}/Doxyfile
+        WORKING_DIRECTORY ${doc_build_folder})
 
     # install the documentation
-    install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
-  endif(BUILD_DOCUMENTATION)
+    # install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
 
-endmacro(build_doxygen_documentation)
+    # Create a dependency on the doc target
+    add_dependencies(doc ${PROJECT_NAME}_doxygen_html)
+
+endmacro(ADD_DOXYGEN_DOCUMENTATION)

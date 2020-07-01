@@ -1,6 +1,11 @@
 Welcome to @PROJECT_NAME@'s documentation!
 ==================================================================================================================================================================
 
+.. toctree::
+   :hidden:
+
+   index.rst
+
 .. mdinclude:: readme.md
 
 @GENERAL_DOCUMENTATION@
@@ -12,12 +17,12 @@ Welcome to @PROJECT_NAME@'s documentation!
 @CMAKE_API@
 
 Indices and Tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`search`
 
 License and Copyrights
-======================
+----------------------
 
 .. mdinclude:: license.txt

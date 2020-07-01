@@ -1,3 +1,4 @@
+#.rst:
 #=============================================================================
 # Copyright 2009 Kitware, Inc.
 # Copyright 2009-2011 Philip Lowman <philip@yhbt.com>
@@ -16,12 +17,13 @@
 # This file has been changed by:
 #
 # Maximilien Naveau (New York University and Max Planck Gesellschaft)
-#
-#
 
+
+#.rst:
+# .. cmake:command:: _find_protobuf_compiler
 #
-# This function looks for the "protoc" executable, which is the protobuf message
-# compiler.
+#   This function looks for the "protoc" executable, which is the protobuf message
+#   compiler.
 #
 function(_find_protobuf_compiler)
   find_package(Protobuf REQUIRED)
@@ -54,15 +56,21 @@ function(_find_protobuf_compiler)
 endfunction()
 
 
+#.rst:
+# .. cmake:command:: PROTOBUF_CATKIN_GENERATE_CPP
 #
-# This function execute the compilation of each protobuf file in the BASE_PATH
-# folder.
+#   :param SRC_PATH in: source path of the *.proto* files
+#   :param SRCS out: list of the *.c* generated files.
+#   :param HDRS out: list of the *.h* generated files.
 #
-# Usage:
-# set(SRC_PATH "protobuf")
-# PROTO_DEFNS paths are supposed relative to SRC_PATH
-# set(PROTO_DEFNS path-to-my-protos-in-${SRC_PATH}/my-proto.proto)
-# PROTOBUF_CATKIN_GENERATE_CPP2(${SRC_PATH} PROTO_SRCS PROTO_HDRS ${PROTO_DEFNS}) 
+#   This function execute the compilation of each protobuf file in the
+#   ``BASE_PATH`` folder.
+#   Usage::
+#
+#       set(SRC_PATH "protobuf")
+#       PROTO_DEFNS paths are supposed relative to SRC_PATH
+#       set(PROTO_DEFNS path-to-my-protos-in-${SRC_PATH}/my-proto.proto)
+#       PROTOBUF_CATKIN_GENERATE_CPP2(${SRC_PATH} PROTO_SRCS PROTO_HDRS ${PROTO_DEFNS})
 #
 function(PROTOBUF_CATKIN_GENERATE_CPP SRC_PATH SRCS HDRS)
   if(NOT ARGN)
@@ -194,7 +202,14 @@ function(PROTOBUF_CATKIN_GENERATE_CPP SRC_PATH SRCS HDRS)
 
 endfunction()
 
-
+#.rst:
+# .. cmake:command:: PROTOBUF_CATKIN_GENERATE_LIB(protobuf_cmake_target)
+#
+#    Use :cmake:command:`PROTOBUF_CATKIN_GENERATE_CPP` in order to generate the
+#    protobuf C++ source files from the protobuf files located in the local
+#    *protobuff/* folder. It then creates a cmake target building the library
+#    including the generated files.
+#
 function(PROTOBUF_CATKIN_GENERATE_LIB protobuf_cmake_target)
     # protbuf source dir
     set(source_path protobuf)

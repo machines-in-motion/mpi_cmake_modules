@@ -11,10 +11,10 @@
 
 INCLUDE(FindThreads)
 
-# SEARCH_FOR_PTHREAD
-# ------------------
+#.rst:
+# .. cmake:command:: SEARCH_FOR_PTHREAD
 #
-# Check for pthread support on Linux. This does nothing on Windows.
+#    Check for pthread support on Linux. This does nothing on Windows.
 #
 MACRO(SEARCH_FOR_PTHREAD)
   IF(UNIX)

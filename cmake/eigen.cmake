@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #.rst:
-# .. command:: SEARCH_FOR_EIGEN
+# .. cmake:command:: SEARCH_FOR_EIGEN
 #
 #   This macro gets eigen include path from pkg-config file, and adds it include directories.
 #   If there is no pkg-config for Eigen, we fall back to a manual search.

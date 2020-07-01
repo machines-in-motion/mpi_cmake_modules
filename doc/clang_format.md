@@ -16,9 +16,9 @@ In order to use it one need to source the workspace environment:
 
 And to run the following command:
 
-    rosrun mpi_cmake_modules clang_format <list of files> <list of folders>
+    rosrun mpi_cmake_modules clang_format list_of_files list_of_folders
 
-<list_of_files> and <list of folders> can be either relative paths or absolute paths.
+`list_of_files` and `list_of_folders` can be either relative paths or absolute paths.
 
 For those not willing to use rosrun the executable is located in
 

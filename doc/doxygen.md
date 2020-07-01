@@ -19,10 +19,10 @@ CMakelists.txt:
 This macro is idle by default. To activate it one need to pass the following
 CMake argument:
 
-    catkin build --cmake-args -DBUILD_DOCUMENTATION=ON
+    catkin build --cmake-args -DGENERATE_DOCUMENTATION=ON
 
 The macro will generate a specific target using the name of the project for
-unicity. The docuementation is located in:
+unicity. The documentation is located in:
 
     workspace/devel/share/<project name>/doc/html/
 
@@ -32,7 +32,7 @@ In order to visual the built documentation with firefox please run:
 
 ## Writting a documentation
 
-In order to write a decent docuementation one need to make sure that Doxygen
+In order to write a decent documentation one need to make sure that Doxygen
 do not output warnings. A warning from DOxygen proves that a code item is not
 documentated. See the 
 [C++ coding guidelines](https://machines-in-motion.github.io/code_documentation/ci_example_cpp/coding_guidelines_1.html)
