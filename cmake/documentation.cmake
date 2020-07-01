@@ -43,4 +43,4 @@ macro(ADD_DOCUMENTATION)
   add_doxygen_documentation()
   add_sphinx_documentation()
 
-endmacro(BUILD_DOCUMENTATION)
+endmacro(ADD_DOCUMENTATION)
