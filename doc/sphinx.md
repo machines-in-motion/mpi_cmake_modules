@@ -15,7 +15,7 @@ off-the-shelf softwares (see the list below).
 
 If anything seems fuzzy (it is a rather long and tedious pipeline),
 please let me know via posting an issue
-`here <https://github.com/machines-in-motion/mpi_cmake_modules/issues>`_.
+[here](https://github.com/machines-in-motion/mpi_cmake_modules/issues).
 
 
 ## 2. Advanced explanation on the tools
@@ -54,7 +54,7 @@ Breathe provide two import tools:
 - An executable `breathe-apidoc` that generates automatically the C++ API
   into ReStructed files.
 
-In order to use it we need to add a couple of line in the `config.py`
+In order to use it we need to add a couple of line in the `conf.py`
 used by Sphinx:
 
 ~~~python
