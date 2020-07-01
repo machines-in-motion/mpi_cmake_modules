@@ -35,6 +35,7 @@ EXCLUDE_PATTERNS       = */*deprecated*/*
 EXCLUDE_PATTERNS      += */*build*/*
 EXCLUDE_PATTERNS      += */tests/*
 EXCLUDE_PATTERNS      += */resources/*
+EXCLUDE_PATTERNS      += */internal/*
 RECURSIVE              = YES
 GENERATE_LATEX         = No
 GENERATE_TAGFILE       = @DOXYGEN_OUTPUT@/@PROJECT_NAME@.tag
