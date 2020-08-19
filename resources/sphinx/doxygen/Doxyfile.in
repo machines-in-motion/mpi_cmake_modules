@@ -42,4 +42,10 @@ GENERATE_TAGFILE       = @DOXYGEN_OUTPUT@/@PROJECT_NAME@.tag
 GENERATE_TREEVIEW = YES
 GENERATE_HTML = No
 GENERATE_XML = YES
+FULL_PATH_NAMES = YES
+STRIP_FROM_PATH = @PROJECT_SOURCE_DIR@
+
+# Include and resize and image.
 ALIASES += imageSize{3}="\htmlonly <style> div.image img[src=\"\1\"]{\2} </style> \endhtmlonly \image html \1 \"\3\""
+# add a `@license` tag
+ALIASES += "license=\xrefitem license \"License\" \"License\" "
