@@ -15,6 +15,30 @@ include(${CMAKE_CURRENT_LIST_DIR}/os_detection.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/xenomai.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/documentation.cmake)
 
+#
+# Standard header for all packages
+#
+
+# required to link the python bindings of the DG entities properly.
+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-as-needed")
+endif()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+# Using C++14
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+# ensuring path to libraries are set during install
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+
 # defining -DXENOMAI, -DRT_PREEMPT or -DNON_REAL_TIME
 # based on 'uname -a' command
 define_os()

@@ -43,7 +43,6 @@ endmacro(CREATE_DOC_TARGET)
 #
 macro(ADD_DOCUMENTATION)
 
-  add_doxygen_documentation()
   add_sphinx_documentation()
 
 endmacro(ADD_DOCUMENTATION)
