@@ -16,7 +16,7 @@ try:
     from shutil import which
 except:
     import distutils.spawn
-    # This ensure the compatibility Python2 vs Python3
+    ## This ensure the compatibility Python2 vs Python3
     which = distutils.spawn.find_executable
 import mpi_cmake_modules
 from mpi_cmake_modules.yaml2oneline import yaml2oneline

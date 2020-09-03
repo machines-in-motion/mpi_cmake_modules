@@ -10,25 +10,31 @@ The main idea is that we can have a unifyed way to generate the documentation.
 ## Usage
 
 In order to use this macro one obviously needs to depend on this package through
-a `find_package` or using `catkin` components.
-Once the dependency is found the following macro needs to be added to the
-CMakelists.txt:
+a `find_package`.
+Once the dependency is found **ONE** of the following macro needs to be added to
+the CMakelists.txt:
 
-    build_doxygen_documentation()
+    # to build the doxygen html
+    add_sphinx_documentation()
+    # to build the sphinx html
+    add_doxygen_documentation()
+    # to build both
+    add_documentation()
 
-This macro is idle by default. To activate it one need to pass the following
+These macro are idle by default. To activate it one need to pass the following
 CMake argument:
 
-    catkin build --cmake-args -DGENERATE_DOCUMENTATION=ON
+    colcon build --ament-cmake-args -DGENERATE_DOCUMENTATION=ON
 
 The macro will generate a specific target using the name of the project for
-unicity. The documentation is located in:
+unicity. The documentations are located in:
 
-    workspace/devel/share/<project name>/doc/html/
+    workspace/install/<project name>/share/docs/doxygen/html/
+    workspace/install/<project name>/share/docs/sphinx/html/
 
-In order to visual the built documentation with firefox please run:
+In order to visualise the built documentation with firefox please run:
 
-    firefox workspace/devel/share/<project name>/doc/html/index.html
+    firefox workspace/install/<project name>/share/docs/doxygen/html/index.html
 
 ## Writting a documentation
 

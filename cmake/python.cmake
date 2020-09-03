@@ -48,10 +48,10 @@
 #
 #  Portable suffix of C++ Python modules.
 
-IF(CMAKE_VERSION VERSION_LESS "3.2")
-    SET(CMAKE_MODULE_PATH ${MPI_CMAKE_MODULES_ROOT_DIR}/cmake/python ${CMAKE_MODULE_PATH})
-    MESSAGE(STATUS "CMake versions older than 3.2 do not properly find Python. Custom macros are used to find it.")
-ENDIF(CMAKE_VERSION VERSION_LESS "3.2")
+IF(CMAKE_VERSION VERSION_LESS "3.12")
+  SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/python ${CMAKE_MODULE_PATH})
+  MESSAGE(STATUS "CMake versions older than 3.12 may warn when looking to Boost components. Custom macros are used to find it.")
+ENDIF(CMAKE_VERSION VERSION_LESS "3.12")
 
 MACRO(FINDPYTHON)
   IF(DEFINED FINDPYTHON_ALREADY_CALLED)
@@ -254,29 +254,12 @@ ENDMACRO(FINDPYTHON)
 #  Alias for the FINDPYTHON macro. See FINDPYTHON().
 #
 MACRO(SEARCH_FOR_PYTHON)
-    message(STATUS "before FIND_PYTHON: PYTHON_INCLUDE_DIRS=" ${PYTHON_INCLUDE_DIRS})
-    message(STATUS "before FIND_PYTHON: PYTHON_LIBRARY_DIRS=" ${PYTHON_LIBRARY_DIRS})
-    message(STATUS "before FIND_PYTHON: PYTHON_LIBRARIES=" ${PYTHON_LIBRARIES})
     if((NOT PYTHON_INCLUDE_DIRS) OR
        (NOT PYTHON_LIBRARIES))
             # If any of the python variable is empty we search for it.
             FINDPYTHON( ${ARGN} )
     endif((NOT PYTHON_INCLUDE_DIRS) OR
           (NOT PYTHON_LIBRARIES))
-
-    message(STATUS "after FIND_PYTHON: PYTHON_INCLUDE_DIRS=" ${PYTHON_INCLUDE_DIRS})
-    message(STATUS "after FIND_PYTHON: PYTHON_LIBRARY_DIRS=" ${PYTHON_LIBRARY_DIRS})
-    message(STATUS "after FIND_PYTHON: PYTHON_LIBRARIES=" ${PYTHON_LIBRARIES})
-    # We fioll in the catkin variables.
-    SET(catkin_INCLUDE_DIRS
-        ${PYTHON_INCLUDE_DIRS}
-        ${catkin_INCLUDE_DIRS}
-    )
-    LINK_DIRECTORIES(${PYTHON_LIBRARY_DIRS})
-    SET(catkin_LIBRARIES
-        ${PYTHON_LIBRARIES}
-        ${catkin_LIBRARIES}
-    )
 ENDMACRO(SEARCH_FOR_PYTHON)
 
 #.rst:

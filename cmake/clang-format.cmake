@@ -23,7 +23,7 @@ MACRO(FORMAT_CODE)
         )
         if(CLANG_FORMAT_EXECUTABLE)
             message(STATUS "Looking for clang-format - found")
-            message(STATUS "Format source files using catkin_make format.")
+            message(STATUS "Format source files upon build.")
 
             # load the clang-format configuration
             execute_process(COMMAND

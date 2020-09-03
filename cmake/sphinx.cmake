@@ -150,12 +150,12 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
   # Build and install directories
   set(SPHINX_DOC_BUILD_FOLDER
-      ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sphinx)
+      ${CMAKE_BINARY_DIR}/share/docs/sphinx)
   set(SPHINX_DOC_INSTALL_FOLDER
-      ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sphinx)
+      share/docs/sphinx)
   # Doxygen
   set(DOXYGEN_DOXYFILE_IN
-      ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/doxygen/Doxyfile.in)
+      ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/doxygen/Doxyfile.in)
   set(DOXYGEN_DOXYFILE ${SPHINX_DOC_BUILD_FOLDER}/doxygen/Doxyfile)
   set(DOXYGEN_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/doxygen)
   set(DOXYGEN_XML_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/doxygen/xml)
@@ -324,6 +324,12 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
   # We generate the final layout. Mardown files are looked for automatically.
   _build_sphinx_build()
+
+  # install the documentation
+  if(GENERATE_DOCUMENTATION)
+    install(DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}/html
+            DESTINATION ${SPHINX_DOC_INSTALL_FOLDER})
+  endif()
 
   # Create a dependency on the doc target
   add_dependencies(doc ${PROJECT_NAME}_sphinx_html)

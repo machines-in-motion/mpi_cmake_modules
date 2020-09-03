@@ -4,7 +4,7 @@ Readme
 ### Introduction
 
 This package `mpi_cmake_modules` defines a list of usefull cmake macros.
-It can be used by simply depending on it using catkin.
+It can be used by simply depending on it using ament.
 The documentation can be seen [here](https://machines-in-motion.github.io/)
 
 ### Getting started
@@ -12,7 +12,7 @@ The documentation can be seen [here](https://machines-in-motion.github.io/)
 In order to use the CMake macros contained in this package one need to depend
 on it in the following way:
 
-    find_package(catkin REQUIRED COMPONENTS ${CATKIN_PKGS}) mpi_cmake_modules)
+    find_package(mpi_cmake_module REQUIRED)
 
 And add the following line in your `package.xml`
 

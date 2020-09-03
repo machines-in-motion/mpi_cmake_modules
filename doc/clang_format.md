@@ -48,6 +48,6 @@ and is called
     format_code()
 
 By default it does nothing. In order to activate it you need to add the
-folowwing CMake argument:
+following CMake argument:
 
-    catkin build mpi_cmake_modules --cmake-args -DFORMAT_CODE=ON
+    colcon build --ament-cmake-args -DFORMAT_CODE=ON

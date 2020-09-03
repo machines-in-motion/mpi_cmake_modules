@@ -14,8 +14,17 @@ In order to build a package containing dynamic-graph entities one need to fetch
 the dependencies first. In order to to this one can use the
 [pkg-config](@ref md_doc_pkg_config).
 
-    catkin_add_required_dependency("dynamic-graph >= 3.0.0")
-    catkin_add_required_dependency("dynamic-graph-python >= 3.0.0")
+    find_package(dynamic-graph REQUIRED")
+    find_package(dynamic-graph-graph REQUIRED")
+    
+and then a target `my_target`:
+
+    # either
+    ament_target_dependencies(my_target dynamic-graph)
+    ament_target_dependencies(my_target dynamic-graph-python)
+    # or
+    target_link_libraries(my_target dynamic-graph::dynamic-graph)
+    target_link_libraries(my_target dynamic-graph::dynamic-graph-python)
 
 Then one need to create a library based on C++ and then build the python
 dynamic graph module:
@@ -28,7 +37,9 @@ dynamic graph module:
         src/a_second_controller.cpp
         src/some_dynamic_graph_operators.cpp
     )
-    target_link_libraries(a_cpp_library ${catkin_LIBRARIES})
+    target_link_libraries(a_cpp_library dynamic-graph::dynamic-graph)
+    target_link_libraries(a_cpp_library dynamic-graph::dynamic-graph-python)
+    target_link_libraries(a_cpp_library <some other dependencies>)
     set_target_properties(a_cpp_library PROPERTIES
         PREFIX ""
         LIBRARY_OUTPUT_DIRECTORY ${DYNAMIC_GRAPH_PLUGIN_DIR}
@@ -39,6 +50,8 @@ dynamic graph module:
         a_cpp_library_wrap # python wrapper target name
     )
 
-This little peace of code creates a library called `a_cpp_library` and build the
-corresponding python dynamic-graph module and install it in
-`lib/pythonX.X/dist-packages/dynamic_graph_manager`.
+This little piece of code creates a library called `a_cpp_library_dg_wrapper`
+and build the corresponding python dynamic-graph module and install it in
+`lib/pythonX.X/dist-packages/${PROJECT_NAME}`. It install as well a python
+file called `a_cpp_library` containing what is necessary to load the built
+library from python.

@@ -9,7 +9,7 @@
 #   Builds the doxygen html documentation of a package. The Doxyfile is set to
 #   parse the Markdown files in the *doc/* folder, the Python file in the
 #   *python/* folder and the C/C++ files. The output is gnerated in 
-#   *${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/doxygen/html/*.
+#   *install/${PROJECT_NAME}/share/docs/doxygen/html/*.
 #
 macro(ADD_DOXYGEN_DOCUMENTATION)
 
@@ -24,14 +24,14 @@ macro(ADD_DOXYGEN_DOCUMENTATION)
     endif()
 
     # set the destination folder to be devel/share/[project_name]/doc/
-    set(doc_build_folder ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/doxygen)
-    set(doc_install_folder ${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs)
+    set(doc_build_folder ${CMAKE_BINARY_DIR}/share/docs/doxygen)
+    set(doc_install_folder share/docs/doxygen)
 
     # Create the doxyfile in function of the current project.
     # If the Doxyfile.in does not exists, the cmake step stops.
     configure_file(${MPI_CMAKE_MODULES_RESOURCES_DIR}/Doxyfile.in
-                    ${doc_build_folder}/Doxyfile
-                    @ONLY IMMEDIATE)
+                   ${doc_build_folder}/Doxyfile
+                   @ONLY IMMEDIATE)
 
     # the doxygen target is generated
     add_custom_target (${PROJECT_NAME}_doxygen_html
@@ -40,7 +40,10 @@ macro(ADD_DOXYGEN_DOCUMENTATION)
         WORKING_DIRECTORY ${doc_build_folder})
 
     # install the documentation
-    # install(DIRECTORY ${doc_build_folder} DESTINATION ${doc_install_folder})
+    if(GENERATE_DOCUMENTATION)
+        install(DIRECTORY ${doc_build_folder}/html
+                DESTINATION ${doc_install_folder})
+    endif()
 
     # Create a dependency on the doc target
     add_dependencies(doc ${PROJECT_NAME}_doxygen_html)

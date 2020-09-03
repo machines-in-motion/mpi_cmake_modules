@@ -3,6 +3,9 @@
 # License BSD-3 clause
 #
 
+include(${CMAKE_CURRENT_LIST_DIR}/doxygen.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/sphinx.cmake)
+
 #.rst:
 # .. cmake:command:: CREATE_DOC_TARGET
 #
