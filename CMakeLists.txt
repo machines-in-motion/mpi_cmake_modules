@@ -30,6 +30,9 @@ set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 #
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
+find_package(ament_lint_auto REQUIRED)
+find_package(ament_lint_common REQUIRED)
+
 
 # Define some path variables for this package
 set(MPI_CMAKE_MODULES_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
