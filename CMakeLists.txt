@@ -8,8 +8,6 @@
 # set up the project
 #
 cmake_minimum_required(VERSION 3.5)
-include(cmake/global_calls.cmake)
-include(cmake/documentation.cmake)
 
 project(mpi_cmake_modules)
 
