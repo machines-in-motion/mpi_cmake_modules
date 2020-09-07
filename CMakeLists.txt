@@ -47,9 +47,8 @@ ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
 #
 # install the CMake find modules at the good place
 #
-install(
-  DIRECTORY cmake/python cmake/boost cmake/xenomai
-  DESTINATION share/${PROJECT_NAME}/cmake)
+install(DIRECTORY cmake/python cmake/boost cmake/xenomai
+        DESTINATION share/${PROJECT_NAME}/cmake)
 
 #
 # Install the executable scripts in bin
@@ -58,6 +57,8 @@ install(
   FILES ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/mpi_clang_format
   DESTINATION bin
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+install(FILES ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
+        DESTINATION ${PYTHON_INSTALL_DIR}/${PROJECT_NAME})
 
 #
 # building documentation
