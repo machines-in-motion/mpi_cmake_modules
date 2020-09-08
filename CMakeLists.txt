@@ -11,6 +11,14 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(mpi_cmake_modules)
 
+# Using C++17
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
 #
 # dependencies
 #
