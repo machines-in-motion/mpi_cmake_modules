@@ -48,10 +48,10 @@
 #
 #  Portable suffix of C++ Python modules.
 
-IF(CMAKE_VERSION VERSION_LESS "3.12")
-  SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/python ${CMAKE_MODULE_PATH})
-  MESSAGE(STATUS "CMake versions older than 3.12 may warn when looking to Boost components. Custom macros are used to find it.")
-ENDIF(CMAKE_VERSION VERSION_LESS "3.12")
+# IF(CMAKE_VERSION VERSION_LESS "3.12")
+#   SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/python ${CMAKE_MODULE_PATH})
+#   MESSAGE(STATUS "CMake versions older than 3.12 may warn when looking to Boost components. Custom macros are used to find it.")
+# ENDIF(CMAKE_VERSION VERSION_LESS "3.12")
 
 MACRO(FINDPYTHON)
   IF(DEFINED FINDPYTHON_ALREADY_CALLED)

@@ -55,8 +55,20 @@ ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
 #
 # install the CMake find modules at the good place
 #
-install(DIRECTORY cmake/python cmake/boost cmake/xenomai
-        DESTINATION share/${PROJECT_NAME}/cmake)
+# find the folders
+MACRO(SUBDIRLIST result curdir)
+  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${curdir}/${child})
+      LIST(APPEND dirlist cmake/${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
+subdirlist(cmake_dirs ${PROJECT_SOURCE_DIR}/cmake)
+install(DIRECTORY ${cmake_dirs}
+        DESTINATION share/${PROJECT_NAME}/cmake/)
 
 #
 # Install the executable scripts in bin
