@@ -20,7 +20,7 @@ flags = sys.getdlopenflags()
 # Import C++ symbols in a global scope
 # This is necessary for signal compiled in different modules to be compatible
 sys.setdlopenflags(RTLD_NOW|RTLD_GLOBAL)
-from . import wrap
+from . import @DYNAMIC_GRAPH_PLUGIN_CPP_BINDINGS@
 # Recover previous flags
 sys.setdlopenflags(flags)
 

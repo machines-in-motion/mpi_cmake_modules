@@ -4,32 +4,32 @@
 #
 
 #[=======================================================================[.rst:
-FindCereal
+Findcereal
 ----------
 
-Finds the Cereal library.
+Finds the cereal library.
 
 Imported Targets
 ^^^^^^^^^^^^^^^^
 
 This module provides the following imported targets, if found:
 
-``Cereal::Cereal``
-  The Cereal interface library.
+``cereal::cereal``
+  The cereal interface library.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
 
 This will define the following variables:
 
-``Cereal_FOUND``
-  True if the system has the Cereal library.
-``Cereal_VERSION``
-  The version of the Cereal library which was found.
-``Cereal_INCLUDE_DIRS``
-  Include directories needed to use Cereal.
-``Cereal_LIBRARIES``
-  Libraries needed to link to Cereal. This will be empty as this is a header
+``cereal_FOUND``
+  True if the system has the cereal library.
+``cereal_VERSION``
+  The version of the cereal library which was found.
+``cereal_INCLUDE_DIRS``
+  Include directories needed to use cereal.
+``cereal_LIBRARIES``
+  Libraries needed to link to cereal. This will be empty as this is a header
   only library.
 
 Cache Variables
@@ -37,10 +37,10 @@ Cache Variables
 
 The following cache variables may also be set:
 
-``Cereal_INCLUDE_DIR``
-  The directory containing ``Cereal.h``.
-``Cereal_LIBRARY``
-  The path to the Cereal library.
+``cereal_INCLUDE_DIR``
+  The directory containing ``cereal.h``.
+``cereal_LIBRARY``
+  The path to the cereal library.
 
 #]=======================================================================]
 

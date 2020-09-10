@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft. License
+# BSD-3 clause
+#
+
+# .rst: .. cmake:command:: FORMAT_CODE
+#
+# Add targets to automatically run clang-format on all C++ source files. From
+# this package one can also use the executable installed as ``mpi_clang_format`.
+#
+macro(FORMAT_CODE)
+
+  message(WARNING "Depreacation warning: FORMAT_CODE macros is depracated."
+                  "Nothing to be done. Please remove from you CMakeLists.txt")
+
+endmacro(FORMAT_CODE)

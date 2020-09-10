@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2019-2020, New York University and Max Planck Gesellschaft.
+# 
 # License BSD-3 clause
 #
 # Build the documentation based on sphinx and the read_the_doc layout.
@@ -9,15 +10,18 @@
 #
 # .. cmake:command:: _BUILD_DOXYGEN
 #
-#   Use doxygen to parse the C++ source files and generate a corresponding xml
-#   entry.
+#    Use doxygen to parse the C++ source files and generate a corresponding xml
+#    entry.
 #
 macro(_BUILD_DOXYGEN)
 
   # Find "doxygen"
   find_package(Doxygen)
   if(NOT DOXYGEN_FOUND)
-    message(FATAL_ERROR "Doxygen is needed to build the documentation. Please install it correctly")
+    message(
+      FATAL_ERROR
+        "Doxygen is needed to build the documentation. Please install it correctly"
+    )
   endif()
 
   # Create the doxyfile in function of the current project. If the Doxyfile.in
@@ -40,8 +44,8 @@ endmacro(_BUILD_DOXYGEN)
 #
 # .. cmake:command:: _BUILD_BREATHE_APIDOC
 #
-#   Use breathe_apidoc to parse the xml output from Doxygen and generate .rst
-#   files.
+#    Use breathe_apidoc to parse the xml output from Doxygen and generate .rst
+#    files.
 #
 macro(_BUILD_BREATHE_APIDOC)
 
@@ -69,8 +73,8 @@ endmacro(_BUILD_BREATHE_APIDOC)
 #
 # .. cmake:command:: _BUILD_SPHINX_API_DOC
 #
-#   Use sphinx_apidoc to parse the python files output from Doxygen and generate
-#   .rst files.
+#    Use sphinx_apidoc to parse the python files output from Doxygen and generate
+#    .rst files.
 #
 macro(_BUILD_SPHINX_API_DOC)
 
@@ -98,8 +102,8 @@ endmacro(_BUILD_SPHINX_API_DOC)
 #
 # .. cmake:command:: _BUILD_SPHINX_BUILD
 #
-#   Use sphinx_build to parse the cmake and rst files previously generated and
-#   generate the final html layout.
+#    Use sphinx_build to parse the cmake and rst files previously generated and
+#    generate the final html layout.
 #
 macro(_BUILD_SPHINX_BUILD)
   # Find the sphinx-apidoc executable.
@@ -126,33 +130,39 @@ endmacro(_BUILD_SPHINX_BUILD)
 # .. cmake:command:: ADD_SPHINX_DOCUMENTATION
 #
 #   Process the current project in order to generate a specific documentation
-#   content. This macro generates the appropriate documentation if is detects
-#   the corresponding files::
-#       * *files* with the extensions {.h, .cpp, ...} generates the *C++ API*
-#         section.
-#       * the *python* folder will generate the *Python API* section.
-#       * the *cmake* folder will generate the *CMake API* section.
-#       * the *doc* folder containing markdown files (*.md*) will generate the
-#         the *Additionnal Documentation* section.
-#
-#   The following macros are called in order and if needed::
-#       * :command: _BUILD_DOXYGEN
-#       * :command: _BUILD_BREATHE_APIDOC
-#       * :command: _BUILD_SPHINX_API_DOC
-#       * :command: _BUILD_SPHINX_BUILD
-#
-#   Please refer to the *Sphinx* paragraph in the *General Documentation* in
-#   this package for more explanation about the parametrization of the tools.
+#   content. This macro generates the appropriate documentation if is detects the
+#   corresponding files:: 
+#      * *files* with the extensions {.h, .cpp, ...} generates
+#        the *C++ API* section.
+#      * the *python* folder will generate the *Python API* section.
+#      * the *cmake* folder will generate the *CMake API* section.
+#      * the *doc* folder containing markdown files (*.md*) will generate the
+#        *Additionnal Documentation* section.
+#  
+#   The following macros are called in order and if needed:: * :command:
+#   _BUILD_DOXYGEN * :command: _BUILD_BREATHE_APIDOC * :command:
+#   _BUILD_SPHINX_API_DOC * :command: _BUILD_SPHINX_BUILD
+#  
+#   Please refer to the *Sphinx* paragraph in the *General Documentation* in this
+#   package for more explanation about the parametrization of the tools.
 #
 macro(ADD_SPHINX_DOCUMENTATION)
 
   # All parameters
 
+  # Get the resource folder
+  ament_index_has_resource(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS
+                           resource_files mpi_cmake_modules)
+  if(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS)
+    ament_index_get_resource(MPI_CMAKE_MODULES_RESOURCES_DIR resource_files
+                             mpi_cmake_modules)
+  elseif()
+    set(MPI_CMAKE_MODULES_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
+  endif()
+
   # Build and install directories
-  set(SPHINX_DOC_BUILD_FOLDER
-      ${CMAKE_BINARY_DIR}/share/docs/sphinx)
-  set(SPHINX_DOC_INSTALL_FOLDER
-      share/docs/sphinx)
+  set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)
+  set(SPHINX_DOC_INSTALL_FOLDER share/docs/sphinx)
   # Doxygen
   set(DOXYGEN_DOXYFILE_IN
       ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/doxygen/Doxyfile.in)
@@ -194,12 +204,12 @@ macro(ADD_SPHINX_DOCUMENTATION)
     )
     # Associated configuration files
     configure_file(
-      ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/doxygen_index_one_page.rst.in
+      ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/doxygen_index_one_page.rst.in
       ${SPHINX_DOC_BUILD_FOLDER}/doxygen_index_one_page.rst
       @ONLY
       IMMEDIATE)
     configure_file(
-      ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/doxygen_index.rst.in
+      ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/doxygen_index.rst.in
       ${SPHINX_DOC_BUILD_FOLDER}/doxygen_index.rst @ONLY IMMEDIATE)
 
     # Build the doxygen xml files.
@@ -244,7 +254,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
     # Add the cmake documentation to the main doc
     configure_file(
-      ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/cmake_doc.rst.in
+      ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/cmake_doc.rst.in
       ${SPHINX_DOC_BUILD_FOLDER}/cmake_doc.rst @ONLY IMMEDIATE)
     # Create a symlink to the cmake folder
     add_custom_target(
@@ -281,13 +291,13 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
   # Generate the configuration files
   configure_file(
-    ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/conf.py.in
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/conf.py.in
     ${SPHINX_DOC_BUILD_FOLDER}/conf.py @ONLY IMMEDIATE)
   configure_file(
-    ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/index.rst.in
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/index.rst.in
     ${SPHINX_DOC_BUILD_FOLDER}/index.rst @ONLY IMMEDIATE)
   configure_file(
-    ${MPI_CMAKE_MODULES_ROOT_DIR}/resources/sphinx/sphinx/general_documentation.rst.in
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/general_documentation.rst.in
     ${SPHINX_DOC_BUILD_FOLDER}/general_documentation.rst
     @ONLY
     IMMEDIATE)

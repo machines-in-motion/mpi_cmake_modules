@@ -1,94 +1,65 @@
 #
-# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
-# License BSD-3 clause
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft. License
+# BSD-3 clause
 #
 
 #.rst:
-# .. cmake:command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME TARGETNAME)
-#   
-#   This file allows us to install the Python bindings of the dynamic graph
-#   at the correct place.
-# 
-#   Add a python submodule to dynamic_graph
-#  
-#   :param SUBMODULENAME: the name of the submodule (can be foo/bar),
-#  
-#   :param LIBRARYNAME:   library to link the submodule with.
-#  
-#   :param TARGETNAME:     name of the target: should be different for several
-#                   calls to the macro.
-#  .. note::
-#    Before calling this macro, set variable NEW_ENTITY_CLASS as
-#    the list of new Entity types that you want to be bound.
-#    Entity class name should match the name referencing the type
-#    in the factory.
+# .. cmake:command:: DYNAMIC_GRAPH_PYTHON_MODULE ( target_name)
 #
-MACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
+#   This file allows us to install the Python bindings of the dynamic graph at the
+#   correct place.
+#
+#   Add a python submodule to dynamic_graph
+#
+#   :param plugin_target: target (library) name of the dynamic graph plugin,
+#
+macro(INSTALL_DYNAMIC_GRAPH_PLUGIN PLUGIN_TARGET)
+  #
+  # Install the plugin target
+  #
 
-  set(SUBMODULE_DIR ${SUBMODULENAME})
-  string(REPLACE "-" "_" SUBMODULE_DIR "${SUBMODULE_DIR}")
+  # This is a plugin so no "lib" as prefix.
+  set_target_properties(PLUGIN_TARGET PROPERTIES PREFIX "")
+  install(TARGETS PLUGIN_TARGET DESTINATION lib/dynamic_graph_plugins)
 
-  IF(NOT DEFINED PYTHONLIBS_FOUND)
-    FINDPYTHON()
-  ELSEIF(NOT ${PYTHONLIBS_FOUND} STREQUAL "TRUE")
-    MESSAGE(FATAL_ERROR "Python has not been found.")
-  ENDIF()
+  #
+  # Install the plugin python bindings
+  #
 
-  # local var to create the destination folders and install it
-  SET(OUTPUT_MODULE_DIR ${DYNAMIC_GRAPH_PYTHON_DIR}/${SUBMODULE_DIR})
+  # Look for the python install directory
+  find_package(ament_cmake_python REQUIRED)
+  _ament_cmake_python_get_python_install_dir()
+  set(plugin_install_dir ${PYTHON_INSTALL_DIR}/${PORJECT_NAME}/dynamic_graph)
 
-  # create the install folder
-  FILE(MAKE_DIRECTORY ${OUTPUT_MODULE_DIR})
-
-
-  # We need to set this policy to old to accept wrap target.
-  CMAKE_POLICY(PUSH)
-  IF(POLICY CMP0037)
-    CMAKE_POLICY(SET CMP0037 OLD)
-  ENDIF()
+  # Get the Python installation.
+  if(NOT DEFINED PYTHONLIBS_FOUND)
+    findpython()
+  elseif(NOT ${PYTHONLIBS_FOUND} STREQUAL "TRUE")
+    message(FATAL_ERROR "Python has not been found.")
+  endif()
 
   # create the library
-  SET(PYTHON_MODULE "${TARGET_NAME}")
+  set(PYTHON_MODULE "${TARGET_NAME}_cpp_bindings")
   configure_file(${MPI_CMAKE_MODULES_RESOURCES_DIR}/python-module-py.cc.in
                  ${PROJECT_BINARY_DIR}/python-module-py.cc @ONLY IMMEDIATE)
-  ADD_LIBRARY(${PYTHON_MODULE}
-    MODULE
-    ${PROJECT_BINARY_DIR}/python-module-py.cc
-  )
-  MESSAGE(STATUS "Creating the python binding of: ${LIBRARYNAME}")
-  TARGET_LINK_LIBRARIES(${PYTHON_MODULE} ${LIBRARYNAME} ${PYTHON_LIBRARY})
-  SET_TARGET_PROPERTIES(${PYTHON_MODULE} PROPERTIES
-    PREFIX ""
-    OUTPUT_NAME wrap
-    LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_MODULE_DIR}/"
-  )
+  add_library(${PYTHON_MODULE} MODULE ${PROJECT_BINARY_DIR}/python-module-py.cc)
+  message(STATUS "Creating the python binding of: ${TARGET_NAME}")
+  target_link_libraries(${PYTHON_MODULE} ${TARGET_NAME} ${PYTHON_LIBRARY})
+  set_target_properties(${PYTHON_MODULE} PROPERTIES PREFIX "")
+  install(TARGETS ${PYTHON_MODULE} DESTINATION ${plugin_install_dir})
 
-  CMAKE_POLICY(POP)
+  # Create an empty __init__.py in the <python_install_dir>/dynamic_graph folder
+  install(
+    FILES ${MPI_CMAKE_MODULES_RESOURCES_DIR}/__init__.py.empty.in
+    RENAME __init__.py
+    DESTINATION plugin_install_dir)
 
-  # In essence create an empty __init__.py in all SUBMODULENAME subfolder
-  # this allow you to load the python package without trouble.
-  string(REPLACE "/" ";" SUB_FOLDER_LIST ${SUBMODULENAME})
-  set(current_folder ${DYNAMIC_GRAPH_PYTHON_DIR})
-  foreach(subfolder ${SUB_FOLDER_LIST})
-    CONFIGURE_FILE(
-        ${MPI_CMAKE_MODULES_RESOURCES_DIR}/__init__.py.empty.in
-      ${current_folder}/${subfolder}/__init__.py
-    )
-    set(current_folder ${current_folder}/${subfolder})
-  endforeach(subfolder ${SUB_FOLDER_LIST})
+  configure_file(${MPI_CMAKE_MODULES_RESOURCES_DIR}/__init__.py.in
+                 ${OUTPUT_MODULE_DIR}/__init__.py)
 
+  set(ENTITY_CLASS_LIST "")
+  foreach(ENTITY ${NEW_ENTITY_CLASS})
+    set(ENTITY_CLASS_LIST "${ENTITY_CLASS_LIST}${ENTITY}('')\n")
+  endforeach(ENTITY ${NEW_ENTITY_CLASS})
 
-  # local var to create the destination folders and install it
-  SET(OUTPUT_MODULE_DIR ${DYNAMIC_GRAPH_PYTHON_DIR}/${SUBMODULE_DIR})
-
-  CONFIGURE_FILE(
-    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/__init__.py.in
-    ${OUTPUT_MODULE_DIR}/__init__.py
-  )
-
-  SET(ENTITY_CLASS_LIST "")
-  FOREACH (ENTITY ${NEW_ENTITY_CLASS})
-    SET(ENTITY_CLASS_LIST "${ENTITY_CLASS_LIST}${ENTITY}('')\n")
-  ENDFOREACH(ENTITY ${NEW_ENTITY_CLASS})
-
-ENDMACRO(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME LIBRARYNAME TARGET_NAME)
+endmacro(INSTALL_DYNAMIC_GRAPH_PLUGIN PLUGIN_TARGET)
