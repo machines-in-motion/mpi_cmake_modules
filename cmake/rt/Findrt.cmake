@@ -3,6 +3,7 @@
 # BSD-3 clause
 #
 
+# cmake-format off
 #[=======================================================================[.rst:
 Findrt
 ----------
@@ -43,7 +44,7 @@ The following cache variables may also be set:
   The path to the rt library.
 
 #]=======================================================================]
-
+# cmake-format on
 set(rt_error_message "Could not find 'rt', the serialization library.")
 
 find_library(rt_LIBRARY rt)
@@ -74,8 +75,8 @@ if(rt_path_found)
   set(rt_target_name rt::rt)
   if(rt_FOUND AND NOT TARGET ${rt_target_name})
     add_library(${rt_target_name} UNKNOWN IMPORTED)
-    set_target_properties(${rt_target_name} PROPERTIES IMPORTED_LOCATION
-                                                       "${Foo_LIBRARY}")
+    set_target_properties(${rt_target_name} PROPERTIES INTERFACE_LINK_LIBRARIES
+                                                       rt)
   endif()
 
   mark_as_advanced(

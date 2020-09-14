@@ -25,7 +25,7 @@ static PyMethodDef functions[] = {
 #if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef module = {
     PyModuleDef_HEAD_INIT,
-    "wrap",
+    "@DYNAMIC_GRAPH_PLUGIN_CPP_BINDINGS@",
     NULL,
     0,
     functions,
@@ -40,9 +40,9 @@ extern "C" {
 #endif
 
 #if PY_MAJOR_VERSION >= 3
-PyMODINIT_FUNC PyInit_wrap(void)
+PyMODINIT_FUNC PyInit_@DYNAMIC_GRAPH_PLUGIN_CPP_BINDINGS@(void)
 #else
-void initwrap(void)
+void init@DYNAMIC_GRAPH_PLUGIN_CPP_BINDINGS@(void)
 #endif
 {
     PyObject *m;
@@ -50,7 +50,7 @@ void initwrap(void)
 #if PY_MAJOR_VERSION >= 3
     m = PyModule_Create(&module);
 #else
-    m = Py_InitModule("wrap", functions);
+    m = Py_InitModule("@DYNAMIC_GRAPH_PLUGIN_CPP_BINDINGS@", functions);
 #endif
     if (m == NULL)
 #if PY_MAJOR_VERSION >= 3

@@ -57,15 +57,15 @@ if(python_INCLUDE_DIRS
 endif()
 
 # Export the library.
-if(Python_FOUND)
+if(${PYTHONLIBS_FOUND})
 
   set(Python_target_name Python::Python)
   if(NOT TARGET ${Python_target_name})
-    add_library(${Python_target_name} IMPORTED)
+    add_library(${Python_target_name} SHARED IMPORTED)
     set_target_properties(
       ${Python_target_name}
       PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${Python_INCLUDE_DIR}"
-                 IMPORTED_LOCATION "${Python_LIBRARIES}")
+      INTERFACE_LINK_LIBRARIES "${Python_LIBRARY}")
   endif()
 
 endif()
