@@ -72,11 +72,11 @@ if(rt_path_found)
     set(rt_DEFINITIONS "")
   endif()
 
-  set(rt_target_name rt::rt)
-  if(rt_FOUND AND NOT TARGET ${rt_target_name})
-    add_library(${rt_target_name} UNKNOWN IMPORTED)
-    set_target_properties(${rt_target_name} PROPERTIES INTERFACE_LINK_LIBRARIES
-                                                       rt)
+  if(rt_FOUND)
+    if(NOT TARGET rt::rt)
+      add_library(rt::rt UNKNOWN IMPORTED)
+      set_target_properties(rt::rt PROPERTIES IMPORTED_LOCATION ${rt_LIBRARY})
+    endif()
   endif()
 
   mark_as_advanced(
