@@ -6,7 +6,22 @@
 
 # cmake-format: off
 #.rst:
-# .. cmake:command:: DYNAMIC_GRAPH_PYTHON_MODULE ( PLUGIN_TARGET)
+# .. cmake:command:: INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH(PLUGIN_TARGET)
+#
+#   Get the install dir for the plugin to install them in the correct place.
+#
+#   Add a python submodule to dynamic_graph
+#
+#   :param plugin_target: target (library) name of the dynamic graph plugin,
+# cmake-format: on
+macro(get_dynamic_graph_plugin_install_path INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH)
+  set(${INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH} lib/dynamic_graph_plugins)
+endmacro(get_dynamic_graph_plugin_install_path
+         INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH)
+
+# cmake-format: off
+#.rst:
+# .. cmake:command:: INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS(PLUGIN_TARGET)
 #
 #   This file allows us to install the Python bindings of the dynamic graph at
 #   the correct place.
@@ -15,19 +30,14 @@
 #
 #   :param plugin_target: target (library) name of the dynamic graph plugin,
 # cmake-format: on
-macro(INSTALL_DYNAMIC_GRAPH_PLUGIN PLUGIN_TARGET)
-  #
-  # Install the plugin target
-  #
-
-  # This is a plugin so no "lib" as prefix.
-  set_target_properties(${PLUGIN_TARGET} PROPERTIES PREFIX "")
-  install(TARGETS ${PLUGIN_TARGET} DESTINATION lib/dynamic_graph_plugins)
-
+macro(INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS PLUGIN_TARGET)
   #
   # Install the plugin python bindings
   #
   message(STATUS "Creating the python binding of: ${PLUGIN_TARGET}")
+
+  # Where do we install the library
+  get_dynamic_graph_plugin_install_path(plugin_install_path)
 
   # Get the mpi_cmake_modules resource folder
   ament_index_has_resource(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS
@@ -68,8 +78,7 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN PLUGIN_TARGET)
     ${PYTHON_MODULE}
     PROPERTIES
       INSTALL_RPATH
-      "${CMAKE_INSTALL_RPATH}:${CMAKE_INSTALL_PREFIX}/lib/dynamic_graph_plugins"
-  )
+      "${CMAKE_INSTALL_RPATH}:${CMAKE_INSTALL_PREFIX}/${plugin_install_path}")
   install(TARGETS ${PYTHON_MODULE} DESTINATION ${plugin_install_dir})
 
   # Create an empty __init__.py in the <python_install_dir>/dynamic_graph folder
@@ -89,4 +98,4 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN PLUGIN_TARGET)
     set(ENTITY_CLASS_LIST "${ENTITY_CLASS_LIST}${ENTITY}('')\n")
   endforeach(ENTITY ${NEW_ENTITY_CLASS})
 
-endmacro(INSTALL_DYNAMIC_GRAPH_PLUGIN PLUGIN_TARGET)
+endmacro()
