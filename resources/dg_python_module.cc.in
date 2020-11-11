@@ -15,7 +15,7 @@
 
 #include "dynamic-graph/python/module.hh"
 
-#include "@DYNAMICGRAPH_MODULE_HEADER@"
+#include "@PYTHON_MODULE_HEADER_FILE@"
 
 struct register_entity
 {
