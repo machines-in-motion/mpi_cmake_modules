@@ -25,14 +25,7 @@ macro(ADD_DOXYGEN_DOCUMENTATION)
   endif()
 
   # Get the resource folder
-  ament_index_has_resource(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS
-                           resource_files mpi_cmake_modules)
-  if(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS)
-    ament_index_get_resource(MPI_CMAKE_MODULES_RESOURCES_DIR resource_files
-                             mpi_cmake_modules)
-  elseif()
-    set(MPI_CMAKE_MODULES_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
-  endif()
+  get_resource_folder(mpi_cmake_modules MPI_CMAKE_MODULES_RESOURCES_DIR)
 
   # set the destination folder to be devel/share/[project_name]/doc/
   set(doc_build_folder ${CMAKE_BINARY_DIR}/share/docs/doxygen)

@@ -151,14 +151,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
   # All parameters
 
   # Get the resource folder
-  ament_index_has_resource(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS
-                           resource_files mpi_cmake_modules)
-  if(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS)
-    ament_index_get_resource(MPI_CMAKE_MODULES_RESOURCES_DIR resource_files
-                             mpi_cmake_modules)
-  elseif()
-    set(MPI_CMAKE_MODULES_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
-  endif()
+  get_resource_folder(mpi_cmake_modules MPI_CMAKE_MODULES_RESOURCES_DIR)
 
   # Build and install directories
   set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)

@@ -40,15 +40,7 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS PLUGIN_TARGET)
   message(STATUS "Creating the python binding of: ${PLUGIN_TARGET}")
 
   # Get the mpi_cmake_modules resource folder.
-  ament_index_has_resource(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS
-                           resource_files mpi_cmake_modules)
-  if(MPI_CMAKE_MODULES_RESOURCES_DIR_EXISTS)
-    ament_index_get_resource(MPI_CMAKE_MODULES_RESOURCES_DIR resource_files
-                             mpi_cmake_modules)
-  elseif()
-    # In this case we might just inside the MPI_CMAKE_MODULES package.
-    set(MPI_CMAKE_MODULES_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
-  endif()
+  get_resource_folder(mpi_cmake_modules MPI_CMAKE_MODULES_RESOURCES_DIR)
 
   # Look for the python install directory.
   find_package(ament_cmake_python REQUIRED)
