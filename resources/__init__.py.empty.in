@@ -1,5 +1,4 @@
-"""@package @PROJECT_NAME@
-
-This is an empty __init__.py to define a python module upon installation.
-
+"""
+License BSD-3-Clause
+Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """

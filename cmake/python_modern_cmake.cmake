@@ -6,8 +6,9 @@
 
 #[=======================================================================[.rst:
 
-Simply add the Findcereal.cmake to the *CMAKE_MODULE_PATH*.
+Simply add the FindPython.cmake to the *CMAKE_MODULE_PATH*.
 
 #]=======================================================================]
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cereal ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/python_modern_cmake
+                      ${CMAKE_MODULE_PATH})
