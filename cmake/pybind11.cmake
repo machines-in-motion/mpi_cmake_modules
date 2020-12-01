@@ -9,21 +9,35 @@
 #
 # .. cmake:command:: ADD_PYBIND11_MODULE
 #
-#    Add a pybind11 module.  Takes as argument the name of the module followed
-#    by an optional list of libraries which are linked to the target.
+#    Create a pybind11 module.  First argument is the target name (needs to
+#    match the name of the Python module!) followed by a list of source files.
 #
-#    This macro expects that the code is defined in a single source file
-#    "srcpy/${module_name}.cpp"!
+#    Optional arguments:
+#     - LINK_LIBRARIES:  List of libraries that are linked to the target.
+#     - INLUCDE_DIRS:  List of include directories.  "include" is added by
+#       default.
 #
 macro(add_pybind11_module module_name)
-    pybind11_add_module(${module_name} srcpy/${module_name}.cpp)
+    cmake_parse_arguments(ADD_PYBIND11_MODULE
+        ""  # options without arguments
+        ""  # options with single argument
+        "INCLUDE_DIRS;LINK_LIBRARIES"  # options with multiple arguments
+        ${ARGN}
+    )
+    set(ADD_PYBIND11_MODULE_SRC ${ADD_PYBIND11_MODULE_UNPARSED_ARGUMENTS})
+
+    pybind11_add_module(${module_name} ${ADD_PYBIND11_MODULE_SRC})
     target_include_directories(${module_name} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
+        ${ADD_PYBIND11_MODULE_INCLUDE_DIRS}
     )
-    target_link_libraries(${module_name} PRIVATE ${ARGN})
+    target_link_libraries(${module_name} PRIVATE
+        ${ADD_PYBIND11_MODULE_LINK_LIBRARIES}
+    )
     install(TARGETS ${module_name}
-        DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}")
+        DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}"
+    )
 endmacro()
 
 
