@@ -35,6 +35,10 @@ macro(add_pybind11_module module_name)
     target_link_libraries(${module_name} PRIVATE
         ${ADD_PYBIND11_MODULE_LINK_LIBRARIES}
     )
+
+    # make sure ${PYTHON_INSTALL_DIR} is set
+    _ament_cmake_python_get_python_install_dir()
+
     install(TARGETS ${module_name}
         DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}"
     )
