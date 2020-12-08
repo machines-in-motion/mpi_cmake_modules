@@ -14,7 +14,7 @@
 # cmake-format: on
 macro(GET_DYNAMIC_GRAPH_PLUGIN_INSTALL_PATH INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH)
   set(${INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH}
-      lib/dynamic-graph-plugins/${PROJECT_NAME})
+      lib/dynamic-graph-plugins)
 endmacro(GET_DYNAMIC_GRAPH_PLUGIN_INSTALL_PATH
          INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH)
 
