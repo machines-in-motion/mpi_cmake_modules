@@ -9,7 +9,7 @@
 # https://github.com/jrl-umi3218/jrl-cmakemodules/blob/master/pthread.cmake
 # 
 
-INCLUDE(FindThreads)
+# INCLUDE(FindThreads)
 
 #.rst:
 # .. cmake:command:: SEARCH_FOR_PTHREAD
@@ -17,6 +17,8 @@ INCLUDE(FindThreads)
 #    Check for pthread support on Linux. This does nothing on Windows.
 #
 MACRO(SEARCH_FOR_PTHREAD)
+  find_package(Threads QUIET)
+  
   IF(UNIX)
     IF(CMAKE_USE_PTHREADS_INIT)
       ADD_DEFINITIONS(-pthread)
