@@ -23,13 +23,14 @@ include(${CMAKE_CURRENT_LIST_DIR}/documentation.cmake)
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   # required to link the python bindings of the DG entities properly.
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-as-needed")
+endif()
   # display all warnings
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
   # add debug flag
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
   # Strongly optimize code.
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
-endif()
+# endif()
 
 # use, i.e. don't skip the full RPATH for the build tree
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
