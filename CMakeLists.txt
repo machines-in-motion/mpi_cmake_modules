@@ -23,10 +23,6 @@ endif()
 # dependencies
 #
 
-# CMake ament macros.
-find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_python REQUIRED)
-
 #
 # Define some path variables for this package.
 #
@@ -36,58 +32,73 @@ set(MPI_CMAKE_MODULES_RESOURCES_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/resources)
 set(MPI_CMAKE_MODULES_SCRIPTS_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/scripts)
 
 #
-# Register the mpi_cmake_moudle resource files install location.
-#
-install(DIRECTORY resources DESTINATION share/${PROJECT_NAME})
-ament_index_register_resource(
-  resource_files CONTENT
-  ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/resources/)
-
-#
 # Get all the files needed
 #
-file(
-  GLOB cmake_files
-  RELATIVE ${PROJECT_SOURCE_DIR}
-  cmake/*.cmake)
-# Include each files for testing.
-foreach(cmake_file ${cmake_files})
-  include(${cmake_file})
-endforeach()
+# file(
+#   GLOB cmake_files
+#   RELATIVE ${PROJECT_SOURCE_DIR}
+#   cmake/*.cmake)
+# # Include each files for testing.
+# foreach(cmake_file ${cmake_files})
+#   include(${cmake_file})
+# endforeach()
+include(cmake/global_calls.cmake)
+include(cmake/get_python_install_dir.cmake)
+include(cmake/documentation.cmake)
+include(cmake/install_scripts.cmake)
+include(cmake/generate_cmake_package.cmake)
+
+
+
+#
+# Register the mpi_cmake_module resource files install location.
+#
+install(DIRECTORY resources DESTINATION share/${PROJECT_NAME})
+# ament_index_register_resource(
+#   resource_files CONTENT
+#   ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/resources/)
 
 #
 # manage python file install
 #
-ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
+# ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
+get_python_install_dir()
+install(
+  DIRECTORY python/${PROJECT_NAME} 
+  DESTINATION "${PYTHON_INSTALL_DIR}"
+  PATTERN "*.pyc" EXCLUDE
+  PATTERN "__pycache__" EXCLUDE
+)
+
 
 #
 # install the CMake find modules at the good place
 #
 # find the folders
-macro(SUBDIRLIST result curdir)
-  file(
-    GLOB children
-    RELATIVE ${curdir}
-    ${curdir}/*)
-  set(dirlist "")
-  foreach(child ${children})
-    if(IS_DIRECTORY ${curdir}/${child})
-      list(APPEND dirlist cmake/${child})
-    endif()
-  endforeach()
-  set(${result} ${dirlist})
-endmacro()
-subdirlist(cmake_dirs ${PROJECT_SOURCE_DIR}/cmake)
-install(DIRECTORY ${cmake_dirs} DESTINATION share/${PROJECT_NAME}/cmake)
+# macro(SUBDIRLIST result curdir)
+#   file(
+#     GLOB children
+#     RELATIVE ${curdir}
+#     ${curdir}/*)
+#   set(dirlist "")
+#   foreach(child ${children})
+#     if(IS_DIRECTORY ${curdir}/${child})
+#       list(APPEND dirlist cmake/${child})
+#     endif()
+#   endforeach()
+#   set(${result} ${dirlist})
+# endmacro()
+# subdirlist(cmake_dirs ${PROJECT_SOURCE_DIR}/cmake)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/ DESTINATION share/${PROJECT_NAME}/cmake)
 
 #
 # Install the executable scripts in bin
 #
 install(
-  FILES ${MPI_CMAKE_MODULES_SCRIPTS_DIR}/mpi_clang_format
+  FILES scripts/mpi_clang_format
   DESTINATION bin
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
-install(FILES ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
+install(FILES resources/_clang-format
         DESTINATION ${PYTHON_INSTALL_DIR}/${PROJECT_NAME})
 
 #
@@ -96,6 +107,6 @@ install(FILES ${MPI_CMAKE_MODULES_RESOURCES_DIR}/_clang-format
 add_documentation()
 
 #
-# export the package as a ament package
-#
-ament_package(CONFIG_EXTRAS ${cmake_files})
+# put the cmake files at the right place
+# 
+generate_cmake_package()
