@@ -43,6 +43,7 @@ set(MPI_CMAKE_MODULES_SCRIPTS_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/scripts)
 #   include(${cmake_file})
 # endforeach()
 include(cmake/global_calls.cmake)
+include(cmake/python.cmake)
 include(cmake/get_python_install_dir.cmake)
 include(cmake/documentation.cmake)
 include(cmake/install_scripts.cmake)
@@ -62,10 +63,10 @@ install(DIRECTORY resources DESTINATION share/${PROJECT_NAME})
 # manage python file install
 #
 # ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
-get_python_install_dir()
+get_python_install_dir(python_install_dir)
 install(
-  DIRECTORY python/${PROJECT_NAME} 
-  DESTINATION "${PYTHON_INSTALL_DIR}"
+  DIRECTORY python/${PROJECT_NAME}
+  DESTINATION "${python_install_dir}"
   PATTERN "*.pyc" EXCLUDE
   PATTERN "__pycache__" EXCLUDE
 )
@@ -99,7 +100,7 @@ install(
   DESTINATION bin
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
 install(FILES resources/_clang-format
-        DESTINATION ${PYTHON_INSTALL_DIR}/${PROJECT_NAME})
+        DESTINATION ${python_install_dir}/${PROJECT_NAME})
 
 #
 # building documentation

@@ -48,11 +48,6 @@
 #
 #  Portable suffix of C++ Python modules.
 
-IF(CMAKE_VERSION VERSION_LESS "3.2")
-    SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/python ${CMAKE_MODULE_PATH})
-    MESSAGE(STATUS "CMake versions older than 3.2 do not properly find Python. Custom macros are used to find it.")
-ENDIF(CMAKE_VERSION VERSION_LESS "3.2")
-
 MACRO(FINDPYTHON)
   IF(DEFINED FINDPYTHON_ALREADY_CALLED)
     MESSAGE(AUTHOR_WARNING "Macro FINDPYTHON has already been called. Several call to FINDPYTHON may not find the same Python version (for a yet unknown reason).")
@@ -246,6 +241,19 @@ MACRO(FINDPYTHON)
     PYTHON_SOABI
     PYTHON_EXT_SUFFIX
     )
+
+  SET(Python_EXECUTABLE          ${PYTHON_EXECUTABLE})
+  SET(Python_LIBRARY             ${PYTHON_LIBRARY})
+  SET(Python_LIBRARIES           ${PYTHON_LIBRARIES})
+  SET(Python_INCLUDE_DIR         ${PYTHON_INCLUDE_DIR})
+  SET(Python_INCLUDE_DIRS        ${PYTHON_INCLUDE_DIRS})
+  SET(Python_VERSION_STRING      ${PYTHON_VERSION_STRING})
+  SET(PythonLIBS_VERSION_STRING  ${PYTHONLIBS_VERSION_STRING})
+  SET(Python_FOUND               ${PYTHON_FOUND})
+  SET(PythonLIBS_FOUND           ${PYTHONLIBS_FOUND})
+  SET(Python_VERSION_MAJOR       ${PYTHON_VERSION_MAJOR})
+  SET(Python_VERSION_MINOR       ${PYTHON_VERSION_MINOR})
+  SET(Python_VERSION_PATCH       ${PYTHON_VERSION_PATCH})
 
 ENDMACRO(FINDPYTHON)
 
