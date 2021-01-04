@@ -1,0 +1,2 @@
+find_package(PythonInterp)
+find_package(PythonLibs)
