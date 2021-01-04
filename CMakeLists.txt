@@ -9,7 +9,7 @@
 #
 cmake_minimum_required(VERSION 3.10.2)
 
-project(mpi_cmake_modules)
+project(mpi_cmake_modules VERSION 1.0.0)
 
 # Using C++17
 if(NOT CMAKE_C_STANDARD)
@@ -34,30 +34,17 @@ set(MPI_CMAKE_MODULES_SCRIPTS_DIR ${MPI_CMAKE_MODULES_ROOT_DIR}/scripts)
 #
 # Get all the files needed
 #
-# file(
-#   GLOB cmake_files
-#   RELATIVE ${PROJECT_SOURCE_DIR}
-#   cmake/*.cmake)
-# # Include each files for testing.
-# foreach(cmake_file ${cmake_files})
-#   include(${cmake_file})
-# endforeach()
 include(cmake/global_calls.cmake)
-include(cmake/python.cmake)
 include(cmake/get_python_install_dir.cmake)
 include(cmake/documentation.cmake)
 include(cmake/install_scripts.cmake)
 include(cmake/generate_cmake_package.cmake)
-
-
+include(cmake/find_modules.cmake)
 
 #
 # Register the mpi_cmake_module resource files install location.
 #
 install(DIRECTORY resources DESTINATION share/${PROJECT_NAME})
-# ament_index_register_resource(
-#   resource_files CONTENT
-#   ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/resources/)
 
 #
 # manage python file install
@@ -75,21 +62,6 @@ install(
 #
 # install the CMake find modules at the good place
 #
-# find the folders
-# macro(SUBDIRLIST result curdir)
-#   file(
-#     GLOB children
-#     RELATIVE ${curdir}
-#     ${curdir}/*)
-#   set(dirlist "")
-#   foreach(child ${children})
-#     if(IS_DIRECTORY ${curdir}/${child})
-#       list(APPEND dirlist cmake/${child})
-#     endif()
-#   endforeach()
-#   set(${result} ${dirlist})
-# endmacro()
-# subdirlist(cmake_dirs ${PROJECT_SOURCE_DIR}/cmake)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/ DESTINATION share/${PROJECT_NAME}/cmake)
 
 #
