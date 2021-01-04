@@ -43,14 +43,12 @@ copyright = (u'Copyright (c) ' + str(now.year) +
 author = u'See the readme file.'
 
 # Version control
-package_xml = os.path.join("@PROJECT_SOURCE_DIR@", "package.xml")
-package_xml_root = xml.etree.ElementTree.parse(package_xml).getroot()
-version_xml = package_xml_root.find('version').text
+version_cmake = "@PROJECT_VERSION@"
 
 # The short X.Y version
-version = version_xml
+version = version_cmake
 # The full version, including alpha/beta/rc tags
-release = version_xml
+release = version_cmake
 
 
 # -- General configuration ---------------------------------------------------
