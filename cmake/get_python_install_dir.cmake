@@ -4,15 +4,18 @@
 # License BSD-3 clause
 #
 
+include(${CMAKE_CURRENT_LIST_DIR}/get_python_interpreter.cmake)
+
 # .rst: .. cmake:command:: get_python_install_dir
 #
-# this macro creates the variable PYTHON_INSTALL_DIR which can be used to know
+# This macro creates the variable PYTHON_INSTALL_DIR which can be used to know
 # where to install python bindings and packages we take the format used for
 # default install of packages and just change to have the right prefix
 # (CMAKE_INSTALL_PREFIX)
 #
-
 function(get_python_install_dir output)
+
+  # Find the python interpreter.
   get_python_interpreter(python_interpreter)
 
   # code to find installation path for python libs
