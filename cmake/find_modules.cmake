@@ -14,6 +14,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/find_modules
                       ${CMAKE_MODULE_PATH})
 
 if(CMAKE_VERSION VERSION_LESS "3.12")
-  set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/python
+  set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/find_modules/python
                         ${CMAKE_MODULE_PATH})
 endif()
