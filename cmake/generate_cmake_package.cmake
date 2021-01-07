@@ -14,7 +14,7 @@
 #
 
 function(generate_cmake_package)
-  cmake_parse_arguments(PARSE_ARGV 0 _LOCAL "INSTALL_EXPORT" "" "")
+  cmake_parse_arguments(PARSE_ARGV 0 _LOCAL "SKIP_EXPORT" "" "")
   include(CMakePackageConfigHelpers)
 
   # generate the necessary cmake file
@@ -35,7 +35,7 @@ function(generate_cmake_package)
   # we copy the cmake files we would need to configure the project
   install(FILES ${cm_files} DESTINATION share/${PROJECT_NAME}/cmake)
 
-  if(${_LOCAL_INSTALL_EXPORT})
+  if(NOT ${_LOCAL_SKIP_EXPORT})
     # we install the cmake package
     install(
       EXPORT ${PROJECT_NAME}Targets
