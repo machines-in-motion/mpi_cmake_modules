@@ -82,4 +82,4 @@ add_documentation()
 #
 # put the cmake files at the right place
 # 
-generate_cmake_package()
+generate_cmake_package(SKIP_TARGET_EXPORT)

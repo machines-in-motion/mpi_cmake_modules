@@ -47,12 +47,8 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS PLUGIN_TARGET)
       ${PYTHON_INSTALL_DIR}/${PROJECT_NAME}/dynamic_graph)
 
   # Find Python.
-  if(NOT DEFINED PYTHONLIBS_FOUND)
-    find_package(Python REQUIRED)
-  elseif(NOT ${PYTHONLIBS_FOUND} STREQUAL "TRUE")
-    message(FATAL_ERROR "Python has not been found.")
-  endif()
-
+  find_package(Python REQUIRED)
+  
   # Suffix to all python objects.
   set(PYTHON_SUFFIX dg_python_module)
 
