@@ -16,13 +16,7 @@ on it in the following way:
 
     find_package(mpi_cmake_module REQUIRED)
 
-And add the following line in your `package.xml`
-
-~~~xml
-<depend>mpi_cmake_modules</depend>
-~~~
-
-Remarque: This will perform by default:
+**Note:** This will perform by default:
 - the `define_os()` macro defined in cmake/os_detection.cmake
 - the `setup_xenomai()` macro defined in the cmake/xenomai.cmake
   if the OS Xenomai is detected.
