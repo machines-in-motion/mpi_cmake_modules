@@ -24,9 +24,6 @@ macro(ADD_DOXYGEN_DOCUMENTATION)
                         "Please install it correctly")
   endif()
 
-  # Get the resource folder
-  get_resource_folder(mpi_cmake_modules MPI_CMAKE_MODULES_RESOURCES_DIR)
-
   # set the destination folder to be devel/share/[project_name]/doc/
   set(doc_build_folder ${CMAKE_BINARY_DIR}/share/docs/doxygen)
   set(doc_install_folder share/docs/doxygen)

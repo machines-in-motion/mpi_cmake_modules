@@ -3,9 +3,9 @@ Python
 
 ## Introduction
 
-This module is very important as it provide tools to search for the Python
+This part is very important as it provides tools to search for the Python
 libraries and includes depending on the required Python version.
-Plus some tools to create python bindings using boost python or pybind11.
+Plus some tools to create python bindings using pybind11.
 
 ## Usage
 
@@ -13,19 +13,19 @@ Plus some tools to create python bindings using boost python or pybind11.
 
 The simplest thing is here to find the default Python library:
 
-    search_for_python()
+    find_package(Python REQUIRED)
 
 This macros is influenced by `PYTHON_EXECUTABLE` and `PYTHON_LIBRARY` which can
 be set for Python2 via the command:
 
-    colcon build --ament-cmake-args -DPYTHON_EXECUTABLE=`which python2`
+    colcon build --cmake-args -DPYTHON_EXECUTABLE=`which python2`
 
 you can add `-DPYTHON_LIBRARY=`/usr/lib/x86_64-linux-gnu/libpython2.7.so``
 if needed
 
 or for Python3 via the command:
 
-    colcon build --ament-cmake-args -DPYTHON_EXECUTABLE=`which python3`
+    colcon build --cmake-args -DPYTHON_EXECUTABLE=`which python3`
 
 you can add `-DPYTHON_LIBRARY=`/usr/lib/x86_64-linux-gnu/libpython3.5m.so``
 if needed
@@ -33,10 +33,17 @@ if needed
 Please make sure the library exists at the defined place before executing the
 above commands.
 
-### Search for Numpy
+If you only want to find the python executable you can just do:
 
-Numpy includes can be found via the following macro:
+    get_python_interpreter(my_var)
 
-    search_for_numpy()
+`my_var` will contain the path to the python interpreter.
 
-The macro `search_for_python()` must have been called before hand.
+### Install path
+
+In order to install files and library in the good place for python to find it
+on need to get the correct path:
+
+    get_python_install_dir(my_var)
+
+`my_var` contains the path to where the python files needs to be installed.

@@ -21,7 +21,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/sphinx.cmake)
 #
 macro(CREATE_DOC_TARGET)
   option(GENERATE_DOCUMENTATION
-         "This allow the docuementation to be build by default." OFF)
+         "This allow the documentation to be build by default." OFF)
 
   if(NOT TARGET doc)
     if(GENERATE_DOCUMENTATION)

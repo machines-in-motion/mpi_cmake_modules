@@ -5,7 +5,7 @@ Doxygen
 
 In the machines-in-motion group we use doxygen in order to build all
 documentations from C/C++ and Python code.
-The main idea is that we can have a unifyed way to generate the documentation.
+The main idea is that we can have a unified way to generate the documentation.
 
 ## Usage
 
@@ -36,7 +36,7 @@ In order to visualise the built documentation with firefox please run:
 
     firefox workspace/install/<project name>/share/docs/doxygen/html/index.html
 
-## Writting a documentation
+## Writing a documentation
 
 In order to write a decent documentation one need to make sure that Doxygen
 do not output warnings. A warning from DOxygen proves that a code item is not
@@ -59,15 +59,15 @@ C/C++:
 
     ```C++
     /** 
-      * \@example <file name> This example provide an exmaple on how to use ...
+      * @example <file name> This example provide an example on how to use ...
       * Remarque: remove the `\` before the `@`.
       */
     ```
 
 - Finally whenever you feel like documenting more extensively something and
-adding graph, image, extensive text explanatin, link, etc, it is way more
-convenitent to use markdown. Therefore one need to provide a `doc/` folder
-containing the additionnal documentation.
+adding graph, image, extensive text explanation, link, etc, it is way more
+convenient to use markdown. Therefore one need to provide a `doc/` folder
+containing the additional documentation.
 
 For more detail on how to use doxygen here is a list of extremely useful links:
 - [List of doxygen commands](http://doxygen.nl/manual/commands.html)
@@ -75,8 +75,8 @@ For more detail on how to use doxygen here is a list of extremely useful links:
 
 ## Implementation details
 
-The `Doxyfile.in` place in this repository's `resources` folder is reponsible
-for the parsing paramters and shape of the documentation. The idea here is that
+The `Doxyfile.in` place in this repository's `resources` folder is responsible
+for the parsing parameters and shape of the documentation. The idea here is that
 upon build Doxygen will go recursively through all the current project files
 looking for the C/C++/Python/Markdown files and generate the documentation
 automatically.

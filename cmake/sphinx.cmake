@@ -150,9 +150,6 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
   # All parameters
 
-  # Get the resource folder
-  get_resource_folder(mpi_cmake_modules MPI_CMAKE_MODULES_RESOURCES_DIR)
-
   # Build and install directories
   set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)
   set(SPHINX_DOC_INSTALL_FOLDER share/docs/sphinx)

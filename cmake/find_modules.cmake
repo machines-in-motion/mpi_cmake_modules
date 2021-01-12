@@ -6,9 +6,14 @@
 
 #[=======================================================================[.rst:
 
-Simply add the Findrt.cmake to the *CMAKE_MODULE_PATH*.
+Simply add the find_modules/* to the *CMAKE_MODULE_PATH*.
 
 #]=======================================================================]
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/rt
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/find_modules
                       ${CMAKE_MODULE_PATH})
+
+if(CMAKE_VERSION VERSION_LESS "3.12")
+  set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/find_modules/python
+                        ${CMAKE_MODULE_PATH})
+endif()

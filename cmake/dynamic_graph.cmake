@@ -40,9 +40,6 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS PLUGIN_TARGET)
 
   message(STATUS "Creating the python binding of: ${PLUGIN_TARGET}")
 
-  # Get the mpi_cmake_modules resource folder.
-  get_resource_folder(mpi_cmake_modules MPI_CMAKE_MODULES_RESOURCES_DIR)
-
   # Look for the python install directory.
   find_package(ament_cmake_python REQUIRED)
   _ament_cmake_python_get_python_install_dir()
@@ -50,12 +47,8 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS PLUGIN_TARGET)
       ${PYTHON_INSTALL_DIR}/${PROJECT_NAME}/dynamic_graph)
 
   # Find Python.
-  if(NOT DEFINED PYTHONLIBS_FOUND)
-    find_package(Python REQUIRED)
-  elseif(NOT ${PYTHONLIBS_FOUND} STREQUAL "TRUE")
-    message(FATAL_ERROR "Python has not been found.")
-  endif()
-
+  find_package(Python REQUIRED)
+  
   # Suffix to all python objects.
   set(PYTHON_SUFFIX dg_python_module)
 
