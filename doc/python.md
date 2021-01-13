@@ -47,3 +47,25 @@ on need to get the correct path:
     get_python_install_dir(my_var)
 
 `my_var` contains the path to where the python files needs to be installed.
+
+### Search python module
+
+In order to find pure python package one can use this:
+
+    find_package(PythonModule REQUIRED COMPONENTS robot_properties_solo)
+
+This will declare the following variables:
+
+- `PythonModules_FOUND`: Whether all specified Python modules were found.
+- `PythonModules_<module>_FOUND`: Whether the Python module \<module\> was found.
+- `PythonModules_<module>_PATH`: Absolute path of the directory containing the
+    Python module named \<module\>
+- `PythonModules_<module>`: Import target for module named \<module\>.
+    The location of the target is `PythonModules_<module>_PATH`.
+- `PythonModules_PYTHONPATH`: The `PYTHONPATH` setting required for the found
+    Python module(s), i.e., The directories that have to be added to the Python
+    search path. To support the use of this CMake module more than once with
+    different arguments to the find_package() command, e.g., with and without
+    the `REQUIRED` argument, the directories containing the found Python
+    modules are appended to any existing directories in\
+    `PythonModules_PYTHONPATH` if not already listed.
