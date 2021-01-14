@@ -1,34 +1,25 @@
-""" @namespace mpi_cmake_modules.clang_format.py
+"""cpp_format.py
 
-Utility functions for creating formatting script based on clang 
-@file clang_format.py
-@license License BSD-3-Clause
-@copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+Formatting script based on clang .
+
+License BSD-3-Clause
+Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """
 
-import argparse
-import sys
 import os
 from os import walk
 from os import path
 
-try:
-    from shutil import which
-except:
-    import distutils.spawn
-
-    ## This ensure the compatibility Python2 vs Python3
-    which = distutils.spawn.find_executable
 import mpi_cmake_modules
 from mpi_cmake_modules.yaml2oneline import yaml2oneline
 from mpi_cmake_modules.utils import (
-    test_valid_file,
-    get_absolute_path,
     list_of_files_to_format,
+    which,
+    parse_args,
 )
 
 
-def find_clang_format(name_list=["clang-format"]):
+def _find_clang_format(name_list=["clang-format"]):
     """Find the full path to the clang-format executable.
 
     Look by default for the `clang-format` executable in the PATH environment
@@ -51,7 +42,7 @@ def find_clang_format(name_list=["clang-format"]):
     )
 
 
-def load_clang_format_config():
+def _load_clang_format_config():
     """Look for the clang-format parameter file in this package.
 
     Look for the _clang-format file located in this package and convert it
@@ -71,7 +62,7 @@ def load_clang_format_config():
     )
 
 
-def execute_clang_format(
+def _execute_clang_format(
     clang_format_bin, clang_format_config, clang_format_arg
 ):
     """Execute the formatting of C/C++ files using clang-format.
@@ -103,3 +94,32 @@ def execute_clang_format(
     except Exception as e:
         print("Fail to call " + clang_format_bin + " with error:")
         print(e)
+
+
+def run_cpp_format(sys_args):
+    print("Formatting C/C++ files.")
+
+    args = parse_args(sys_args)
+
+    extensions = (".h", ".c", ".hh", ".cc", ".hpp", ".cpp", ".hxx", ".cxx")
+
+    # Path to the clang-format binary.
+    clang_format_bin = _find_clang_format(
+        ["clang-format", "clang-format-6.0", "clang-format-8"]
+    )
+
+    # clang-format parameters.
+    clang_format_config = _load_clang_format_config()
+    # List of files or directories to parse.
+    list_of_files = list_of_files_to_format(args.files_or_folders, extensions)
+
+    if not list_of_files:
+        print("\nNo C/C++ file to format in the given paths.\n")
+        return
+    else:
+        print("\nFormatting:")
+        for f in list_of_files:
+            print("\t" + str(f))
+        print("")
+
+    _execute_clang_format(clang_format_bin, clang_format_config, list_of_files)

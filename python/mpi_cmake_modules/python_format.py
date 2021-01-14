@@ -1,9 +1,9 @@
-""" @namespace mpi_cmake_modules.black_format.py
+""" python_format
 
 Utility functions for creating formatting script based on clang 
-@file black_format.py
-@license License BSD-3-Clause
-@copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+
+License BSD-3-Clause
+Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """
 
 import argparse
@@ -20,19 +20,16 @@ except:
     ## This ensure the compatibility Python2 vs Python3
     which = distutils.spawn.find_executable
 
+from mpi_cmake_modules.utils import parse_args
 
-def find_black_format():
+def _find_black():
     """Find the full path to the clang-format executable.
 
-    Look by default for the `clang-format` executable in the PATH environment
+    Look by default for the `black` executable in the PATH environment
     variable.
 
-    Args:
-        name_list: list(str) `--` Potential executable names which might differ
-        according to the clang-format version available.
-
     Returns:
-        The full path to the clang-format executable.
+        The full path to the black executable.
     """
     path_to_black = which("black")
     if path_to_black is not None:
@@ -42,8 +39,7 @@ def find_black_format():
         "'(sudo -H) pip install install black'"
     )
 
-
-def execute_black_format(
+def _execute_black(
     black_format_bin, list_of_files=None, list_of_directories=None
 ):
     """Execute the formatting of python files using black.
@@ -84,3 +80,24 @@ def execute_black_format(
     except Exception as e:
         print("Fail to call " + black_format_bin + " with error:")
         print(e)
+
+def run_python_format(sys_args):
+    print("Formatting Python files.")
+
+    args = parse_args(sys_args)
+
+    list_of_files = []
+    list_of_directories = []
+    for file_or_folder in args.files_or_folders:
+        if path.isfile(file_or_folder):
+            list_of_files.append(file_or_folder)
+        elif path.isdir(file_or_folder):
+            list_of_directories.append(file_or_folder)
+
+    if not list_of_files:
+        list_of_files = None
+    if not list_of_directories:
+        list_of_directories = None
+
+    black_bin = _find_black()
+    _execute_black(black_bin, list_of_files, list_of_directories)

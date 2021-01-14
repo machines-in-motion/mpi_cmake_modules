@@ -1,70 +1,20 @@
 #!/usr/bin/env python
 
 """mpi_cpp_format
-Execute clang-format on a desired file or folder.
+
+Format C/C++ files. This files are either directly given as argument or found
+in a folder also given as argument.
 
 License BSD-3-Clause
 Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """
 
-# cakin install has been called and install has been sourced
-from mpi_cmake_modules import clang_format
-import argparse
-
-def _execute():
-    print("Formatting C/C++ files.")
-
-    ## Parser for the input arguments
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "files_or_folders",
-        ## Store the argument in files_or_folders.
-        metavar="files_or_folders",
-        ## Define the input argument type.
-        type=str,
-        ## ...
-        nargs="+",
-        ## Help string in case the argument is wrong.
-        help="List of source files or folders.",
-    )
-
-    ## Input arguments.
-    args = parser.parse_args()
-
-    extensions = (".h", ".c", ".hh", ".cc", ".hpp", ".cpp", ".hxx", ".cxx")
-
-    ## Path to the clang-format binary.
-    clang_format_bin = clang_format.find_clang_format(
-        ["clang-format", "clang-format-6.0", "clang-format-8"]
-    )
-
-    ## clang-format parameters.
-    clang_format_config = clang_format.load_clang_format_config()
-    ## List of files or directories to parse.
-    list_of_files = clang_format.list_of_files_to_format(
-        args.files_or_folders, extensions
-    )
-
-    if not list_of_files:
-        print("\nNo C/C++ file to format in the given paths.\n")
-        return
-    else:
-        print("\nFormatting:")
-        for f in list_of_files:
-            print("\t" + str(f))
-        print("")
-
-    clang_format.execute_clang_format(
-        clang_format_bin, clang_format_config, list_of_files
-    )
+import sys
+from mpi_cmake_modules.cpp_format import run_cpp_format
 
 if __name__ == "__main__":
-    """
-    Format source files given or found recursively in the given folders.
-    """
-
     try:
-        _execute()
+        run_cpp_format(sys.argv)
     except Exception as e:
         import traceback
 
