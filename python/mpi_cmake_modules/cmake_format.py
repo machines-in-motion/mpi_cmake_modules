@@ -72,21 +72,20 @@ def _execute_cmake_format(cmake_format_bin, list_of_files):
 
 
 def run_cmake_format(sys_args):
-    print("Formatting C/C++ files.")
+    print("Formatting CMake files.")
 
     args = parse_args(sys_args)
 
     # Path to the cmake-format binary.
     cmake_format_bin = which("cmake-format")
-    if cmake_format_bin is not None:
-        return cmake_format_bin
-    raise Exception(
-        "cmake-format executable not found. You may try "
-        "'sudo apt-get install cmake-format'"
-    )
+    if cmake_format_bin is None:
+        raise Exception(
+            "cmake-format executable not found. You may try "
+            "'sudo apt-get install cmake-format'"
+        )
 
     # List of files or directories to parse.
-    extensions = ("CMakelists.txt", ".cmake")
+    extensions = ("CMakeLists.txt", ".cmake")
     list_of_files = list_of_files_to_format(args.files_or_folders, extensions)
 
     if not list_of_files:
