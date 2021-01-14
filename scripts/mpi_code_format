@@ -1,0 +1,5 @@
+#! /bin/bash
+
+mpi_cpp_format "$@"
+mpi_python_format "$@"
+# mpi_cmake_format "$@"

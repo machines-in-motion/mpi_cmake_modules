@@ -1,10 +1,61 @@
-#! /bin/bash
+#! /usr/bin/env python
 
-working_dir=$1
+"""mpi_python_format
+Execute clang-format on a desired file or folder.
 
-if [[ -d "$working_dir" ]]
-then
-    black --line-length 79 $working_dir
-else
-    echo "Cannot execute black, $working_dir does not exists on your filesystem."
-fi
+License BSD-3-Clause
+Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+"""
+
+from os import path
+import argparse
+from mpi_cmake_modules.black_format import find_black_format, execute_black_format
+
+def _execute():
+    print("Formatting Python files.")
+
+    ## Parser for the input arguments
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "files_or_folders",
+        ## Store the argument in files_or_folders.
+        metavar="files_or_folders",
+        ## Define the input argument type.
+        type=str,
+        ## ...
+        nargs="+",
+        ## Help string in case the argument is wrong.
+        help="List of source files or folders.",
+    )
+
+    ## Input arguments.
+    args = parser.parse_args()
+
+    list_of_files = []
+    list_of_directories = []
+    for file_or_folder in args.files_or_folders:
+        if path.isfile(file_or_folder):
+            list_of_files.append(file_or_folder)
+        elif path.isdir(file_or_folder):
+            list_of_directories.append(file_or_folder)
+
+    if not list_of_files:
+        list_of_files=None
+    if not list_of_directories:
+        list_of_directories = None
+
+    black_bin = find_black_format()
+    execute_black_format(black_bin, list_of_files, list_of_directories)
+
+if __name__ == "__main__":
+    """
+    Format source files given or found recursively in the given folders.
+    """
+
+    try:
+        _execute()
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+        print("\nfailed with error:\n" + str(e) + "\n")
