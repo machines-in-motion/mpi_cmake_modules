@@ -1,0 +1,10 @@
+#! /bin/bash
+
+working_dir=$1
+
+if [[ -d "$working_dir" ]]
+then
+    black --line-length 79 $working_dir
+else
+    echo "Cannot execute black, $working_dir does not exists on your filesystem."
+fi

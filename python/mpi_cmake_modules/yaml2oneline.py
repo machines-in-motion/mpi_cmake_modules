@@ -24,8 +24,8 @@ import yaml
 
 
 def yaml2oneline(filename):
-    """ Convert a yaml file into a dictionnary one-line string
-    
+    """Convert a yaml file into a dictionnary one-line string
+
     This function is used here typically in order to parse the yaml config file
     defining the clang-format parameters.
 

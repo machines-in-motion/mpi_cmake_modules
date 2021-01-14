@@ -12,17 +12,19 @@ import sys
 import os
 from os import walk
 from os import path
+
 try:
     from shutil import which
 except:
     import distutils.spawn
+
     ## This ensure the compatibility Python2 vs Python3
     which = distutils.spawn.find_executable
 import mpi_cmake_modules
 from mpi_cmake_modules.yaml2oneline import yaml2oneline
 
 
-def find_clang_format(name_list=['clang-format']):
+def find_clang_format(name_list=["clang-format"]):
     """Find the full path to the clang-format executable.
 
     Look by default for the `clang-format` executable in the PATH environment
@@ -39,8 +41,10 @@ def find_clang_format(name_list=['clang-format']):
         path_to_clang_format = which(name)
         if path_to_clang_format is not None:
             return path_to_clang_format
-    raise Exception("clang-format executable not found. You may try "
-                    "'sudo apt-get install clang-format'")
+    raise Exception(
+        "clang-format executable not found. You may try "
+        "'sudo apt-get install clang-format'"
+    )
 
 
 def load_clang_format_config():
@@ -57,12 +61,14 @@ def load_clang_format_config():
             if "_clang-format" in filenames:
                 return yaml2oneline(path.join(dirpath, "_clang-format"))
             break
-    raise Exception("failed to find _clang-format file in " +
-                    str(mpi_cmake_modules.__path__))
+    raise Exception(
+        "failed to find _clang-format file in "
+        + str(mpi_cmake_modules.__path__)
+    )
 
 
 def test_valid_file(filename, extensions):
-    """ Test if the input file exists and is of one of the provided extension.
+    """Test if the input file exists and is of one of the provided extension.
 
     Args:
         filename (str): Path to the file to test.
@@ -74,8 +80,9 @@ def test_valid_file(filename, extensions):
 
         False otherwise.
     """
-    if (path.isfile(filename) and any([filename.endswith(suffix) for suffix in
-                                       extensions])):
+    if path.isfile(filename) and any(
+        [filename.endswith(suffix) for suffix in extensions]
+    ):
         return True
     else:
         return False
@@ -85,8 +92,8 @@ def get_absolute_path(file_or_directory):
     """Get the absolute path of a given path and check its existance
 
     Check if file_or_directory is an existing file or directory,
-    if so, returns it. Otherwise, assumes it is a relative path, 
-    which it upgrades to an absolute path, this it returns. If the 
+    if so, returns it. Otherwise, assumes it is a relative path,
+    which it upgrades to an absolute path, this it returns. If the
     upgraded path does not correspond to an existing file or directory,
     returns None
 
@@ -123,11 +130,10 @@ def list_of_files_to_format(files_or_directories, extensions):
 
         False otherwise.
     """
-    fixed = [get_absolute_path(fod)
-             for fod in files_or_directories]
+    fixed = [get_absolute_path(fod) for fod in files_or_directories]
     for original, fix in zip(files_or_directories, fixed):
         if fix is None:
-            raise Exception("failed to find: "+str(original))
+            raise Exception("failed to find: " + str(original))
     files_or_directories = fixed
     list_of_files = []
     for file_or_directory in files_or_directories:
@@ -136,13 +142,16 @@ def list_of_files_to_format(files_or_directories, extensions):
         elif path.isdir(file_or_directory):
             for (dirpath, _, filenames) in walk(file_or_directory):
                 for filename in filenames:
-                    if test_valid_file(path.join(dirpath, filename), extensions):
+                    if test_valid_file(
+                        path.join(dirpath, filename), extensions
+                    ):
                         list_of_files.append(path.join(dirpath, filename))
     return list_of_files
 
 
-def execute_clang_format(clang_format_bin, clang_format_config,
-                         clang_format_arg):
+def execute_clang_format(
+    clang_format_bin, clang_format_config, clang_format_arg
+):
     """Execute the formatting of C/C++ files using clang-format.
 
     Get the path to the executable, and run it using the clang-format insput
@@ -154,17 +163,20 @@ def execute_clang_format(clang_format_bin, clang_format_config,
         clang_format_config (list(str)): One line dictionnary string containing
         the clang-format parameters.
 
-        clang_format_arg list(str): List of source files to parse.   
+        clang_format_arg list(str): List of source files to parse.
     """
 
-    cmd = ' '.join([clang_format_bin,
-                    ' -style="' + clang_format_config + '"',
-                    ' -i ' + ' '.join(clang_format_arg)
-                    ])
+    cmd = " ".join(
+        [
+            clang_format_bin,
+            ' -style="' + clang_format_config + '"',
+            " -i " + " ".join(clang_format_arg),
+        ]
+    )
     try:
-        print ("\nexecuting: ")
-        print (cmd)
-        print ("")
+        print("\nexecuting: ")
+        print(cmd)
+        print("")
         os.system(cmd)
     except Exception as e:
         print("Fail to call " + clang_format_bin + " with error:")
