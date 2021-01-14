@@ -7,35 +7,11 @@ Copyright (c) 2019, New York University and Max Planck Gesellschaft.
 """
 
 import os
-from os import walk
-from os import path
-
-import mpi_cmake_modules
 from mpi_cmake_modules.utils import (
     list_of_files_to_format,
     which,
     parse_args,
 )
-
-
-def _load_cmake_format_config():
-    """Look for the cmake-format parameter file in this package.
-
-    Look for the _cmake-format file located in this package and convert it
-    in a one line dictionnary string.
-
-    Returns:
-        The _cmake-format in a online dictionnary string.
-    """
-    for module_path in mpi_cmake_modules.__path__:
-        for (dirpath, _, filenames) in walk(module_path):
-            if "_cmake-format" in filenames:
-                return yaml2oneline(path.join(dirpath, "_cmake-format"))
-            break
-    raise Exception(
-        "failed to find _cmake-format file in "
-        + str(mpi_cmake_modules.__path__)
-    )
 
 
 def _execute_cmake_format(cmake_format_bin, list_of_files):
@@ -62,9 +38,8 @@ def _execute_cmake_format(cmake_format_bin, list_of_files):
             ]
         )
         try:
-            print("\nexecuting: ")
+            print("executing: ", end="")
             print(cmd)
-            print("")
             os.system(cmd)
         except Exception as e:
             print("Fail to call " + cmake_format_bin + " with error:")
@@ -72,7 +47,7 @@ def _execute_cmake_format(cmake_format_bin, list_of_files):
 
 
 def run_cmake_format(sys_args):
-    print("Formatting CMake files.")
+    print("Formatting CMake files...")
 
     args = parse_args(sys_args)
 
@@ -98,3 +73,6 @@ def run_cmake_format(sys_args):
         print("")
 
     _execute_cmake_format(cmake_format_bin, list_of_files)
+
+    print("Formatting CMake files ... Done")
+    print("")

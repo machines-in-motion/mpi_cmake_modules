@@ -22,6 +22,7 @@ Example:
 import sys
 import yaml
 
+
 def yaml2oneline(filename):
     """Convert a yaml file into a dictionnary one-line string
 
@@ -34,6 +35,7 @@ def yaml2oneline(filename):
     with open(filename, "r") as fh:
         data = yaml.load(fh, Loader=yaml.SafeLoader)
         return yaml.dump(data, default_flow_style=True).replace("\n", "")
+
 
 if __name__ == "__main__":
     """ Execute yaml2oneline on the input yaml file. """

@@ -97,7 +97,7 @@ def _execute_clang_format(
 
 
 def run_cpp_format(sys_args):
-    print("Formatting C/C++ files.")
+    print("Formatting C/C++ files...")
 
     args = parse_args(sys_args)
 
@@ -123,3 +123,6 @@ def run_cpp_format(sys_args):
         print("")
 
     _execute_clang_format(clang_format_bin, clang_format_config, list_of_files)
+
+    print("Formatting C/C++ files... Done")
+    print("")

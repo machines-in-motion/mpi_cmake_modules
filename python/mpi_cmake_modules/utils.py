@@ -17,6 +17,7 @@ except:
     ## This ensure the compatibility Python2 vs Python3
     which = distutils.spawn.find_executable
 
+
 def test_valid_file(filename, extensions):
     """Test if the input file exists and is of one of the provided extension.
 
@@ -36,6 +37,7 @@ def test_valid_file(filename, extensions):
         return True
     else:
         return False
+
 
 def get_absolute_path(file_or_directory):
     """Get the absolute path of a given path and check its existence
@@ -58,6 +60,7 @@ def get_absolute_path(file_or_directory):
     if path.isfile(fixed_path) or path.isdir(fixed_path):
         return fixed_path
     return None
+
 
 def list_of_files_to_format(files_or_directories, extensions):
     """Get the list of files to format exploring the input arguments.
@@ -96,21 +99,17 @@ def list_of_files_to_format(files_or_directories, extensions):
                         list_of_files.append(path.join(dirpath, filename))
     return list_of_files
 
+
 def parse_args(sys_args):
 
     # Parser for the input arguments
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "files_or_folders",
-        ## Store the argument in files_or_folders.
-        metavar="files_or_folders",
-        ## Define the input argument type.
         type=str,
-        ## ...
         nargs="+",
-        ## Help string in case the argument is wrong.
         help="List of source files or folders.",
     )
 
     # Input arguments.
-    return parser.parse_args(sys_args)
+    return parser.parse_args()

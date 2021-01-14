@@ -22,6 +22,7 @@ except:
 
 from mpi_cmake_modules.utils import parse_args
 
+
 def _find_black():
     """Find the full path to the clang-format executable.
 
@@ -38,6 +39,7 @@ def _find_black():
         "black executable not found. You may try "
         "'(sudo -H) pip install install black'"
     )
+
 
 def _execute_black(
     black_format_bin, list_of_files=None, list_of_directories=None
@@ -81,8 +83,9 @@ def _execute_black(
         print("Fail to call " + black_format_bin + " with error:")
         print(e)
 
+
 def run_python_format(sys_args):
-    print("Formatting Python files.")
+    print("Formatting Python files...")
 
     args = parse_args(sys_args)
 
@@ -101,3 +104,6 @@ def run_python_format(sys_args):
 
     black_bin = _find_black()
     _execute_black(black_bin, list_of_files, list_of_directories)
+
+    print("Formatting Python files... Done")
+    print("")
