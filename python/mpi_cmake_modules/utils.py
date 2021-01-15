@@ -2,7 +2,7 @@
 Utility functions for creating formatting scripts.
 
 License BSD-3-Clause
-Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
 import argparse
@@ -100,7 +100,7 @@ def list_of_files_to_format(files_or_directories, extensions):
     return list_of_files
 
 
-def parse_args(sys_args):
+def code_formatter_parse_args(sys_args):
 
     # Parser for the input arguments
     parser = argparse.ArgumentParser(description=__doc__)

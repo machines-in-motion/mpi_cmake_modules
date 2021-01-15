@@ -3,7 +3,7 @@
 Utility functions for creating formatting script based on clang 
 
 License BSD-3-Clause
-Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
 import argparse
@@ -20,7 +20,7 @@ except:
     ## This ensure the compatibility Python2 vs Python3
     which = distutils.spawn.find_executable
 
-from mpi_cmake_modules.utils import parse_args
+from mpi_cmake_modules.utils import code_formatter_parse_args
 
 
 def _find_black():
@@ -41,9 +41,7 @@ def _find_black():
     )
 
 
-def _execute_black(
-    black_format_bin, list_of_files=None, list_of_directories=None
-):
+def _execute_black(black_format_bin, list_of_files_and_directories):
     """Execute the formatting of python files using black.
 
     Get the path to the executable, and run it on the list of files to format.
@@ -56,21 +54,12 @@ def _execute_black(
 
         black_format_arg list(str): List of source files to parse.
     """
-    arg_files = ""
-    if list_of_files is not None:
-        arg_files = " --pyi " + " ".join(list_of_files)
-
-    arg_folder = ""
-    if list_of_directories is not None:
-        arg_folder = " ".join(list_of_directories)
-
     # Format files
     cmd = " ".join(
         [
             black_format_bin,
             "--line-length 79",
-            arg_folder,
-            arg_files,
+            " ".join(list_of_files_and_directories),
             "--verbose",
         ]
     )
@@ -87,23 +76,10 @@ def _execute_black(
 def run_python_format(sys_args):
     print("Formatting Python files...")
 
-    args = parse_args(sys_args)
-
-    list_of_files = []
-    list_of_directories = []
-    for file_or_folder in args.files_or_folders:
-        if path.isfile(file_or_folder):
-            list_of_files.append(file_or_folder)
-        elif path.isdir(file_or_folder):
-            list_of_directories.append(file_or_folder)
-
-    if not list_of_files:
-        list_of_files = None
-    if not list_of_directories:
-        list_of_directories = None
+    args = code_formatter_parse_args(sys_args)
 
     black_bin = _find_black()
-    _execute_black(black_bin, list_of_files, list_of_directories)
+    _execute_black(black_bin, args.files_or_folders)
 
     print("Formatting Python files... Done")
     print("")

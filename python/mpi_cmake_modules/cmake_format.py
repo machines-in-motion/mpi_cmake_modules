@@ -3,19 +3,19 @@
 Formatting script based on cmake-format
 
 License BSD-3-Clause
-Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
 import os
 from mpi_cmake_modules.utils import (
     list_of_files_to_format,
     which,
-    parse_args,
+    code_formatter_parse_args,
 )
 
 
 def _execute_cmake_format(cmake_format_bin, list_of_files):
-    """Execute the formatting of C/C++ files using cmake-format.
+    """Execute the formatting of CMake files using cmake-format.
 
     Get the path to the executable, and run it using the cmake-format insput
     parameter on the list of files to format.
@@ -23,10 +23,7 @@ def _execute_cmake_format(cmake_format_bin, list_of_files):
     Args:
         cmake_format_bin (str):  Path to the cmake-format binary.
 
-        cmake_format_config (list(str)): One line dictionnary string containing
-        the cmake-format parameters.
-
-        cmake_format_arg list(str): List of source files to parse.
+        list_of_files list(str): List of source files to parse.
     """
 
     for file_to_format in list_of_files:
@@ -49,7 +46,7 @@ def _execute_cmake_format(cmake_format_bin, list_of_files):
 def run_cmake_format(sys_args):
     print("Formatting CMake files...")
 
-    args = parse_args(sys_args)
+    args = code_formatter_parse_args(sys_args)
 
     # Path to the cmake-format binary.
     cmake_format_bin = which("cmake-format")

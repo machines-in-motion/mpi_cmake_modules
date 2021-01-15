@@ -12,11 +12,8 @@ Example:
     
         {foo: 13, bar: 42}
 
-@file yaml2oneline.py
-
-@license License BSD-3-Clause
-
-@copyright Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+License BSD-3-Clause
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
 import sys

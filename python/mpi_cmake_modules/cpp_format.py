@@ -3,7 +3,7 @@
 Formatting script based on clang .
 
 License BSD-3-Clause
-Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
 import os
@@ -15,7 +15,7 @@ from mpi_cmake_modules.yaml2oneline import yaml2oneline
 from mpi_cmake_modules.utils import (
     list_of_files_to_format,
     which,
-    parse_args,
+    code_formatter_parse_args,
 )
 
 
@@ -99,7 +99,7 @@ def _execute_clang_format(
 def run_cpp_format(sys_args):
     print("Formatting C/C++ files...")
 
-    args = parse_args(sys_args)
+    args = code_formatter_parse_args(sys_args)
 
     extensions = (".h", ".c", ".hh", ".cc", ".hpp", ".cpp", ".hxx", ".cxx")
 

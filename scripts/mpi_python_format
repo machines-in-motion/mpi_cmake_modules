@@ -6,7 +6,7 @@ Format python files. This files are either directly given as argument or found
 in a folder also given as argument.
 
 License BSD-3-Clause
-Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
 import sys
