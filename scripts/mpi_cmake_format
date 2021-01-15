@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+"""mpi_cmake_format
+
+Format CMake files. This files are either directly given as argument or found
+in a folder also given as argument.
+
+License BSD-3-Clause
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
+"""
+
+import sys
+from mpi_cmake_modules.cmake_format import run_cmake_format
+
+if __name__ == "__main__":
+    try:
+        run_cmake_format(sys.argv)
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+        print("\nfailed with error:\n" + str(e) + "\n")

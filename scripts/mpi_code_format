@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+"""mpi_code_format
+
+Format source files. This files are either directly given as argument or found
+in a folder also given as argument.
+
+License BSD-3-Clause
+Copyright (c) 2021, New York University and Max Planck Gesellschaft.
+"""
+
+import sys
+from mpi_cmake_modules.cpp_format import run_cpp_format
+from mpi_cmake_modules.python_format import run_python_format
+from mpi_cmake_modules.cmake_format import run_cmake_format
+
+if __name__ == "__main__":
+    try:
+        run_cpp_format(sys.argv)
+        run_python_format(sys.argv)
+        run_cmake_format(sys.argv)
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+        print("\nfailed with error:\n" + str(e) + "\n")

@@ -49,28 +49,29 @@ install(DIRECTORY resources DESTINATION share/${PROJECT_NAME})
 #
 # manage python file install
 #
-# ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
 get_python_install_dir(python_install_dir)
 install(
   DIRECTORY python/${PROJECT_NAME}
   DESTINATION "${python_install_dir}"
   PATTERN "*.pyc" EXCLUDE
-  PATTERN "__pycache__" EXCLUDE
-)
-
+  PATTERN "__pycache__" EXCLUDE)
 
 #
 # install the CMake find modules at the good place
 #
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/ DESTINATION share/${PROJECT_NAME}/cmake)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/
+        DESTINATION share/${PROJECT_NAME}/cmake)
 
 #
 # Install the executable scripts in bin
 #
+# install the scripts.
 install(
-  FILES scripts/mpi_clang_format
+  FILES scripts/mpi_cpp_format scripts/mpi_python_format
+        scripts/mpi_cmake_format scripts/mpi_code_format
   DESTINATION bin
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+# install their configuration files.
 install(FILES resources/_clang-format
         DESTINATION ${python_install_dir}/${PROJECT_NAME})
 
@@ -81,5 +82,5 @@ add_documentation()
 
 #
 # put the cmake files at the right place
-# 
+#
 generate_cmake_package(SKIP_TARGET_EXPORT)

@@ -1,5 +1,11 @@
+# For the documentation
 sphinx
 m2r
 recommonmark
 breathe
 sphinxcontrib-moderncmakedomain
+
+# For the formatting
+clang-format
+cmake-format
+black
