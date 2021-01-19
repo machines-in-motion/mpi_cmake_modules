@@ -41,6 +41,8 @@ include(cmake/install_scripts.cmake)
 include(cmake/generate_cmake_package.cmake)
 include(cmake/find_modules.cmake)
 
+find_package(Python REQUIRED)
+
 #
 # Register the mpi_cmake_module resource files install location.
 #
