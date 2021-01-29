@@ -16,7 +16,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/get_python_interpreter.cmake)
 function(get_python_install_dir output)
 
   # Find the python interpreter.
-  get_python_interpreter(python_interpreter)
+  find_package(Python REQUIRED)
 
   # code to find installation path for python libs
   set(_python_code
@@ -27,14 +27,14 @@ function(get_python_install_dir output)
       "rel_path = os.path.relpath(python_lib, start=install_path)"
       "print(rel_path.replace(os.sep, '/'))")
   execute_process(
-    COMMAND "${python_interpreter}" "-c" "${_python_code}"
+    COMMAND "${Python_EXECUTABLE}" "-c" "${_python_code}"
     OUTPUT_VARIABLE _output
     RESULT_VARIABLE _result
     OUTPUT_STRIP_TRAILING_WHITESPACE)
   if(NOT _result EQUAL 0)
     message(
       FATAL_ERROR
-        "execute_process(${python_interpreter} -c '${_python_code}') returned "
+        "execute_process(${Python_EXECUTABLE} -c '${_python_code}') returned "
         "error code ${_result}")
   endif()
   set(${output}
