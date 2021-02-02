@@ -53,7 +53,7 @@ def run_cmake_format(sys_args):
     if cmake_format_bin is None:
         raise Exception(
             "cmake-format executable not found. You may try "
-            "'sudo apt-get install cmake-format'"
+            "'pip install cmake-format'"
         )
 
     # List of files or directories to parse.
