@@ -4,6 +4,8 @@
 # License BSD-3 clause
 #
 
+include(${CMAKE_CURRENT_LIST_DIR}/get_python_install_dir.cmake)
+
 # cmake-format: off
 #.rst:
 # .. cmake:command:: GET_DYNAMIC_GRAPH_PLUGIN_INSTALL_PATH(INSTALL_DYNAMIC_GRAPH_PLUGIN_PATH)
@@ -41,10 +43,9 @@ macro(INSTALL_DYNAMIC_GRAPH_PLUGIN_PYTHON_BINDINGS PLUGIN_TARGET)
   message(STATUS "Creating the python binding of: ${PLUGIN_TARGET}")
 
   # Look for the python install directory.
-  find_package(ament_cmake_python REQUIRED)
-  _ament_cmake_python_get_python_install_dir()
+  get_python_install_dir(python_install_dir)
   set(python_module_install_dir
-      ${PYTHON_INSTALL_DIR}/${PROJECT_NAME}/dynamic_graph)
+      ${python_install_dir}/${PROJECT_NAME}/dynamic_graph)
 
   # Find Python.
   find_package(Python REQUIRED)
