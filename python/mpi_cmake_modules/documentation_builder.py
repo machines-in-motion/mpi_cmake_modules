@@ -100,6 +100,7 @@ def _resource_path(project_source_dir):
         str: Path to the configuration files.
     """
     assert Path(project_source_dir).is_dir()
+
     # Find the resources from the package.
     project_name = Path(project_source_dir).stem
     if project_name == "mpi_cmake_modules":
@@ -110,16 +111,16 @@ def _resource_path(project_source_dir):
                 + str(mpi_cmake_modules.__path__)
             )
         return resource_path
+
     # Find the resources from the installation of this package.
-    else:
-        for module_path in mpi_cmake_modules.__path__:
-            resource_path = Path(module_path) / "resources"
-            if resource_path.is_dir():
-                return resource_path
-        raise Exception(
-            "failed to find the resource directory in "
-            + str(mpi_cmake_modules.__path__)
-        )
+    for module_path in mpi_cmake_modules.__path__:
+        resource_path = Path(module_path) / "resources"
+        if resource_path.is_dir():
+            return resource_path
+    raise Exception(
+        "failed to find the resource directory in "
+        + str(mpi_cmake_modules.__path__)
+    )
 
 
 def _build_doxygen_xml(doc_build_dir, project_source_dir):
@@ -129,7 +130,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
 
     Args:
         doc_build_dir (str): Path to where the doc should be built
-        project_source_dir (str): Path to the source files.
+        project_source_dir (str): Path to the source file of the project.
     """
     # Get project_name
     project_name = Path(project_source_dir).stem
@@ -180,7 +181,7 @@ def _build_breath_api_doc(doc_build_dir):
     '.rst' files.
 
     Args:
-        doc_build_dir (str): Path for the breathe-apidoc output
+        doc_build_dir (str): Path where to create the temporary output.
     """
     breathe_apidoc = _find_breathe_apidoc()
     breathe_input = Path(doc_build_dir) / "doxygen" / "xml"
@@ -211,8 +212,8 @@ def _build_sphinx_api_doc(doc_build_dir, project_source_dir):
     generate '.rst' files.
 
     Args:
-        doc_build_dir ([type]): [description]
-        project_source_dir ([type]): [description]
+        doc_build_dir (str): Path where to create the temporary output.
+        project_source_dir (str): Path to the source file of the project.
     """
     # define input folder
     project_name = Path(project_source_dir).stem
@@ -264,7 +265,7 @@ def _build_sphinx_build(doc_build_dir):
     generate the final html layout.
 
     Args:
-        doc_build_dir ([type]): [description]
+        doc_build_dir (str): Path where to create the temporary output.
     """
     sphinx_build = _find_sphinx_build()
     bashCommand = (
@@ -282,34 +283,18 @@ def _build_sphinx_build(doc_build_dir):
     print("sphinx-apidoc error:\n", error)
 
 
-def build_documentation(build_dir, project_source_dir, project_version):
+def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
+    """Search if there is a C++ api do document, and document it.
 
-    #
-    # Initialize the paths
-    #
+    Args:
+        doc_build_dir (str): Path where to create the temporary output.
+        project_source_dir (str): Path to the source file of the project.
+        resource_dir (str): Path to the resources files for the build.
 
-    # Get the project name form the source path.
-    project_name = Path(project_source_dir).stem
-
-    # Get the build folder for the documentation.
-    doc_build_dir = Path(build_dir) / "share" / "docs" / "sphinx"
-
-    # Create the folder architecture inside the build folder.
-    shutil.rmtree(str(doc_build_dir), ignore_errors=True)
-    doc_build_dir.mkdir(parents=True, exist_ok=True)
-
-    # Get the path to resource files.
-    resource_dir = Path(_resource_path(project_source_dir))
-
-    #
-    # Parametrize the final doc layout depending we have CMake/Python/C++ api.
-    #
-
-    # String to replace in the main index.rst
-    general_documentation = ""
+    Returns:
+        str: String added to the main index.rst in case there is a C++ api.
+    """
     cpp_api = ""
-    python_api = ""
-    cmake_api = ""
 
     # Search for C++ API:
     cpp_files = [
@@ -346,6 +331,24 @@ def build_documentation(build_dir, project_source_dir, project_version):
         # Generate the .rst corresponding to the doxygen xml
         _build_breath_api_doc(doc_build_dir)
 
+    return cpp_api
+
+
+def _search_for_python_api(doc_build_dir, project_source_dir):
+    """Search for a Python API and build it's documentation.
+
+    Args:
+        doc_build_dir (str): Path where to create the temporary output.
+        project_source_dir (str): Path to the source file of the project.
+
+    Returns:
+        str: String added to the main index.rst in case there is a Python api.
+    """
+    python_api = ""
+
+    # Get the project name form the source path.
+    project_name = Path(project_source_dir).stem
+
     # Search for Python API.
     if (
         Path(project_source_dir) / "python" / project_name / "__init__.py"
@@ -362,6 +365,11 @@ def build_documentation(build_dir, project_source_dir, project_version):
             "   modules\n\n"
         )
         _build_sphinx_api_doc(doc_build_dir, project_source_dir)
+    return python_api
+
+
+def _search_for_cmake_api(doc_build_dir, project_source_dir, resource_dir):
+    cmake_api = ""
 
     # Search for CMake API.
     cmake_files = [
@@ -382,7 +390,9 @@ def build_documentation(build_dir, project_source_dir, project_version):
         for cmake_file in cmake_files:
             doc_cmake_module += cmake_file.stem + "\n"
             doc_cmake_module += len(cmake_file.stem) * "-" + "\n\n"
-            doc_cmake_module += ".. cmake-module:: " + cmake_file.name + "\n\n"
+            doc_cmake_module += (
+                ".. cmake-module:: cmake/" + cmake_file.name + "\n\n"
+            )
         with open(
             str(resource_dir / "sphinx" / "sphinx" / "cmake_doc.rst.in"), "rt"
         ) as f:
@@ -395,6 +405,13 @@ def build_documentation(build_dir, project_source_dir, project_version):
             str(doc_build_dir / "cmake"),
         )
 
+    return cmake_api
+
+
+def _search_for_general_documentation(
+    doc_build_dir, project_source_dir, resource_dir
+):
+    general_documentation = ""
     # Search for additional doc.
     if (Path(project_source_dir) / "doc").is_dir():
         general_documentation = (
@@ -410,6 +427,47 @@ def build_documentation(build_dir, project_source_dir, project_version):
             / "general_documentation.rst.in",
             str(doc_build_dir / "general_documentation.rst"),
         )
+    return general_documentation
+
+
+def build_documentation(build_dir, project_source_dir, project_version):
+
+    #
+    # Initialize the paths
+    #
+
+    # Get the project name form the source path.
+    project_name = Path(project_source_dir).stem
+
+    # Get the build folder for the documentation.
+    doc_build_dir = Path(build_dir) / "share" / "docs" / "sphinx"
+
+    # Create the folder architecture inside the build folder.
+    shutil.rmtree(str(doc_build_dir), ignore_errors=True)
+    doc_build_dir.mkdir(parents=True, exist_ok=True)
+
+    # Get the path to resource files.
+    resource_dir = Path(_resource_path(project_source_dir))
+
+    #
+    # Parametrize the final doc layout depending we have CMake/Python/C++ api.
+    #
+
+    # String to replace in the main index.rst
+
+    cpp_api = _search_for_cpp_api(
+        doc_build_dir, project_source_dir, resource_dir
+    )
+
+    python_api = _search_for_python_api(doc_build_dir, project_source_dir)
+
+    cmake_api = _search_for_cmake_api(
+        doc_build_dir, project_source_dir, resource_dir
+    )
+
+    general_documentation = _search_for_general_documentation(
+        doc_build_dir, project_source_dir, resource_dir
+    )
 
     #
     # Configure the config.py and the index.rst.
@@ -458,12 +516,12 @@ def build_documentation(build_dir, project_source_dir, project_version):
     ][0]
     shutil.copy(str(readme), doc_build_dir / "readme.md")
 
-    license = [
+    license_file = [
         p.resolve()
         for p in Path(project_source_dir).glob("*")
         if p.name in ["LICENSE", "license.txt"]
     ][0]
-    shutil.copy(str(license), doc_build_dir / "license.txt")
+    shutil.copy(str(license_file), doc_build_dir / "license.txt")
 
     #
     # Generate the html doc
