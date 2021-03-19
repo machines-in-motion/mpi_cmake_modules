@@ -6,5 +6,5 @@ C++ API
    :maxdepth: 2
    :caption: Table of Content: Index
    
-   breathe/*
+   breathe_apidoc/*
    doxygen_index_one_page.rst   
