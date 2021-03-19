@@ -152,7 +152,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
   # Build and install directories
   set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)
-  set(SPHINX_DOC_INSTALL_FOLDER share/docs/sphinx)
+  set(SPHINX_DOC_INSTALL_FOLDER share/${PROJECT_NAME}/docs/sphinx)
   # Doxygen
   set(DOXYGEN_DOXYFILE_IN
       ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/doxygen/Doxyfile.in)

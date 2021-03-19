@@ -26,7 +26,7 @@ macro(ADD_DOXYGEN_DOCUMENTATION)
 
   # set the destination folder to be devel/share/[project_name]/doc/
   set(doc_build_folder ${CMAKE_BINARY_DIR}/share/docs/doxygen)
-  set(doc_install_folder share/docs/doxygen)
+  set(doc_install_folder share/${PROJECT_NAME}/docs/doxygen)
 
   # Create the doxyfile in function of the current project. If the Doxyfile.in
   # does not exists, the cmake step stops.

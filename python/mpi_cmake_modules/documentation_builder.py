@@ -440,7 +440,9 @@ def build_documentation(build_dir, project_source_dir, project_version):
     project_name = Path(project_source_dir).stem
 
     # Get the build folder for the documentation.
-    doc_build_dir = Path(build_dir) / "share" / "docs" / "sphinx"
+    doc_build_dir = (
+        Path(build_dir) / "share" / project_name / "docs" / "sphinx"
+    )
 
     # Create the folder architecture inside the build folder.
     shutil.rmtree(str(doc_build_dir), ignore_errors=True)
