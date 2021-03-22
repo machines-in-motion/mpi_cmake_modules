@@ -280,6 +280,13 @@ macro(ADD_SPHINX_DOCUMENTATION)
   endif()
 
   # Generate the configuration files
+  set(HEADER "Welcome to ${PROJECT_NAME}'s documentation!")
+  string(LENGTH ${HEADER} HEADER_LENGTH)
+  set(HEADER_UNDERLINE "")
+  foreach(i RANGE ${HEADER_LENGTH})
+    string(CONCAT HEADER_UNDERLINE "${HEADER_UNDERLINE}=")
+  endforeach()
+  set(HEADER "${HEADER}\n${HEADER_UNDERLINE}")
   configure_file(
     ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/conf.py.in
     ${SPHINX_DOC_BUILD_FOLDER}/conf.py @ONLY IMMEDIATE)
