@@ -16,6 +16,8 @@ function(get_python_interpreter output)
     message(FATAL_ERROR "Python executable has not been found.")
   endif(NOT ${PYTHONINTERP_FOUND} STREQUAL TRUE)
 
+  set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
+
   message(STATUS "PythonInterp: ${PYTHON_EXECUTABLE}")
   set(${output}
       ${PYTHON_EXECUTABLE}

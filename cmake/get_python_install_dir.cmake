@@ -4,8 +4,6 @@
 # License BSD-3 clause
 #
 
-include(${CMAKE_CURRENT_LIST_DIR}/get_python_interpreter.cmake)
-
 # .rst: .. cmake:command:: get_python_install_dir
 #
 # This macro creates the variable PYTHON_INSTALL_DIR which can be used to know

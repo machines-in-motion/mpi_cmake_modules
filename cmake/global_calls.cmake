@@ -73,3 +73,9 @@ endif()
 
 # All package have a doc target. This target may do nothing.
 create_doc_target()
+
+# By default we wanna use the default python executable available
+if(NOT PYTHON_EXECUTABLE)
+  find_program(PYTHON_EXECUTABLE "python")
+  set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
+endif()
