@@ -20,7 +20,7 @@ def _find_doxygen():
         Exception: if the doxygen executable is not found.
 
     Returns:
-        The full path to the black executable.
+        The full path to the doxygen executable.
     """
     exec_path = which("doxygen")
     if exec_path is not None:
