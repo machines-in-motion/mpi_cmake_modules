@@ -16,19 +16,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/get_python_interpreter.cmake)
 function(get_python_install_dir output)
 
   # Find the python interpreter.
-  if(NOT PYTHON_EXECUTABLE)
-    find_program(PYTHON_EXECUTABLE "python")
-  endif()
-
-  set(PYTHON_VERSION
-      ""
-      CACHE STRING
-            "Specify specific Python version to use ('major.minor' or 'major')")
-  # if not specified otherwise use Python 3
-  if(NOT PYTHON_VERSION)
-    set(PYTHON_VERSION "3")
-  endif()
-  message(STATUS "Using PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
+  find_package(Python REQUIRED)
 
   # code to find installation path for python libs
   set(_python_code
