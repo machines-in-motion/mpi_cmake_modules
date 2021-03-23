@@ -44,8 +44,12 @@ else()
   endif()
 endif()
 
+set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
+set(Python_INCLUDE_DIR ${PYTHON_INCLUDE_DIR})
+set(Python_LIBRARY ${PYTHON_LIBRARY})
+
 # We display what has been found so far.
 message(STATUS "FindPython has found:")
-message(STATUS "    - PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
-message(STATUS "    - PYTHON_INCLUDE_DIR: ${PYTHON_INCLUDE_DIR}")
-message(STATUS "    - PYTHON_LIBRARY: ${PYTHON_LIBRARY}")
+message(STATUS "    - Python_EXECUTABLE: ${PYTHON_EXECUTABLE}")
+message(STATUS "    - Python_INCLUDE_DIR: ${PYTHON_INCLUDE_DIR}")
+message(STATUS "    - Python_LIBRARY: ${PYTHON_LIBRARY}")
