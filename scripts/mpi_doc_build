@@ -15,7 +15,9 @@ from mpi_cmake_modules.documentation_builder import (
 )
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser = argparse.ArgumentParser(
+        description="Build the sphinx documentation from a source folder."
+    )
     parser.add_argument(
         "build_dir",
         type=str,
@@ -35,5 +37,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     build_documentation(
-        args.build_dir, args.project_source_dir, args.project_version
+        args.build_dir , args.project_source_dir, args.project_version
     )

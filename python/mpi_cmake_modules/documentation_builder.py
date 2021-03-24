@@ -13,6 +13,10 @@ import mpi_cmake_modules
 from mpi_cmake_modules.utils import which
 
 
+def _get_cpp_file_patterns():
+    return "*.h *.hh *.hpp *.hxx *.cpp *.c *.cc"
+
+
 def _find_doxygen():
     """Find the full path to the doxygen executable.
 
@@ -97,12 +101,12 @@ def _resource_path(project_source_dir):
         Exception: if the resources folder is not found.
 
     Returns:
-        str: Path to the configuration files.
+        pathlib.Path: Path to the configuration files.
     """
     assert Path(project_source_dir).is_dir()
 
     # Find the resources from the package.
-    project_name = Path(project_source_dir).stem
+    project_name = Path(project_source_dir).name
     if project_name == "mpi_cmake_modules":
         resource_path = Path(project_source_dir) / "resources"
         if not resource_path.is_dir():
@@ -133,7 +137,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
         project_source_dir (str): Path to the source file of the project.
     """
     # Get project_name
-    project_name = Path(project_source_dir).stem
+    project_name = Path(project_source_dir).name
 
     # Get the doxygen executable.
     doxygen = _find_doxygen()
@@ -146,7 +150,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
     assert doxyfile_in.is_file()
 
     # Which files are going to be parsed.
-    doxygen_file_patterns = "*.h *.hpp *.hh *.cpp *.c *.cc *.hxx"
+    doxygen_file_patterns = _get_cpp_file_patterns()
 
     # Where to put the doxygen output.
     doxygen_output = Path(doc_build_dir) / "doxygen"
@@ -206,7 +210,7 @@ def _build_breath_api_doc(doc_build_dir):
     print("")
 
 
-def _build_sphinx_api_doc(doc_build_dir, project_source_dir):
+def _build_sphinx_api_doc(doc_build_dir, python_source_dir):
     """
     Use sphinx_apidoc to parse the python files output from Doxygen and
     generate '.rst' files.
@@ -216,33 +220,13 @@ def _build_sphinx_api_doc(doc_build_dir, project_source_dir):
         project_source_dir (str): Path to the source file of the project.
     """
     # define input folder
-    project_name = Path(project_source_dir).stem
-    python_folder = Path(project_source_dir) / "python" / project_name
-    src_folder = Path(project_source_dir) / "src" / project_name
-
     sphinx_apidoc = _find_sphinx_apidoc()
     sphinx_apidoc_output = str(doc_build_dir)
-    if python_folder.is_dir():
-        sphinx_apidoc_input = str(python_folder)
+    if Path(python_source_dir).is_dir():
+        sphinx_apidoc_input = str(python_source_dir)
         bashCommand = (
             sphinx_apidoc
             + " -o "
-            + str(sphinx_apidoc_output)
-            + " "
-            + str(sphinx_apidoc_input)
-        )
-        process = subprocess.Popen(
-            bashCommand.split(), stdout=subprocess.PIPE, cwd=str(doc_build_dir)
-        )
-        output, error = process.communicate()
-        print("sphinx-apidoc output:\n", output.decode("UTF-8"))
-        print("sphinx-apidoc error:\n", error)
-
-    elif src_folder.is_dir():
-        sphinx_apidoc_input = str(src_folder)
-        bashCommand = (
-            sphinx_apidoc
-            + "-f -o "
             + str(sphinx_apidoc_output)
             + " "
             + str(sphinx_apidoc_input)
@@ -300,7 +284,7 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
     cpp_files = [
         p.resolve()
         for p in Path(project_source_dir).glob("**/*")
-        if p.suffix in [".c", ".cc", ".cpp", ".hxx", ".h"]
+        if p.suffix in _get_cpp_file_patterns().split()
     ]
     if cpp_files:
         # Introduce this toc tree in the main index.rst
@@ -347,14 +331,12 @@ def _search_for_python_api(doc_build_dir, project_source_dir):
     python_api = ""
 
     # Get the project name form the source path.
-    project_name = Path(project_source_dir).stem
+    project_name = Path(project_source_dir).name
 
     # Search for Python API.
-    if (
-        Path(project_source_dir) / "python" / project_name / "__init__.py"
-    ).is_file() or (
-        Path(project_source_dir) / "src" / project_name / "__init__.py"
-    ).is_file():
+    if (Path(project_source_dir) / "python" / project_name).is_dir() or (
+        Path(project_source_dir) / "src" / project_name
+    ).is_dir():
         # Introduce this toc tree in the main index.rst
         python_api = (
             "Python API\n"
@@ -364,7 +346,14 @@ def _search_for_python_api(doc_build_dir, project_source_dir):
             "   :maxdepth: 3\n\n"
             "   modules\n\n"
         )
-        _build_sphinx_api_doc(doc_build_dir, project_source_dir)
+        if (Path(project_source_dir) / "python" / project_name).is_dir():
+            _build_sphinx_api_doc(
+                doc_build_dir, Path(project_source_dir) / "python"
+            )
+        if (Path(project_source_dir) / "src" / project_name).is_dir():
+            _build_sphinx_api_doc(
+                doc_build_dir, Path(project_source_dir) / "src"
+            )
     return python_api
 
 
@@ -427,6 +416,10 @@ def _search_for_general_documentation(
             / "general_documentation.rst.in",
             str(doc_build_dir / "general_documentation.rst"),
         )
+        shutil.copytree(
+            str(Path(project_source_dir) / "doc"),
+            str(doc_build_dir / "doc"),
+        )
     return general_documentation
 
 
@@ -437,12 +430,10 @@ def build_documentation(build_dir, project_source_dir, project_version):
     #
 
     # Get the project name form the source path.
-    project_name = Path(project_source_dir).stem
+    project_name = Path(project_source_dir).name
 
     # Get the build folder for the documentation.
-    doc_build_dir = (
-        Path(build_dir) / "share" / project_name / "docs" / "sphinx"
-    )
+    doc_build_dir = Path(build_dir)
 
     # Create the folder architecture inside the build folder.
     shutil.rmtree(str(doc_build_dir), ignore_errors=True)
@@ -514,16 +505,18 @@ def build_documentation(build_dir, project_source_dir, project_version):
     readme = [
         p.resolve()
         for p in Path(project_source_dir).glob("*")
-        if p.suffix in [".md"] and p.name.lower() == "readme.md"
-    ][0]
-    shutil.copy(str(readme), doc_build_dir / "readme.md")
+        if p.name.lower() == "readme.md"
+    ]
+    if readme:
+        shutil.copy(str(readme[0]), doc_build_dir / "readme.md")
 
     license_file = [
         p.resolve()
         for p in Path(project_source_dir).glob("*")
         if p.name in ["LICENSE", "license.txt"]
-    ][0]
-    shutil.copy(str(license_file), doc_build_dir / "license.txt")
+    ]
+    if license_file:
+        shutil.copy(str(license_file[0]), doc_build_dir / "license.txt")
 
     #
     # Generate the html doc
