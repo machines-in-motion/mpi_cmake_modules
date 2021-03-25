@@ -66,14 +66,18 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/
 # Install the executable scripts in bin
 #
 # install the scripts.
-install(
-  FILES scripts/mpi_cpp_format scripts/mpi_python_format
-        scripts/mpi_cmake_format scripts/mpi_code_format
+# cmake-format: off
+install(FILES 
+  scripts/mpi_cpp_format
+  scripts/mpi_python_format
+  scripts/mpi_cmake_format
+  scripts/mpi_code_format
+  scripts/mpi_doc_build
   DESTINATION bin
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+# cmake-format: on
 # install their configuration files.
-install(FILES resources/_clang-format
-        DESTINATION ${python_install_dir}/${PROJECT_NAME})
+install(DIRECTORY resources DESTINATION ${python_install_dir}/${PROJECT_NAME})
 
 #
 # building documentation

@@ -52,7 +52,9 @@ def _load_clang_format_config():
         The _clang-format in a online dictionnary string.
     """
     for module_path in mpi_cmake_modules.__path__:
-        for (dirpath, _, filenames) in walk(module_path):
+        for (dirpath, _, filenames) in walk(
+            path.join(module_path, "resources")
+        ):
             if "_clang-format" in filenames:
                 return yaml2oneline(path.join(dirpath, "_clang-format"))
             break
