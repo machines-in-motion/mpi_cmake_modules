@@ -33,8 +33,8 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 project = u'@PROJECT_NAME@'
 now = datetime.datetime.now()
-copyright = (u'Copyright (c) ' + str(now.year) +
-             ', See license.txt file or the license section.')
+copyright = ('Copyright (c) ' + str(now.year) +
+             ', See license.txt file or the license section.').encode('utf-8')
 author = u'See the readme file.'
 
 # Version control
@@ -166,8 +166,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, '@PROJECT_NAME@.tex', u'@PROJECT_NAME@ Documentation',
-     author, 'manual'),
+    (master_doc.encode('utf-8'), u'@PROJECT_NAME@.tex', u'@PROJECT_NAME@ Documentation',
+     author, u'manual'),
 ]
 
 
