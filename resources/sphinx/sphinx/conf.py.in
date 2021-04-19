@@ -12,15 +12,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import xml.etree.ElementTree
 import datetime
-from sphinx.util.nodes import set_source_info
-from docutils import nodes
-from docutils.parsers.rst import Directive
-import textwrap
 import os
 import sys
-import sphinx
 from m2r import MdInclude
 from recommonmark.transform import AutoStructify
 
@@ -44,7 +38,7 @@ copyright = (u'Copyright (c) ' + str(now.year) +
 author = u'See the readme file.'
 
 # Version control
-version_cmake = "@PROJECT_VERSION@"
+version_cmake = u'@PROJECT_VERSION@'
 
 # The short X.Y version
 version = version_cmake
@@ -74,14 +68,14 @@ extensions = [
 ]
 
 # Root of the github page:
-github_doc_root = 'https://machines-in-motion.github.io/code_documentation/@PROJECT_NAME@'
+github_doc_root = u'https://machines-in-motion.github.io/code_documentation/@PROJECT_NAME@'
 html_baseurl = github_doc_root
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # breath extension management
-breathe_projects = {project: "@DOXYGEN_XML_OUTPUT@"}
+breathe_projects = {project: u'@DOXYGEN_XML_OUTPUT@'}
 breathe_default_project = project
 breathe_default_members = ('members', 'private-members', 'undoc-members')
 
@@ -193,9 +187,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, '@PROJECT_NAME@', '@PROJECT_NAME@ C++',
-     author, '@PROJECT_NAME@', 'One line description of project.',
-     'Robotics'),
+    (master_doc, u'@PROJECT_NAME@', u'@PROJECT_NAME@ C++',
+     author, u'@PROJECT_NAME@', u'One line description of project.',
+     u'Robotics'),
 ]
 
 
