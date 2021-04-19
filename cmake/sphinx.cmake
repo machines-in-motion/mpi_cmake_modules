@@ -162,7 +162,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
   set(DOXYGEN_FILE_PATTERNS "*.h *.hpp *.hh *.cpp *.c *.cc *.hxx")
   # Breathe apidoc
   set(BREATHE_INPUT ${SPHINX_DOC_BUILD_FOLDER}/doxygen/xml)
-  set(BREATHE_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/breathe)
+  set(BREATHE_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/breathe_apidoc)
   set(BREATHE_OPTION -g union,namespace,class,group,struct,file,interface)
   # Sphinx apidoc
   set(SPHINX_APIDOC_INPUT ${PROJECT_SOURCE_DIR}/python/${PROJECT_NAME})
