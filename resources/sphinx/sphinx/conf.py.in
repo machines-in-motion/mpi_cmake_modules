@@ -34,7 +34,7 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 project = u'@PROJECT_NAME@'
 now = datetime.datetime.now()
 copyright = ('Copyright (c) ' + str(now.year) +
-             ', See license.txt file or the license section.').encode('utf-8')
+             ', See license.txt file or the license section.')
 author = u'See the readme file.'
 
 # Version control
