@@ -4,6 +4,7 @@ m2r
 recommonmark
 breathe
 sphinxcontrib-moderncmakedomain
+sphinx-rtd-theme
 
 # For the formatting
 clang-format
