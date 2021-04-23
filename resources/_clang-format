@@ -5,6 +5,7 @@ AllowShortFunctionsOnASingleLine: None
 BinPackArguments: 'false'
 BinPackParameters: 'false'
 BreakBeforeBraces: Allman
+IncludeBlocks: Preserve
 IndentWidth: '4'
 
 ...
