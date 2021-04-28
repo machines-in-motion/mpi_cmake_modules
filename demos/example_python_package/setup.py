@@ -7,14 +7,9 @@ This a very simple example on how you could build the documentation of your
 package if you have the mpi_cmake_modules installed.
 """
 
-import sys
-from shutil import copytree, rmtree
 from pathlib import Path
-from distutils.core import setup
-from distutils.command.build_py import build_py
-from setuptools.command.install import install
-from setuptools.command.develop import develop
-from setuptools.command.egg_info import egg_info
+from setuptools import setup
+from setuptools.command.build_py import build_py
 
 
 # Defines the paramters of this package:
