@@ -311,7 +311,20 @@ macro(ADD_SPHINX_DOCUMENTATION)
     endif(${md_file_lower} STREQUAL "readme.md")
   endforeach(md_file ${md_files})
   if(NOT readme_file)
-    message(FATAL_ERROR "No readme file found.")
+      file(
+        GLOB rst_files
+        RELATIVE ${PROJECT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/*.rst)
+      foreach(rst_file ${rst_files})
+        string(TOLOWER ${rst_file} rst_file_lower)
+        if(${rst_file_lower} STREQUAL "readme.rst")
+          set(readme_file ${rst_file})
+        endif(${rst_file_lower} STREQUAL "readme.rst")
+      endforeach(rst_file ${rst_files})
+
+      if(NOT readme_file)
+        message(FATAL_ERROR "No readme file found.")
+      endif()
   endif()
   add_custom_target(
     ${PROJECT_NAME}_readme_symlink
