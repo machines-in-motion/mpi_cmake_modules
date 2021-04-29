@@ -125,6 +125,29 @@ macro(_BUILD_SPHINX_BUILD)
 
 endmacro(_BUILD_SPHINX_BUILD)
 
+
+#.rst:
+#
+# .. cmake:command:: _FIND_README
+#
+#    Search for a README with the given file extension and, if found, return
+#    its name using ``OUTPUT_VAR``.  Example to search for 'readme.md'::
+#
+#        _FIND_README(readme_file "md")
+#
+macro(_FIND_README OUTPUT_VAR EXTENSION)
+  file(
+    GLOB files
+    RELATIVE ${PROJECT_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}/*.${EXTENSION})
+  foreach(file ${files})
+    string(TOLOWER ${file} file_lower)
+    if(${file_lower} STREQUAL "readme.${EXTENSION}")
+      set(${OUTPUT_VAR} ${file})
+    endif()
+  endforeach()
+endmacro()
+
 #.rst:
 #
 # .. cmake:command:: ADD_SPHINX_DOCUMENTATION
@@ -300,31 +323,14 @@ macro(ADD_SPHINX_DOCUMENTATION)
     IMMEDIATE)
 
   # Fetch the readme.md and the license.txt
-  file(
-    GLOB md_files
-    RELATIVE ${PROJECT_SOURCE_DIR}
-    ${PROJECT_SOURCE_DIR}/*.md)
-  foreach(md_file ${md_files})
-    string(TOLOWER ${md_file} md_file_lower)
-    if(${md_file_lower} STREQUAL "readme.md")
-      set(readme_file ${md_file})
-    endif(${md_file_lower} STREQUAL "readme.md")
-  endforeach(md_file ${md_files})
+  _FIND_README(readme_file "md")
   if(NOT readme_file)
-      file(
-        GLOB rst_files
-        RELATIVE ${PROJECT_SOURCE_DIR}
-        ${PROJECT_SOURCE_DIR}/*.rst)
-      foreach(rst_file ${rst_files})
-        string(TOLOWER ${rst_file} rst_file_lower)
-        if(${rst_file_lower} STREQUAL "readme.rst")
-          set(readme_file ${rst_file})
-        endif(${rst_file_lower} STREQUAL "readme.rst")
-      endforeach(rst_file ${rst_files})
+    # If no "readme.md" is found, let's check if there is a "readme.rst"
+    _FIND_README(readme_file "rst")
 
-      if(NOT readme_file)
-        message(FATAL_ERROR "No readme file found.")
-      endif()
+    if(NOT readme_file)
+      message(FATAL_ERROR "No readme file found.")
+    endif()
   endif()
   add_custom_target(
     ${PROJECT_NAME}_readme_symlink
