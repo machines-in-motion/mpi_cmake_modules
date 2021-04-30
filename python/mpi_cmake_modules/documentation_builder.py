@@ -505,8 +505,11 @@ def build_documentation(build_dir, project_source_dir, project_version):
     readme = [
         p.resolve()
         for p in Path(project_source_dir).glob("*")
-        if p.name.lower() == "readme.md"
+        if p.name.lower() in ["readme.md", "readme.rst"]
     ]
+    # sort alphabetically so that "readme.md" is preferred in case both are
+    # found
+    readme = sorted(readme)
     if readme:
         shutil.copy(str(readme[0]), doc_build_dir / "readme.md")
 
