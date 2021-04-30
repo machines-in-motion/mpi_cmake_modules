@@ -240,3 +240,7 @@ def setup(app):
     app.add_config_value('m2r_anonymous_references', False, 'env')
     app.add_config_value('m2r_disable_inline_math', False, 'env')
     app.add_directive('mdinclude', MdInclude)
+
+    # Add CSS file with style fixes
+    # See https://github.com/readthedocs/sphinx_rtd_theme/issues/694
+    app.add_css_file('custom_style.css')

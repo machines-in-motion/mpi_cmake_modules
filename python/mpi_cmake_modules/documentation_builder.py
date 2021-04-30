@@ -521,6 +521,9 @@ def build_documentation(build_dir, project_source_dir, project_version):
     if license_file:
         shutil.copy(str(license_file[0]), doc_build_dir / "license.txt")
 
+    custom_css_file = resource_dir / "sphinx" / "sphinx" / "custom_style.css.in"
+    shutil.copy(str(custom_css_file), doc_build_dir / "custom_style.css")
+
     #
     # Generate the html doc
     #

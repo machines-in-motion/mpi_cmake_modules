@@ -314,6 +314,9 @@ macro(ADD_SPHINX_DOCUMENTATION)
     ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/conf.py.in
     ${SPHINX_DOC_BUILD_FOLDER}/conf.py @ONLY IMMEDIATE)
   configure_file(
+    ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/custom_style.css.in
+    ${SPHINX_DOC_BUILD_FOLDER}/custom_style.css @ONLY IMMEDIATE)
+  configure_file(
     ${MPI_CMAKE_MODULES_RESOURCES_DIR}/sphinx/sphinx/index.rst.in
     ${SPHINX_DOC_BUILD_FOLDER}/index.rst @ONLY IMMEDIATE)
   configure_file(
