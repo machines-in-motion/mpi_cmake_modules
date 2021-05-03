@@ -43,6 +43,12 @@ jobs:
       #
       # Build and test the current package.
       #
+      - name: Create separate environment for build and source dependencies.
+        shell: bash
+        run: >
+          mkdir -p ${BUILD_FOLDER} &&
+          mkdir -p ${DEVEL_FOLDER}/workspace/src
+
       - name: Configure CMake
         shell: bash
         working-directory: ${{github.workspace}}/build
