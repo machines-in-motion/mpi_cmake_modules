@@ -57,7 +57,10 @@ jobs:
       - name: Copy the documentation and upload it.
         shell: bash
         run: |
-          REPOSITORY_NAME=${${{github.workspace}}##*/}
+          # Get repository name
+          cd ${{github.workspace}}
+          REPOSITORY_NAME=basename "$PWD"
+
           mkdir -p $DEVEL_FOLDER
           cd $DEVEL_FOLDER
           git clone git@github.com:machines-in-motion/machines-in-motion.github.io
