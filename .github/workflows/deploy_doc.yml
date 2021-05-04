@@ -7,7 +7,7 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  REPOSITORY_NAME: mpi_cmake_module
+  REPOSITORY_NAME: package_template
   BUILD_TYPE: Release
   BUILD_FOLDER: ${{github.workspace}}/../build
   DEVEL_FOLDER: ${{github.workspace}}/../devel
@@ -44,33 +44,23 @@ jobs:
       #
       # Build and test the current package.
       #
-      - name: Create separate environment for build and source dependencies.
-        shell: bash
-        run: >
-          mkdir -p ${BUILD_FOLDER} &&
-          mkdir -p ${DEVEL_FOLDER}/workspace/src
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{github.workspace}}/build
-        run: |
-          echo cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
-          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
-
-      - name: Build
-        working-directory: ${{github.workspace}}/build
+      - name: Build and run CTest.
         shell: bash
         run: |
-          echo cmake --build . --config $BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
+          mkdir -p $BUILD_FOLDER
+          cd $BUILD_FOLDER
+          echo Source environment.
+          cmake ${{github.workspace}} -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
           cmake --build . --config $BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
+          env CTEST_OUTPUT_ON_FAILURE=1 ctest -C $BUILD_TYPE
 
       #
       # Copy the compiled documentation to the github page of the group.
       #
       - name: Copy the documentation and upload it.
         shell: bash
-        working-directory: ${{github.workspace}}
         run: |
+          mkdir -p $DEVEL_FOLDER
           cd $DEVEL_FOLDER
           git clone git@github.com:machines-in-motion/machines-in-motion.github.io
           code_doc_dir=$DEVEL_FOLDER/machines-in-motion.github.io/code_documentation/$REPOSITORY_NAME
