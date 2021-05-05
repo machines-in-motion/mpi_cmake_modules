@@ -60,7 +60,7 @@ jobs:
           # Get repository name
           cd ${{github.workspace}}
           REPOSITORY_NAME="${PWD##*/}"
-          echo $REPOSITORY_NAME
+          echo "repository_name=$REPOSITORY_NAME"
 
           mkdir -p $DEVEL_FOLDER
           cd $DEVEL_FOLDER
