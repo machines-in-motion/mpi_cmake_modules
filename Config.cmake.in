@@ -10,6 +10,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/install_scripts.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/generate_cmake_package.cmake)
 
 # Used by some dependencies
+include(${CMAKE_CURRENT_LIST_DIR}/boost_python.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/pybind11.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/find_modules.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/dynamic_graph.cmake)
