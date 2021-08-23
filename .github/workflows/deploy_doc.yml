@@ -49,7 +49,7 @@ jobs:
           mkdir -p $BUILD_FOLDER
           cd $BUILD_FOLDER
           cmake ${{github.workspace}} -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
-          cmake --build . --config $BUILD_TYPE -DGENERATE_DOCUMENTATION=ON
+          cmake --build . --config $BUILD_TYPE
 
       #
       # Copy the compiled documentation to the github page of the group.
