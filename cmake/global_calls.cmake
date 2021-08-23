@@ -85,6 +85,7 @@ if(NOT PYTHON_EXECUTABLE)
     #
     execute_process(COMMAND ${PYTHON_EXECUTABLE} --version OUTPUT_VARIABLE out)
     if(out)
+        message(STATUS "Python version: ${out}")
         string(REPLACE " " ";" python_version_str ${out})
         list(GET python_version_str 1 PYTHON_VERSION_STRING)
         string(REPLACE "." ";" python_version_list ${PYTHON_VERSION_STRING})
