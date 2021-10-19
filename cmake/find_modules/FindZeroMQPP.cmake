@@ -63,7 +63,7 @@ if(ZeroMQPP_path_found)
 
   # Export the library.
   if(ZeroMQPP_FOUND)
-    set(ZeroMQPP_LIBRARIES "")
+    set(ZeroMQPP_LIBRARIES ${ZeroMQPP_LIBRARY})
     set(ZeroMQPP_LIBRARY ${ZeroMQPP_LIBRARY})
     set(ZeroMQPP_INCLUDE_DIRS ${ZeroMQPP_INCLUDE_DIR})
     set(ZeroMQPP_DEFINITIONS "")
