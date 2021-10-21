@@ -67,14 +67,13 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/
 #
 # install the scripts.
 # cmake-format: off
-install(FILES 
+install(PROGRAMS
   scripts/mpi_cpp_format
   scripts/mpi_python_format
   scripts/mpi_cmake_format
   scripts/mpi_code_format
   scripts/mpi_doc_build
-  DESTINATION bin
-  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+  DESTINATION bin)
 # cmake-format: on
 # install their configuration files.
 install(DIRECTORY resources DESTINATION ${python_install_dir}/${PROJECT_NAME})
