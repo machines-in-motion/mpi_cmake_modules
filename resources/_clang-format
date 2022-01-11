@@ -7,5 +7,7 @@ BinPackParameters: 'false'
 BreakBeforeBraces: Allman
 IncludeBlocks: Preserve
 IndentWidth: '4'
+DeriveLineEnding: 'false'
+UseCRLF: 'false'
 
 ...
