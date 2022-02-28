@@ -1,22 +1,36 @@
 #!/usr/bin/env python3
-
 """mpi_cpp_format
 
 Format C/C++ files. This files are either directly given as argument or found
 in a folder also given as argument.
 
+This is a wrapper around `run-clang-format` setting `--recursive`, `--in-place`
+and `--style`.
+See `run-clang-format --help` for further options.
+
 License BSD-3-Clause
 Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
-
+import os
 import sys
-from mpi_cmake_modules.cpp_format import run_cpp_format
+
+import mpi_cmake_modules
+
 
 if __name__ == "__main__":
-    try:
-        run_cpp_format(sys.argv)
-    except Exception as e:
-        import traceback
+    if "-h" in sys.argv or "--help" in sys.argv:
+        print(__doc__)
+        sys.exit()
 
-        traceback.print_exc()
-        print("\nfailed with error:\n" + str(e) + "\n")
+    config_file = os.path.join(
+        mpi_cmake_modules.__path__[0], "resources", "_clang-format"
+    )
+
+    os.execlp(
+        "run-clang-format",
+        "run-clang-format",
+        "--recursive",
+        "--in-place",
+        "--style=file:%s" % config_file,
+        *sys.argv[1:]
+    )
