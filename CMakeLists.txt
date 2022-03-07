@@ -68,6 +68,7 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/cmake/
 # install the scripts.
 # cmake-format: off
 install(PROGRAMS
+  scripts/run-clang-format
   scripts/mpi_cpp_format
   scripts/mpi_python_format
   scripts/mpi_cmake_format
