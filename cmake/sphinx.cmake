@@ -173,6 +173,14 @@ macro(ADD_SPHINX_DOCUMENTATION)
 
   # All parameters
 
+  # TODO: This should probably be handled in a nicer way that is more obvious to
+  # the user (probably via an argument that has to be passed?
+  if (DEFINED PYTHON_INSTALL_DIR)
+    set(PYTHON_PACKAGE_LOCATION ${CMAKE_INSTALL_PREFIX}/${PYTHON_INSTALL_DIR})
+  else()
+    set(PYTHON_PACKAGE_LOCATION ${PROJECT_SOURCE_DIR}/python)
+  endif()
+
   # Build and install directories
   set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)
   set(SPHINX_DOC_INSTALL_FOLDER share/${PROJECT_NAME}/docs/sphinx)
@@ -188,7 +196,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
   set(BREATHE_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/breathe_apidoc)
   set(BREATHE_OPTION -g union,namespace,class,group,struct,file,interface)
   # Sphinx apidoc
-  set(SPHINX_APIDOC_INPUT ${PROJECT_SOURCE_DIR}/python/${PROJECT_NAME})
+  set(SPHINX_APIDOC_INPUT ${PYTHON_PACKAGE_LOCATION}/${PROJECT_NAME})
   set(SPHINX_APIDOC_OUTPUT ${SPHINX_DOC_BUILD_FOLDER})
   # Shinx build
   set(SPHINX_BUILD_INPUT ${SPHINX_DOC_BUILD_FOLDER})
