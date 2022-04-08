@@ -169,7 +169,19 @@ endmacro()
 #   Please refer to the *Sphinx* paragraph in the *General Documentation* in this
 #   package for more explanation about the parametrization of the tools.
 #
+#   Optional Arguments:
+#
+#   - DOXYGEN_EXCLUDE_PATTERNS:  String that is added to EXCLUDE_PATTERNS in the
+#       doxygen configuration (see documentation of doxygen for details).
+#
 macro(ADD_SPHINX_DOCUMENTATION)
+
+  cmake_parse_arguments(ADD_SPHINX_DOCUMENTATION
+    ""  # options without arguments
+    "DOXYGEN_EXCLUDE_PATTERNS"  # options with single argument
+    ""  # options with multiple arguments
+    ${ARGN}
+  )
 
   # All parameters
 
@@ -191,6 +203,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
   set(DOXYGEN_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/doxygen)
   set(DOXYGEN_XML_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/doxygen/xml)
   set(DOXYGEN_FILE_PATTERNS "*.h *.hpp *.hh *.cpp *.c *.cc *.hxx")
+  set(DOXYGEN_EXCLUDE_PATTERNS "${ADD_SPHINX_DOCUMENTATION_DOXYGEN_EXCLUDE_PATTERNS}")
   # Breathe apidoc
   set(BREATHE_INPUT ${SPHINX_DOC_BUILD_FOLDER}/doxygen/xml)
   set(BREATHE_OUTPUT ${SPHINX_DOC_BUILD_FOLDER}/breathe_apidoc)
