@@ -290,7 +290,9 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
     cpp_files = [
         p.resolve()
         for p in Path(project_source_dir).glob("**/*")
-        if any(fnmatch.fnmatch(p, pattern) for pattern in _get_cpp_file_patterns())
+        if any(
+            fnmatch.fnmatch(p, pattern) for pattern in _get_cpp_file_patterns()
+        )
     ]
     if cpp_files:
         print("Found C++ files, add C++ API documentation")
@@ -332,7 +334,9 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
     return cpp_api
 
 
-def _search_for_python_api(doc_build_dir, project_source_dir):
+def _search_for_python_api(
+    doc_build_dir, project_source_dir, package_path=None
+):
     """Search for a Python API and build it's documentation.
 
     Args:
@@ -347,17 +351,16 @@ def _search_for_python_api(doc_build_dir, project_source_dir):
     # Get the project name form the source path.
     project_name = Path(project_source_dir).name
 
-    package_path_candidates = [
-        Path(project_source_dir) / project_name,
-        Path(project_source_dir) / "python" / project_name,
-        Path(project_source_dir) / "src" / project_name,
-    ]
-
-    package_path = None
-    for p in package_path_candidates:
-        if p.is_dir():
-            package_path = p
-            break
+    if package_path is None:
+        package_path_candidates = [
+            Path(project_source_dir) / project_name,
+            Path(project_source_dir) / "python" / project_name,
+            Path(project_source_dir) / "src" / project_name,
+        ]
+        for p in package_path_candidates:
+            if p.is_dir():
+                package_path = p
+                break
 
     # Search for Python API.
     if package_path:
@@ -451,7 +454,9 @@ def _search_for_general_documentation(
     return general_documentation
 
 
-def build_documentation(build_dir, project_source_dir, project_version):
+def build_documentation(
+    build_dir, project_source_dir, project_version, python_pkg_path=None
+):
 
     #
     # Initialize the paths
@@ -480,7 +485,9 @@ def build_documentation(build_dir, project_source_dir, project_version):
         doc_build_dir, project_source_dir, resource_dir
     )
 
-    python_api = _search_for_python_api(doc_build_dir, project_source_dir)
+    python_api = _search_for_python_api(
+        doc_build_dir, project_source_dir, python_pkg_path
+    )
 
     cmake_api = _search_for_cmake_api(
         doc_build_dir, project_source_dir, resource_dir
@@ -559,9 +566,26 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--build-dir", type=str, help="Build directory")
-    parser.add_argument("--project-dir", type=str, help="Package directory?")
+    parser.add_argument(
+        "--build-dir", required=True, type=str, help="Build directory"
+    )
+    parser.add_argument(
+        "--package-dir", required=True, type=str, help="Package directory"
+    )
+    # FIXME relative path with ../../ not working...
+    parser.add_argument(
+        "--python-dir",
+        type=str,
+        help="""Directory containing the Python package.  If not set, it is
+            auto-detected inside the package directory
+        """,
+    )
     parser.add_argument("--project-version", type=str, help="Package version")
     args = parser.parse_args()
 
-    build_documentation(args.build_dir, args.project_dir, args.project_version)
+    build_documentation(
+        args.build_dir,
+        args.package_dir,
+        args.project_version,
+        python_pkg_path=args.python_dir,
+    )
