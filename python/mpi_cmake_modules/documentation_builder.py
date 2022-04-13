@@ -346,10 +346,20 @@ def _search_for_python_api(doc_build_dir, project_source_dir):
     # Get the project name form the source path.
     project_name = Path(project_source_dir).name
 
+    package_path_candidates = [
+        Path(project_source_dir) / project_name,
+        Path(project_source_dir) / "python" / project_name,
+        Path(project_source_dir) / "src" / project_name,
+    ]
+
+    package_path = None
+    for p in package_path_candidates:
+        if p.is_dir():
+            package_path = p
+            break
+
     # Search for Python API.
-    if (Path(project_source_dir) / "python" / project_name).is_dir() or (
-        Path(project_source_dir) / "src" / project_name
-    ).is_dir():
+    if package_path:
         # Introduce this toc tree in the main index.rst
         python_api = textwrap.dedent(
             """
@@ -363,14 +373,7 @@ def _search_for_python_api(doc_build_dir, project_source_dir):
 
         """
         )
-        if (Path(project_source_dir) / "python" / project_name).is_dir():
-            _build_sphinx_api_doc(
-                doc_build_dir, Path(project_source_dir) / "python"
-            )
-        if (Path(project_source_dir) / "src" / project_name).is_dir():
-            _build_sphinx_api_doc(
-                doc_build_dir, Path(project_source_dir) / "src"
-            )
+        _build_sphinx_api_doc(doc_build_dir, package_path)
     return python_api
 
 
