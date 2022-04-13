@@ -525,3 +525,15 @@ def build_documentation(build_dir, project_source_dir, project_version):
     # Generate the html doc
     #
     _build_sphinx_build(doc_build_dir)
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--build-dir", type=str, help="Build directory")
+    parser.add_argument("--project-dir", type=str, help="Package directory?")
+    parser.add_argument("--project-version", type=str, help="Package version")
+    args = parser.parse_args()
+
+    build_documentation(args.build_dir, args.project_dir, args.project_version)
