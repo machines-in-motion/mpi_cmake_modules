@@ -9,6 +9,7 @@ Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 import subprocess
 import shutil
 import fnmatch
+import textwrap
 from pathlib import Path
 
 import mpi_cmake_modules
@@ -294,12 +295,15 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
         print("Found C++ files, add C++ API documentation")
 
         # Introduce this toc tree in the main index.rst
-        cpp_api = (
-            "C++ API\n"
-            "-------\n\n"
-            ".. toctree::\n"
-            "   :maxdepth: 2\n\n"
-            "   doxygen_index\n\n"
+        cpp_api = textwrap.dedent(
+            """
+            .. toctree::
+               :caption: C++ API
+               :maxdepth: 2
+
+               doxygen_index
+
+        """
         )
         # Copy the index of the C++ API.
         shutil.copy(
@@ -347,13 +351,17 @@ def _search_for_python_api(doc_build_dir, project_source_dir):
         Path(project_source_dir) / "src" / project_name
     ).is_dir():
         # Introduce this toc tree in the main index.rst
-        python_api = (
-            "Python API\n"
-            "----------\n\n"
-            "* :ref:`modindex`\n\n"
-            ".. toctree::\n"
-            "   :maxdepth: 3\n\n"
-            "   modules\n\n"
+        python_api = textwrap.dedent(
+            """
+            .. toctree::
+               :caption: Python API
+               :maxdepth: 3
+
+               modules
+
+            * :ref:`modindex`
+
+        """
         )
         if (Path(project_source_dir) / "python" / project_name).is_dir():
             _build_sphinx_api_doc(
@@ -377,12 +385,15 @@ def _search_for_cmake_api(doc_build_dir, project_source_dir, resource_dir):
     ]
     if cmake_files:
         # Introduce this toc tree in the main index.rst
-        cmake_api = (
-            "CMake API\n"
-            "---------\n"
-            ".. toctree::\n"
-            "   :maxdepth: 3\n\n"
-            "   cmake_doc\n\n"
+        cmake_api = textwrap.dedent(
+            """
+            .. toctree::
+               :caption: CMake API
+               :maxdepth: 3
+
+               cmake_doc
+
+        """
         )
         doc_cmake_module = ""
         for cmake_file in cmake_files:
@@ -412,11 +423,15 @@ def _search_for_general_documentation(
     general_documentation = ""
     # Search for additional doc.
     if (Path(project_source_dir) / "doc").is_dir():
-        general_documentation = (
-            "General Documentation\n---------------------\n"
-            ".. toctree::\n"
-            "   :maxdepth: 2\n\n"
-            "   general_documentation\n\n"
+        general_documentation = textwrap.dedent(
+            """
+            .. toctree::
+               :caption: General Documentation
+               :maxdepth: 2
+
+               general_documentation
+
+        """
         )
         shutil.copy(
             resource_dir
