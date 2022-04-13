@@ -229,6 +229,7 @@ def _build_sphinx_api_doc(doc_build_dir, python_source_dir):
         sphinx_apidoc_input = str(python_source_dir)
         bashCommand = (
             sphinx_apidoc
+            + " --separate "
             + " -o "
             + str(sphinx_apidoc_output)
             + " "
