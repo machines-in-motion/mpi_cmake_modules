@@ -8,7 +8,9 @@ Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 
 import subprocess
 import shutil
+import fnmatch
 from pathlib import Path
+
 import mpi_cmake_modules
 from mpi_cmake_modules.utils import which
 
@@ -281,12 +283,16 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
     cpp_api = ""
 
     # Search for C++ API:
+    # TODO: this search is overly expensive for just checking if there are any cpp files
+    # (could stop at first match)
     cpp_files = [
         p.resolve()
         for p in Path(project_source_dir).glob("**/*")
-        if p.suffix in _get_cpp_file_patterns().split()
+        if any(fnmatch.fnmatch(p, pattern) for pattern in _get_cpp_file_patterns())
     ]
     if cpp_files:
+        print("Found C++ files, add C++ API documentation")
+
         # Introduce this toc tree in the main index.rst
         cpp_api = (
             "C++ API\n"
@@ -314,6 +320,9 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
         _build_doxygen_xml(doc_build_dir, project_source_dir)
         # Generate the .rst corresponding to the doxygen xml
         _build_breath_api_doc(doc_build_dir)
+
+    else:
+        print("No C++ files found.")
 
     return cpp_api
 
