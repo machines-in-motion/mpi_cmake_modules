@@ -17,7 +17,7 @@ from mpi_cmake_modules.utils import which
 
 
 def _get_cpp_file_patterns():
-    return "*.h *.hh *.hpp *.hxx *.cpp *.c *.cc"
+    return ["*.h", "*.hh", "*.hpp", "*.hxx", "*.cpp", "*.c", "*.cc"]
 
 
 def _find_doxygen():
@@ -153,7 +153,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
     assert doxyfile_in.is_file()
 
     # Which files are going to be parsed.
-    doxygen_file_patterns = _get_cpp_file_patterns()
+    doxygen_file_patterns = " ".join(_get_cpp_file_patterns())
 
     # Where to put the doxygen output.
     doxygen_output = Path(doc_build_dir) / "doxygen"
@@ -284,17 +284,16 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
     """
     cpp_api = ""
 
-    # Search for C++ API:
-    # TODO: this search is overly expensive for just checking if there are any cpp files
-    # (could stop at first match)
-    cpp_files = [
-        p.resolve()
-        for p in Path(project_source_dir).glob("**/*")
+    # Search for C++ files
+    has_cpp = False
+    for p in Path(project_source_dir).glob("**/*"):
         if any(
             fnmatch.fnmatch(p, pattern) for pattern in _get_cpp_file_patterns()
-        )
-    ]
-    if cpp_files:
+        ):
+            has_cpp = True
+            break
+
+    if has_cpp:
         print("Found C++ files, add C++ API documentation")
 
         # Introduce this toc tree in the main index.rst
