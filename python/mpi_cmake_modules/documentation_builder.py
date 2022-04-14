@@ -425,11 +425,22 @@ def _search_for_cmake_api(doc_build_dir, project_source_dir, resource_dir):
 
 
 def _search_for_general_documentation(
-    doc_build_dir, project_source_dir, resource_dir
-):
+    doc_build_dir: Path, project_source_dir: Path, resource_dir: Path
+) -> str:
     general_documentation = ""
+
+    doc_path_candidates = [
+        project_source_dir / "doc",
+        project_source_dir / "docs",
+    ]
+    doc_path = None
+    for p in doc_path_candidates:
+        if p.is_dir():
+            doc_path = p
+            break
+
     # Search for additional doc.
-    if (Path(project_source_dir) / "doc").is_dir():
+    if doc_path:
         general_documentation = textwrap.dedent(
             """
             .. toctree::
@@ -445,11 +456,11 @@ def _search_for_general_documentation(
             / "sphinx"
             / "sphinx"
             / "general_documentation.rst.in",
-            str(doc_build_dir / "general_documentation.rst"),
+            doc_build_dir / "general_documentation.rst",
         )
         shutil.copytree(
-            str(Path(project_source_dir) / "doc"),
-            str(doc_build_dir / "doc"),
+            doc_path,
+            doc_build_dir / "doc",
         )
     return general_documentation
 
@@ -578,7 +589,6 @@ if __name__ == "__main__":
         type=AbsolutePath,
         help="Package directory",
     )
-    # FIXME relative path with ../../ not working...
     parser.add_argument(
         "--python-dir",
         type=AbsolutePath,
