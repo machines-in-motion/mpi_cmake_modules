@@ -11,17 +11,21 @@ import shutil
 import fnmatch
 import textwrap
 import os
+import typing
 from pathlib import Path
 
 import mpi_cmake_modules
 from mpi_cmake_modules.utils import which
 
 
-def _get_cpp_file_patterns():
+PathLike = typing.Union[str, os.PathLike]
+
+
+def _get_cpp_file_patterns() -> typing.List[str]:
     return ["*.h", "*.hh", "*.hpp", "*.hxx", "*.cpp", "*.c", "*.cc"]
 
 
-def _find_doxygen():
+def _find_doxygen() -> str:
     """Find the full path to the doxygen executable.
 
     Raises:
@@ -39,7 +43,7 @@ def _find_doxygen():
     )
 
 
-def _find_breathe_apidoc():
+def _find_breathe_apidoc() -> str:
     """Find the full path to the breathe-apidoc executable.
 
     Raises:
@@ -57,7 +61,7 @@ def _find_breathe_apidoc():
     )
 
 
-def _find_sphinx_apidoc():
+def _find_sphinx_apidoc() -> str:
     """Find the full path to the sphinx-apidoc executable.
 
     Raises:
@@ -75,7 +79,7 @@ def _find_sphinx_apidoc():
     )
 
 
-def _find_sphinx_build():
+def _find_sphinx_build() -> str:
     """Find the full path to the sphinx-build executable.
 
     Raises:
@@ -87,13 +91,14 @@ def _find_sphinx_build():
     exec_path = which("sphinx-build")
     if exec_path is not None:
         return exec_path
+
     raise Exception(
         "sphinx-build executable not found. You may try "
         "'(sudo -H) pip3 install sphinx'"
     )
 
 
-def _resource_path(project_source_dir):
+def _resource_path(project_source_dir: Path) -> Path:
     """
     Fetch the resources path. This will contains all the configuration files
     for the different executables: Doxyfile, conf.py, etc.
@@ -107,12 +112,12 @@ def _resource_path(project_source_dir):
     Returns:
         pathlib.Path: Path to the configuration files.
     """
-    assert Path(project_source_dir).is_dir()
+    assert project_source_dir.is_dir()
 
     # Find the resources from the package.
-    project_name = Path(project_source_dir).name
+    project_name = project_source_dir.name
     if project_name == "mpi_cmake_modules":
-        resource_path = Path(project_source_dir) / "resources"
+        resource_path = project_source_dir / "resources"
         if not resource_path.is_dir():
             raise Exception(
                 "failed to find the resource directory in "
@@ -125,13 +130,14 @@ def _resource_path(project_source_dir):
         resource_path = Path(module_path) / "resources"
         if resource_path.is_dir():
             return resource_path
+
     raise Exception(
         "failed to find the resource directory in "
         + str(mpi_cmake_modules.__path__)
     )
 
 
-def _build_doxygen_xml(doc_build_dir, project_source_dir):
+def _build_doxygen_xml(doc_build_dir: Path, project_source_dir: Path):
     """
     Use doxygen to parse the C++ source files and generate a corresponding xml
     entry.
@@ -141,7 +147,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
         project_source_dir (str): Path to the source file of the project.
     """
     # Get project_name
-    project_name = Path(project_source_dir).name
+    project_name = project_source_dir.name
 
     # Get the doxygen executable.
     doxygen = _find_doxygen()
@@ -157,7 +163,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
     doxygen_file_patterns = " ".join(_get_cpp_file_patterns())
 
     # Where to put the doxygen output.
-    doxygen_output = Path(doc_build_dir) / "doxygen"
+    doxygen_output = doc_build_dir / "doxygen"
 
     # Parse the Doxyfile.in and replace the value between '@'
     with open(doxyfile_in, "rt") as f:
@@ -168,9 +174,9 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
             .replace("@DOXYGEN_FILE_PATTERNS@", doxygen_file_patterns)
             .replace("@DOXYGEN_OUTPUT@", str(doxygen_output))
         )
-    doxyfile_out = Path(doxygen_output) / "Doxyfile"
+    doxyfile_out = doxygen_output / "Doxyfile"
     doxyfile_out.parent.mkdir(parents=True, exist_ok=True)
-    with open(str(doxyfile_out), "wt") as f:
+    with open(doxyfile_out, "wt") as f:
         f.write(doxyfile_out_text)
 
     bashCommand = doxygen + " " + str(doxyfile_out)
@@ -183,7 +189,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
     print("")
 
 
-def _build_breath_api_doc(doc_build_dir):
+def _build_breath_api_doc(doc_build_dir: Path):
     """
     Use breathe_apidoc to parse the xml output from Doxygen and generate
     '.rst' files.
@@ -192,8 +198,8 @@ def _build_breath_api_doc(doc_build_dir):
         doc_build_dir (str): Path where to create the temporary output.
     """
     breathe_apidoc = _find_breathe_apidoc()
-    breathe_input = Path(doc_build_dir) / "doxygen" / "xml"
-    breathe_output = Path(doc_build_dir) / "breathe_apidoc"
+    breathe_input = doc_build_dir / "doxygen" / "xml"
+    breathe_output = doc_build_dir / "breathe_apidoc"
     breathe_option = "-f -g class,interface,struct,union,file,namespace,group"
 
     bashCommand = (
@@ -214,7 +220,7 @@ def _build_breath_api_doc(doc_build_dir):
     print("")
 
 
-def _build_sphinx_api_doc(doc_build_dir, python_source_dir):
+def _build_sphinx_api_doc(doc_build_dir: Path, python_source_dir: Path):
     """
     Use sphinx_apidoc to parse the python files output from Doxygen and
     generate '.rst' files.
@@ -224,17 +230,18 @@ def _build_sphinx_api_doc(doc_build_dir, python_source_dir):
         project_source_dir (str): Path to the source file of the project.
     """
     # define input folder
-    sphinx_apidoc = _find_sphinx_apidoc()
-    sphinx_apidoc_output = str(doc_build_dir)
-    if Path(python_source_dir).is_dir():
+    if python_source_dir.is_dir():
+        sphinx_apidoc = _find_sphinx_apidoc()
         sphinx_apidoc_input = str(python_source_dir)
+        sphinx_apidoc_output = str(doc_build_dir)
+
         bashCommand = (
             sphinx_apidoc
             + " --separate "
             + " -o "
-            + str(sphinx_apidoc_output)
+            + sphinx_apidoc_output
             + " "
-            + str(sphinx_apidoc_input)
+            + sphinx_apidoc_input
         )
         process = subprocess.Popen(
             bashCommand.split(), stdout=subprocess.PIPE, cwd=str(doc_build_dir)
@@ -248,7 +255,7 @@ def _build_sphinx_api_doc(doc_build_dir, python_source_dir):
     print("")
 
 
-def _build_sphinx_build(doc_build_dir):
+def _build_sphinx_build(doc_build_dir: Path):
     """
     Use sphinx_build to parse the cmake and rst files previously generated and
     generate the final html layout.
@@ -272,7 +279,9 @@ def _build_sphinx_build(doc_build_dir):
     print("sphinx-apidoc error:\n", error)
 
 
-def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
+def _search_for_cpp_api(
+    doc_build_dir: Path, project_source_dir: Path, resource_dir: Path
+) -> str:
     """Search if there is a C++ api do document, and document it.
 
     Args:
@@ -287,9 +296,10 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
 
     # Search for C++ files
     has_cpp = False
-    for p in Path(project_source_dir).glob("**/*"):
+    for p in project_source_dir.glob("**/*"):
         if any(
-            fnmatch.fnmatch(p, pattern) for pattern in _get_cpp_file_patterns()
+            fnmatch.fnmatch(str(p), pattern)
+            for pattern in _get_cpp_file_patterns()
         ):
             has_cpp = True
             break
@@ -310,17 +320,15 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
         )
         # Copy the index of the C++ API.
         shutil.copy(
-            str(
-                resource_dir
-                / "sphinx"
-                / "sphinx"
-                / "doxygen_index_one_page.rst.in"
-            ),
-            str(doc_build_dir / "doxygen_index_one_page.rst"),
+            resource_dir
+            / "sphinx"
+            / "sphinx"
+            / "doxygen_index_one_page.rst.in",
+            doc_build_dir / "doxygen_index_one_page.rst",
         )
         shutil.copy(
-            str(resource_dir / "sphinx" / "sphinx" / "doxygen_index.rst.in"),
-            str(doc_build_dir / "doxygen_index.rst"),
+            resource_dir / "sphinx" / "sphinx" / "doxygen_index.rst.in",
+            doc_build_dir / "doxygen_index.rst",
         )
 
         # Build the doxygen xml files.
@@ -335,8 +343,10 @@ def _search_for_cpp_api(doc_build_dir, project_source_dir, resource_dir):
 
 
 def _search_for_python_api(
-    doc_build_dir, project_source_dir, package_path=None
-):
+    doc_build_dir: Path,
+    project_source_dir: Path,
+    package_path: typing.Optional[Path] = None,
+) -> str:
     """Search for a Python API and build it's documentation.
 
     Args:
@@ -349,13 +359,13 @@ def _search_for_python_api(
     python_api = ""
 
     # Get the project name form the source path.
-    project_name = Path(project_source_dir).name
+    project_name = project_source_dir.name
 
     if package_path is None:
         package_path_candidates = [
-            Path(project_source_dir) / project_name,
-            Path(project_source_dir) / "python" / project_name,
-            Path(project_source_dir) / "src" / project_name,
+            project_source_dir / project_name,
+            project_source_dir / "python" / project_name,
+            project_source_dir / "src" / project_name,
         ]
         for p in package_path_candidates:
             if p.is_dir():
@@ -381,13 +391,15 @@ def _search_for_python_api(
     return python_api
 
 
-def _search_for_cmake_api(doc_build_dir, project_source_dir, resource_dir):
+def _search_for_cmake_api(
+    doc_build_dir: Path, project_source_dir: Path, resource_dir: Path
+) -> str:
     cmake_api = ""
 
     # Search for CMake API.
     cmake_files = [
         p.resolve()
-        for p in Path(project_source_dir).glob("cmake/*")
+        for p in project_source_dir.glob("cmake/*")
         if p.suffix in [".cmake"] or p.name == "CMakeLists.txt"
     ]
     if cmake_files:
@@ -410,15 +422,15 @@ def _search_for_cmake_api(doc_build_dir, project_source_dir, resource_dir):
                 ".. cmake-module:: cmake/" + cmake_file.name + "\n\n"
             )
         with open(
-            str(resource_dir / "sphinx" / "sphinx" / "cmake_doc.rst.in"), "rt"
+            resource_dir / "sphinx" / "sphinx" / "cmake_doc.rst.in", "rt"
         ) as f:
             out_text = f.read().replace("@DOC_CMAKE_MODULE@", doc_cmake_module)
         with open(str(doc_build_dir / "cmake_doc.rst"), "wt") as f:
             f.write(out_text)
 
         shutil.copytree(
-            str(Path(project_source_dir) / "cmake"),
-            str(doc_build_dir / "cmake"),
+            project_source_dir / "cmake",
+            doc_build_dir / "cmake",
         )
 
     return cmake_api
@@ -466,21 +478,26 @@ def _search_for_general_documentation(
 
 
 def build_documentation(
-    build_dir, project_source_dir, project_version, python_pkg_path=None
+    build_dir: PathLike,
+    project_source_dir: PathLike,
+    project_version,
+    python_pkg_path: typing.Optional[PathLike] = None,
 ):
+    # make sure all paths are of type Path
+    doc_build_dir = Path(build_dir)
+    project_source_dir = Path(project_source_dir)
+    if python_pkg_path is not None:
+        python_pkg_path = Path(python_pkg_path)
 
     #
     # Initialize the paths
     #
 
     # Get the project name form the source path.
-    project_name = Path(project_source_dir).name
-
-    # Get the build folder for the documentation.
-    doc_build_dir = Path(build_dir)
+    project_name = project_source_dir.name
 
     # Create the folder architecture inside the build folder.
-    shutil.rmtree(str(doc_build_dir), ignore_errors=True)
+    shutil.rmtree(doc_build_dir, ignore_errors=True)
     doc_build_dir.mkdir(parents=True, exist_ok=True)
 
     # Get the path to resource files.
@@ -515,9 +532,7 @@ def build_documentation(
     # configure the index.rst.in.
     header = "Welcome to " + project_name + "'s documentation!"
     header += "\n" + len(header) * "=" + "\n"
-    with open(
-        str(resource_dir / "sphinx" / "sphinx" / "index.rst.in"), "rt"
-    ) as f:
+    with open(resource_dir / "sphinx" / "sphinx" / "index.rst.in", "rt") as f:
         out_text = (
             f.read()
             .replace("@HEADER@", header)
@@ -526,13 +541,11 @@ def build_documentation(
             .replace("@PYTHON_API@", python_api)
             .replace("@CMAKE_API@", cmake_api)
         )
-    with open(str(doc_build_dir / "index.rst"), "wt") as f:
+    with open(doc_build_dir / "index.rst", "wt") as f:
         f.write(out_text)
 
     # configure the config.py.in.
-    with open(
-        str(resource_dir / "sphinx" / "sphinx" / "conf.py.in"), "rt"
-    ) as f:
+    with open(resource_dir / "sphinx" / "sphinx" / "conf.py.in", "rt") as f:
         out_text = (
             f.read()
             .replace("@PROJECT_SOURCE_DIR@", os.fspath(project_source_dir))
@@ -542,7 +555,7 @@ def build_documentation(
                 "@DOXYGEN_XML_OUTPUT@", str(doc_build_dir / "doxygen" / "xml")
             )
         )
-    with open(str(doc_build_dir / "conf.py"), "wt") as f:
+    with open(doc_build_dir / "conf.py", "wt") as f:
         f.write(out_text)
 
     #
@@ -550,22 +563,22 @@ def build_documentation(
     #
     readme = [
         p.resolve()
-        for p in Path(project_source_dir).glob("*")
+        for p in project_source_dir.glob("*")
         if p.name.lower() in ["readme.md", "readme.rst"]
     ]
     # sort alphabetically so that "readme.md" is preferred in case both are
     # found
     readme = sorted(readme)
     if readme:
-        shutil.copy(str(readme[0]), doc_build_dir / "readme.md")
+        shutil.copy(readme[0], doc_build_dir / "readme.md")
 
     license_file = [
         p.resolve()
-        for p in Path(project_source_dir).glob("*")
+        for p in project_source_dir.glob("*")
         if p.name in ["LICENSE", "license.txt"]
     ]
     if license_file:
-        shutil.copy(str(license_file[0]), doc_build_dir / "license.txt")
+        shutil.copy(license_file[0], doc_build_dir / "license.txt")
 
     #
     # Generate the html doc
