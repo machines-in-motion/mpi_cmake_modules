@@ -10,6 +10,7 @@ import subprocess
 import shutil
 import fnmatch
 import textwrap
+import os
 from pathlib import Path
 
 import mpi_cmake_modules
@@ -163,7 +164,7 @@ def _build_doxygen_xml(doc_build_dir, project_source_dir):
         doxyfile_out_text = (
             f.read()
             .replace("@PROJECT_NAME@", project_name)
-            .replace("@PROJECT_SOURCE_DIR@", project_source_dir)
+            .replace("@PROJECT_SOURCE_DIR@", os.fspath(project_source_dir))
             .replace("@DOXYGEN_FILE_PATTERNS@", doxygen_file_patterns)
             .replace("@DOXYGEN_OUTPUT@", str(doxygen_output))
         )
@@ -523,7 +524,7 @@ def build_documentation(
     ) as f:
         out_text = (
             f.read()
-            .replace("@PROJECT_SOURCE_DIR@", project_source_dir)
+            .replace("@PROJECT_SOURCE_DIR@", os.fspath(project_source_dir))
             .replace("@PROJECT_NAME@", project_name)
             .replace("@PROJECT_VERSION@", project_version)
             .replace(
@@ -564,17 +565,23 @@ def build_documentation(
 if __name__ == "__main__":
     import argparse
 
+    def AbsolutePath(path):
+        return Path(path).absolute()
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--build-dir", required=True, type=str, help="Build directory"
+        "--build-dir", required=True, type=AbsolutePath, help="Build directory"
     )
     parser.add_argument(
-        "--package-dir", required=True, type=str, help="Package directory"
+        "--package-dir",
+        required=True,
+        type=AbsolutePath,
+        help="Package directory",
     )
     # FIXME relative path with ../../ not working...
     parser.add_argument(
         "--python-dir",
-        type=str,
+        type=AbsolutePath,
         help="""Directory containing the Python package.  If not set, it is
             auto-detected inside the package directory
         """,
