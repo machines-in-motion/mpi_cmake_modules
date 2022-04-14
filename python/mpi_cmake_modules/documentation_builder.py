@@ -586,7 +586,7 @@ def build_documentation(
     _build_sphinx_build(doc_build_dir)
 
 
-if __name__ == "__main__":
+def main():
     import argparse
 
     def AbsolutePath(path):
@@ -594,7 +594,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--build-dir", required=True, type=AbsolutePath, help="Build directory"
+        "--output-dir",
+        required=True,
+        type=AbsolutePath,
+        help="Build directory",
     )
     parser.add_argument(
         "--package-dir",
@@ -609,12 +612,35 @@ if __name__ == "__main__":
             auto-detected inside the package directory
         """,
     )
-    parser.add_argument("--project-version", type=str, help="Package version")
+    parser.add_argument(
+        "--project-version", required=True, type=str, help="Package version"
+    )
+    parser.add_argument(
+        "--force",
+        "-f",
+        action="store_true",
+        help="Do not ask before deleting files.",
+    )
     args = parser.parse_args()
 
+    if not args.force and args.output_dir.exists():
+        print(
+            "Output directory {} already exists."
+            " It will be deleted if you proceed!".format(args.output_dir)
+        )
+        c = input("Continue? [y/N] ")
+
+        if c not in ["y", "Y", "yes"]:
+            print("Abort.")
+            return
+
     build_documentation(
-        args.build_dir,
+        args.output_dir,
         args.package_dir,
         args.project_version,
         python_pkg_path=args.python_dir,
     )
+
+
+if __name__ == "__main__":
+    main()
