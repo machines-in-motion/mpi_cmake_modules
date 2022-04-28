@@ -18,9 +18,7 @@ import sys
 from m2r import MdInclude
 from recommonmark.transform import AutoStructify
 
-sys.path.insert(0, os.path.abspath('.'))  # in order to use the local modules
-sys.path.insert(0, os.path.abspath("@PROJECT_SOURCE_DIR@/python"))
-sys.path.insert(0, os.path.abspath("@PROJECT_SOURCE_DIR@/src"))
+sys.path.insert(0, os.path.abspath("@PYTHON_PACKAGE_LOCATION@"))
 
 # cmake parser custom module
 currentmode = "user"
