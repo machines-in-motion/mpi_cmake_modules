@@ -6,6 +6,7 @@ License BSD-3-Clause
 Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 """
 
+import argparse
 import subprocess
 import shutil
 import fnmatch
@@ -587,8 +588,6 @@ def build_documentation(
 
 
 def main():
-    import argparse
-
     def AbsolutePath(path):
         return Path(path).absolute()
 
