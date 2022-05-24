@@ -263,7 +263,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
   endif()
   # Build the Python API rst files if needed
   set(PYTHON_API "")
-  if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/python)
+  if(IS_DIRECTORY ${PYTHON_PACKAGE_LOCATION})
 
     # Add the Python API to the main documentation
     set(PYTHON_API
