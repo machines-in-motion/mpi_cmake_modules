@@ -39,7 +39,7 @@ macro(DEFINE_OS)
     set(CURRENT_OS "xenomai")
     add_definitions("-DXENOMAI")
 
-  elseif(OS_VERSION MATCHES "preempt rt" OR OS_VERSION MATCHES "preempt-rt" OR OS_VERSION MATCHES "preempt_rt")
+  elseif(OS_VERSION MATCHES "preempt rt" OR OS_VERSION MATCHES "preempt-rt" OR OS_VERSION MATCHES "preempt_rt" OR OS_VERSION MATCHES "lowlatency")
     set(CURRENT_OS "rt-preempt")
     add_definitions("-DRT_PREEMPT")
 
