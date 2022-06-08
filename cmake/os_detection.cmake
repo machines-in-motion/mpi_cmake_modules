@@ -19,11 +19,11 @@
 #   Supported OS_VERSIONs are::
 #
 #       * "xenomai"
-#       * "preempt-rt"
+#       * "preempt-rt" / "lowlatency"
 #       * "non-real-time"/"ubuntu"
 #       * "darwin" (Mac-OS)
 #
-#   It also discriminate between real-time and non-real-time *OS*.
+#   It also discriminate between real-time and non-real-time (or low latency) *OS* (kernel).
 #
 macro(DEFINE_OS)
 
