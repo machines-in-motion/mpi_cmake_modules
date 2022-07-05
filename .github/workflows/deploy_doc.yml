@@ -75,11 +75,11 @@ jobs:
           make
           if [[ `git status --porcelain` ]]; then
             # Changes
-	    git add --all
+            git add --all
             git commit -am "[Github action $REPOSITORY_NAME] update doc"
             git push origin master
           else
             # No changes
-	    echo "Documentation up to date"
+	        echo "Documentation up to date"
           fi
           
