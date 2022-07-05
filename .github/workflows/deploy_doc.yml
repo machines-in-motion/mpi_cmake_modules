@@ -73,6 +73,13 @@ jobs:
           mv $BUILD_FOLDER/share/docs/sphinx/html $code_doc_dir/documentation
           cd $DEVEL_FOLDER/machines-in-motion.github.io
           make
-          git add --all
-          git commit -am "[Github action $REPOSITORY_NAME] update doc"
-          git push origin master
+          if [[ `git status --porcelain` ]]; then
+            # Changes
+	    git add --all
+            git commit -am "[Github action $REPOSITORY_NAME] update doc"
+            git push origin master
+          else
+            # No changes
+	    echo "Documentation up to date"
+          fi
+          
