@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ## [Unreleased]
+### Changed
+- `mpi_doc_build` uses breathing-cat internally and is marked as deprecated.
+
+### Removed
+- Python documentation build (it has been moved to its own package called
+  [breathing-cat](https://github.com/machines-in-motion/breathing-cat).
 
 
 ## [2.0.0] - 2022-06-29

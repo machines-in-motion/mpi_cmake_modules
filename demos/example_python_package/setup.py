@@ -24,7 +24,7 @@ class custom_build_py(build_py):
         # Try to build the doc and install it.
         try:
             # Get the mpi_cmake_module build doc method
-            from mpi_cmake_modules.documentation_builder import (
+            from breathing_cat.build import (
                 build_documentation,
             )
 
