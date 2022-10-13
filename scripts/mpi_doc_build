@@ -5,4 +5,6 @@
 # License BSD-3-Clause
 # Copyright (c) 2021, New York University and Max Planck Gesellschaft.
 
-python3 -m mpi_cmake_modules.documentation_builder "$@"
+echo "WARNING: mpi_doc_build is deprecated. Use breathing-cat (`bcat`) instead."
+
+bcat "$@"
