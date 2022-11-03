@@ -64,7 +64,7 @@ macro(ADD_SPHINX_DOCUMENTATION)
   if(NOT BCAT)
     message(FATAL_ERROR
         "breathing-cat not found! "
-        "Please install using: pip3 install git+https://github.com/machines-in-motion/breathing-cat"
+        "Please install using: pip3 install breathing-cat"
     )
   endif()
 
