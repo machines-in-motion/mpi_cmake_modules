@@ -6,7 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Changed
-- `mpi_doc_build` uses breathing-cat internally and is marked as deprecated.
+- `mpi_doc_build` uses
+  [breathing-cat](https://github.com/machines-in-motion/breathing-cat)
+  internally and is marked as deprecated.
+- The `add_documentation` cmake macro now uses breathing-cat internally. The
+  `DOXYGEN_EXCLUDE_PATTERNS` argument of `add_documentation` is not supported
+  anymore, use a breathing-cat config file instead.  Apart from this,
+  `add_documentation` should mostly work the same way as before.
 
 ### Removed
 - Python documentation build (it has been moved to its own package called
