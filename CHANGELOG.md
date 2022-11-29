@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ## [Unreleased]
+### Added
+- `NO_EXTRAS` flag for `add_pybind11_module()`.
+
 ### Changed
 - `mpi_doc_build` uses
   [breathing-cat](https://github.com/machines-in-motion/breathing-cat)
