@@ -46,45 +46,48 @@ macro(ADD_SPHINX_DOCUMENTATION)
     # year or so.
   endif()
 
-  # TODO: This should probably be handled in a nicer way that is more obvious to
-  # the user (probably via an argument that has to be passed?
-  if (DEFINED PYTHON_INSTALL_DIR)
-    set(PYTHON_PACKAGE_LOCATION ${CMAKE_INSTALL_PREFIX}/${PYTHON_INSTALL_DIR}/${PROJECT_NAME})
-  else()
-    set(PYTHON_PACKAGE_LOCATION ${PROJECT_SOURCE_DIR}/python/${PROJECT_NAME})
-  endif()
-
-  # Build and install directories
-  set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)
-  set(SPHINX_DOC_INSTALL_FOLDER share/${PROJECT_NAME}/docs/sphinx)
-
-
-  # make sure bcat is installed
-  find_program(BCAT bcat)
-  if(NOT BCAT)
-    message(FATAL_ERROR
-        "breathing-cat not found! "
-        "Please install using: pip3 install breathing-cat"
-    )
-  endif()
-
-  # Create the output
-  add_custom_target(
-    ${PROJECT_NAME}_sphinx_html
-    ${BCAT} --package-dir "${PROJECT_SOURCE_DIR}"
-        --output-dir "${SPHINX_DOC_BUILD_FOLDER}"
-        --python-dir "${PYTHON_PACKAGE_LOCATION}"
-        --force
-    COMMENT "Building documentation for ${PROJECT_NAME}"
-  )
-
-  # install the documentation
   if(GENERATE_DOCUMENTATION)
+
+    # TODO: This should probably be handled in a nicer way that is more obvious
+    # to the user (probably via an argument that has to be passed?
+    if (DEFINED PYTHON_INSTALL_DIR)
+      set(PYTHON_PACKAGE_LOCATION
+          ${CMAKE_INSTALL_PREFIX}/${PYTHON_INSTALL_DIR}/${PROJECT_NAME})
+    else()
+      set(PYTHON_PACKAGE_LOCATION ${PROJECT_SOURCE_DIR}/python/${PROJECT_NAME})
+    endif()
+
+    # Build and install directories
+    set(SPHINX_DOC_BUILD_FOLDER ${CMAKE_BINARY_DIR}/share/docs/sphinx)
+    set(SPHINX_DOC_INSTALL_FOLDER share/${PROJECT_NAME}/docs/sphinx)
+
+
+    # make sure bcat is installed
+    find_program(BCAT bcat)
+    if(NOT BCAT)
+      message(FATAL_ERROR
+          "breathing-cat not found! "
+          "Please install using: pip3 install breathing-cat"
+      )
+    endif()
+
+    # Create the output
+    add_custom_target(
+      ${PROJECT_NAME}_sphinx_html
+      ${BCAT} --package-dir "${PROJECT_SOURCE_DIR}"
+          --output-dir "${SPHINX_DOC_BUILD_FOLDER}"
+          --python-dir "${PYTHON_PACKAGE_LOCATION}"
+          --force
+      COMMENT "Building documentation for ${PROJECT_NAME}"
+    )
+
+    # install the documentation
     install(DIRECTORY ${SPHINX_DOC_BUILD_FOLDER}/html
             DESTINATION ${SPHINX_DOC_INSTALL_FOLDER})
-  endif()
 
-  # Create a dependency on the doc target
-  add_dependencies(doc ${PROJECT_NAME}_sphinx_html)
+    # Create a dependency on the doc target
+    add_dependencies(doc ${PROJECT_NAME}_sphinx_html)
+
+  endif()
 
 endmacro(ADD_SPHINX_DOCUMENTATION)
